@@ -1,1 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="M.J. Gross Inc. - 3 Generations of Diamond Excellence. Direct NYC Wholesalers & Manufacturers.">
+    <title>M.J. Gross Inc. | New York Diamond Wholesalers</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary-color: #0F172A; /* Deep Navy */
+            --accent-color: #C5A059; /* Muted Gold */
+            --text-light: #F8FAFC;
+            --text-dark: #334155;
+            --bg-light: #FFFFFF;
+            --bg-off-white: #F1F5F9;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3 {
+            font-family: 'Garamond', 'Georgia', serif;
+            font-weight: 400;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        /* --- NAVIGATION --- */
+        header {
+            background-color: var(--bg-light);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Logo Image Styling */
+        .logo-img {
+            height: 40px; /* Adjust based on your actual logo file */
+            width: auto;
+        }
+
+        /* Text Fallback if image doesn't load */
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .btn-login {
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light) !important;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 180px 20px 100px;
+            text-align: center;
+            /* RELATIVE PATH TO IMAGE FOLDER */
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cta-button:hover {
+            background-color: #b08d4b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+
+        .sub-cta {
+            display: block;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .sub-cta:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- VALUE PROPS (3 Columns) --- */
+        .values {
+            padding: 80px 20px;
+            background-color: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .value-card {
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .value-card p {
+            color: #64748B;
+            line-height: 1.7;
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about {
+            background-color: var(--bg-off-white);
+            padding: 100px 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .about p {
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+            color: var(--text-dark);
+        }
+
+        /* --- FOOTER / CONTACT --- */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 80px 20px 40px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-col h4 {
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 0.9rem;
+        }
+
+        .footer-col p, .footer-col a {
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+            opacity: 0.8;
+            display: block;
+            color: var(--text-light);
+        }
+        
+        .footer-col a:hover {
+            color: var(--accent-color);
+            opacity: 1;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* --- MOBILE TWEAKS --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Note: A mobile menu script would be needed for full mobile nav */
+            .logo-text { font-size: 1.2rem; }
+            .hero { padding-top: 140px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="M.J. Gross Inc." class="logo-img" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block';">
+                <div class="logo-text" style="display:none;">M.J. Gross Inc.</div>
+            </div>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#inventory">Inventory</a>
+                <a href="#contact">Contact</a>
+                <a href="#" class="btn-login">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Three Generations of Excellence.</h1>
+        <p>Direct from the source. Unmatched global inventory. New York City pricing.</p>
+        <a href="#" class="cta-button">View Live Inventory</a>
+        <a href="#" class="sub-cta">New User? Register for Access</a>
+    </section>
+
+    <section class="values">
+        <div class="container">
+            <div class="grid-3">
+                <div class="value-card">
+                    <span class="icon">★</span>
+                    <h3>The Source</h3>
+                    <p>Located in the heart of NYC's Diamond District. We manufacture and wholesale directly, cutting out middlemen to protect your margins.</p>
+                </div>
+                <div class="value-card">
+                    <span class="icon">💎</span>
+                    <h3>The Standard</h3>
+                    <p>We deal exclusively in GIA-certified stones. Every shape, size, and quality is in stock and available for immediate delivery.</p>
+                </div>
+                <div class="value-card">
+                    <span class="icon">⚡</span>
+                    <h3>The Savings</h3>
+                    <p>Our high turnover volume allows us to consistently beat standard market list prices like Rapnet and Polygon.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2>A Legacy Built on Trust</h2>
+            <p>For over three generations, M.J. Gross Inc. has been a cornerstone of the New York diamond industry. We operate from 579 Fifth Avenue, the epicenter of the global diamond trade.</p>
+            <p>Our longevity is built on a simple promise: <strong>Respect, Honesty, and Value.</strong> By leveraging our manufacturing capabilities, we offer pricing structures that empower our clients to compete—and win—in their local markets.</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Contact Sales</h4>
+                <p>Phone: <a href="tel:2127683944">(212) 768-3944</a></p>
+                <p>Toll-Free: <a href="tel:8886547677">(888) MJ-GROSS</a></p>
+                <p>Email: <a href="mailto:sales@mjgross.com">sales@mjgross.com</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>Visit Us</h4>
+                <p>20 West 47th Street, Suite #504</p>
+                <p>New York, NY 10036</p>
+            </div>
+            <div class="footer-col">
+                <h4>Inventory</h4>
+                <a href="#">Search GIA Certified Stones</a>
+                <a href="#">Register for Account</a>
+                <a href="#">Partner Login</a>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2024 M.J. Gross Inc. All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
