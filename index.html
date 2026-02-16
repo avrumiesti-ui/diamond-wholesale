@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="M.J. Gross Inc. - 3 Generations of Diamond Excellence. Direct NYC Wholesalers & Manufacturers.">
     <title>M.J. Gross Inc. | New York Diamond Wholesalers</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
             --primary-color: #0F172A; /* Deep Navy */
+            --primary-light: #1E293B; /* Lighter Navy for gradients */
             --accent-color: #C5A059; /* Muted Gold */
             --text-light: #F8FAFC;
             --text-dark: #334155;
             --bg-light: #FFFFFF;
-            --bg-off-white: #F1F5F9;
+            --bg-off-white: #F8FAFC;
         }
         
         * {
@@ -46,7 +47,8 @@
         /* --- NAVIGATION --- */
         header {
             background-color: var(--bg-light);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            /* A subtle border to separate header since logo has white bg */
+            border-bottom: 1px solid #e2e8f0;
             position: fixed;
             width: 100%;
             top: 0;
@@ -56,30 +58,18 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0.8rem 2rem;
+            padding: 0.5rem 2rem; /* Reduced padding to make header sleeker */
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-
-        /* Logo Image Styling */
+        /* LOGO STYLING */
         .logo-img {
-            height: 40px; /* Adjust based on your actual logo file */
+            /* Adjust height to ensure logo fits nicely */
+            height: 60px; 
             width: auto;
-        }
-
-        /* Text Fallback if image doesn't load */
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            display: block;
         }
 
         .nav-links {
@@ -90,10 +80,10 @@
 
         .nav-links a {
             color: var(--text-dark);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .nav-links a:hover {
@@ -112,43 +102,58 @@
             color: var(--text-light) !important;
         }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO SECTION (NO PHOTO VERSION) --- */
         .hero {
-            background-color: var(--primary-color);
+            /* CSS GRADIENT INSTEAD OF PHOTO */
+            background: linear-gradient(135deg, var(--primary-color) 0%, #243b55 100%);
             color: var(--text-light);
-            padding: 180px 20px 100px;
+            padding: 200px 20px 120px;
             text-align: center;
-            /* RELATIVE PATH TO IMAGE FOLDER */
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('images/hero-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Optional: Subtle geometric pattern overlay for texture */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: 4rem; /* Larger font since we have no image distractions */
+            margin-bottom: 1.5rem;
             color: var(--text-light);
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
         }
 
         .hero p {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             max-width: 700px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 3rem;
             opacity: 0.9;
             font-weight: 300;
+            color: #cbd5e1;
         }
 
         .cta-button {
             display: inline-block;
             background-color: var(--accent-color);
             color: #fff;
-            padding: 1rem 2.5rem;
+            padding: 1.2rem 3rem;
             font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 4px;
+            letter-spacing: 2px;
+            border-radius: 2px; /* Sharper corners for B2B look */
             font-weight: bold;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
@@ -156,20 +161,20 @@
         .cta-button:hover {
             background-color: #b08d4b;
             transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
         }
 
         .sub-cta {
             display: block;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             font-size: 0.9rem;
-            color: #cbd5e1;
+            color: #94a3b8;
             text-decoration: underline;
             cursor: pointer;
         }
         
         .sub-cta:hover {
-            color: var(--accent-color);
+            color: var(--text-light);
         }
 
         /* --- VALUE PROPS (3 Columns) --- */
@@ -186,23 +191,15 @@
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
+            gap: 4rem;
             text-align: center;
         }
 
-        .value-card {
-            padding: 2rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .value-card:hover {
-            transform: translateY(-5px);
-        }
-
         .value-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-bottom: 1rem;
             color: var(--primary-color);
+            font-weight: 600;
         }
 
         .value-card p {
@@ -211,9 +208,9 @@
         }
 
         .icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--accent-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: block;
         }
 
@@ -289,10 +286,10 @@
 
         /* --- MOBILE TWEAKS --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; } /* Note: A mobile menu script would be needed for full mobile nav */
-            .logo-text { font-size: 1.2rem; }
+            .hero h1 { font-size: 2.8rem; line-height: 1.1; }
+            .nav-links { display: none; } 
             .hero { padding-top: 140px; }
+            .logo-img { height: 45px; } /* Smaller logo on mobile */
         }
     </style>
 </head>
@@ -301,8 +298,7 @@
     <header>
         <div class="nav-container">
             <div class="logo-container">
-                <img src="images/logo.png" alt="M.J. Gross Inc." class="logo-img" onerror="this.style.display='none'; document.querySelector('.logo-text').style.display='block';">
-                <div class="logo-text" style="display:none;">M.J. Gross Inc.</div>
+                <img src="images/logo.jpg" alt="M.J. Gross Inc." class="logo-img">
             </div>
             <nav class="nav-links">
                 <a href="#about">About</a>
@@ -314,10 +310,12 @@
     </header>
 
     <section class="hero" id="home">
-        <h1>Three Generations of Excellence.</h1>
-        <p>Direct from the source. Unmatched global inventory. New York City pricing.</p>
-        <a href="#" class="cta-button">View Live Inventory</a>
-        <a href="#" class="sub-cta">New User? Register for Access</a>
+        <div class="hero-content">
+            <h1>Generations of<br>Diamond Excellence.</h1>
+            <p>Direct manufacturers. Unmatched inventory. New York City pricing.</p>
+            <a href="#" class="cta-button">View Inventory</a>
+            <a href="#" class="sub-cta">Register for Wholesale Access</a>
+        </div>
     </section>
 
     <section class="values">
@@ -326,17 +324,17 @@
                 <div class="value-card">
                     <span class="icon">★</span>
                     <h3>The Source</h3>
-                    <p>Located in the heart of NYC's Diamond District. We manufacture and wholesale directly, cutting out middlemen to protect your margins.</p>
+                    <p>Located in the heart of NYC's Diamond District. We manufacture and wholesale directly, protecting your margins.</p>
                 </div>
                 <div class="value-card">
                     <span class="icon">💎</span>
                     <h3>The Standard</h3>
-                    <p>We deal exclusively in GIA-certified stones. Every shape, size, and quality is in stock and available for immediate delivery.</p>
+                    <p>We deal exclusively in GIA-certified stones. Every shape, size, and quality is in stock and ready for delivery.</p>
                 </div>
                 <div class="value-card">
                     <span class="icon">⚡</span>
                     <h3>The Savings</h3>
-                    <p>Our high turnover volume allows us to consistently beat standard market list prices like Rapnet and Polygon.</p>
+                    <p>High turnover volume allows us to consistently beat standard market list prices like Rapnet and Polygon.</p>
                 </div>
             </div>
         </div>
@@ -346,7 +344,7 @@
         <div class="about-content">
             <h2>A Legacy Built on Trust</h2>
             <p>For over three generations, M.J. Gross Inc. has been a cornerstone of the New York diamond industry. We operate from 579 Fifth Avenue, the epicenter of the global diamond trade.</p>
-            <p>Our longevity is built on a simple promise: <strong>Respect, Honesty, and Value.</strong> By leveraging our manufacturing capabilities, we offer pricing structures that empower our clients to compete—and win—in their local markets.</p>
+            <p>Our longevity is built on a simple promise: <strong>Respect, Honesty, and Value.</strong></p>
         </div>
     </section>
 
@@ -360,8 +358,8 @@
             </div>
             <div class="footer-col">
                 <h4>Visit Us</h4>
-                <p>20 West 47th Street, Suite #504</p>
-                <p>New York, NY 10036</p>
+                <p>579 5th Avenue</p>
+                <p>New York, NY 10017</p>
             </div>
             <div class="footer-col">
                 <h4>Inventory</h4>
