@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="M.J. Gross Inc. - 3 Generations of Diamond Excellence. Direct NYC Wholesalers & Manufacturers.">
-    <title>M.J. Gross Inc. | New York Diamond Wholesalers</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <meta name="description" content="M.J. Gross Inc. - Procurers of Fine Diamonds. D-J Color, FL-VS2+. Serving the industry from 20 W 47th St.">
+    <title>M.J. Gross Inc. | Fine Diamond Traders & Procurers</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
         /* --- RESET & VARIABLES --- */
         :root {
-            --primary-color: #0F172A; /* Deep Navy */
-            --primary-light: #1E293B; /* Lighter Navy for gradients */
-            --accent-color: #C5A059; /* Muted Gold */
-            --text-light: #F8FAFC;
-            --text-dark: #334155;
+            /* Updated to MATCH LOGO (Rich Black) */
+            --primary-color: #000000; 
+            --accent-color: #C5A059; /* Gold remains for luxury accent */
+            --text-light: #FFFFFF;
+            --text-dark: #333333;
             --bg-light: #FFFFFF;
-            --bg-off-white: #F8FAFC;
+            --bg-off-white: #F9F9F9;
         }
         
         * {
@@ -47,8 +48,7 @@
         /* --- NAVIGATION --- */
         header {
             background-color: var(--bg-light);
-            /* A subtle border to separate header since logo has white bg */
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #eee;
             position: fixed;
             width: 100%;
             top: 0;
@@ -58,16 +58,15 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0.5rem 2rem; /* Reduced padding to make header sleeker */
+            padding: 0.5rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         /* LOGO STYLING */
-        .logo-img {
-            /* Adjust height to ensure logo fits nicely */
-            height: 60px; 
+        .logo-container img {
+            height: 55px; /* Adjust size as needed */
             width: auto;
             display: block;
         }
@@ -79,7 +78,7 @@
         }
 
         .nav-links a {
-            color: var(--text-dark);
+            color: var(--primary-color);
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -93,7 +92,7 @@
         .btn-login {
             border: 1px solid var(--primary-color);
             padding: 0.5rem 1.5rem;
-            border-radius: 4px;
+            border-radius: 2px;
             transition: all 0.3s ease;
         }
 
@@ -102,47 +101,29 @@
             color: var(--text-light) !important;
         }
 
-        /* --- HERO SECTION (NO PHOTO VERSION) --- */
+        /* --- HERO SECTION --- */
         .hero {
-            /* CSS GRADIENT INSTEAD OF PHOTO */
-            background: linear-gradient(135deg, var(--primary-color) 0%, #243b55 100%);
+            /* Black Gradient to match logo feel */
+            background: linear-gradient(135deg, #111111 0%, #2c2c2c 100%);
             color: var(--text-light);
-            padding: 200px 20px 120px;
+            padding: 220px 20px 140px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Optional: Subtle geometric pattern overlay for texture */
-        .hero::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 4rem; /* Larger font since we have no image distractions */
+            font-size: 3.8rem;
             margin-bottom: 1.5rem;
             color: var(--text-light);
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
         }
 
         .hero p {
-            font-size: 1.3rem;
-            max-width: 700px;
+            font-size: 1.25rem;
+            max-width: 800px;
             margin: 0 auto 3rem;
             opacity: 0.9;
             font-weight: 300;
-            color: #cbd5e1;
+            color: #ddd;
         }
 
         .cta-button {
@@ -153,31 +134,33 @@
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border-radius: 2px; /* Sharper corners for B2B look */
+            border-radius: 2px;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .cta-button:hover {
             background-color: #b08d4b;
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
         }
 
-        .sub-cta {
-            display: block;
-            margin-top: 2rem;
+        /* --- INVENTORY SPECS --- */
+        .specs-bar {
+            background-color: #f4f4f4;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .specs-bar span {
+            margin: 0 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+            text-transform: uppercase;
             font-size: 0.9rem;
-            color: #94a3b8;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        
-        .sub-cta:hover {
-            color: var(--text-light);
+            letter-spacing: 1px;
+            display: inline-block;
         }
 
-        /* --- VALUE PROPS (3 Columns) --- */
+        /* --- VALUE PROPS --- */
         .values {
             padding: 80px 20px;
             background-color: var(--bg-light);
@@ -203,8 +186,9 @@
         }
 
         .value-card p {
-            color: #64748B;
+            color: #555;
             line-height: 1.7;
+            font-size: 0.95rem;
         }
 
         .icon {
@@ -214,32 +198,43 @@
             display: block;
         }
 
-        /* --- ABOUT SECTION --- */
-        .about {
+        /* --- TERMS & PROCESS --- */
+        .process {
             background-color: var(--bg-off-white);
-            padding: 100px 20px;
-            border-top: 1px solid #e2e8f0;
+            padding: 80px 20px;
+            border-top: 1px solid #eee;
         }
-
-        .about-content {
-            max-width: 800px;
+        
+        .process-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1000px;
             margin: 0 auto;
-            text-align: center;
+            align-items: center;
         }
 
-        .about h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-        }
-
-        .about p {
+        .process-text h2 {
+            font-size: 2.2rem;
             margin-bottom: 1.5rem;
-            font-size: 1.15rem;
-            color: var(--text-dark);
         }
 
-        /* --- FOOTER / CONTACT --- */
+        .term-list li {
+            margin-bottom: 1rem;
+            list-style: none;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .term-list li::before {
+            content: "•";
+            color: var(--accent-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* --- FOOTER --- */
         footer {
             background-color: var(--primary-color);
             color: var(--text-light);
@@ -289,7 +284,7 @@
             .hero h1 { font-size: 2.8rem; line-height: 1.1; }
             .nav-links { display: none; } 
             .hero { padding-top: 140px; }
-            .logo-img { height: 45px; } /* Smaller logo on mobile */
+            .process-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -298,11 +293,11 @@
     <header>
         <div class="nav-container">
             <div class="logo-container">
-                <img src="images/logo.jpg" alt="M.J. Gross Inc." class="logo-img">
+                <a href="#"><img src="images/logo.jpg" alt="M.J. Gross Inc."></a>
             </div>
             <nav class="nav-links">
                 <a href="#about">About</a>
-                <a href="#inventory">Inventory</a>
+                <a href="#terms">Memo Terms</a>
                 <a href="#contact">Contact</a>
                 <a href="#" class="btn-login">Login</a>
             </nav>
@@ -310,41 +305,67 @@
     </header>
 
     <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Generations of<br>Diamond Excellence.</h1>
-            <p>Direct manufacturers. Unmatched inventory. New York City pricing.</p>
-            <a href="#" class="cta-button">View Inventory</a>
-            <a href="#" class="sub-cta">Register for Wholesale Access</a>
-        </div>
+        <h1>Fine Diamonds.<br>Direct from the Source.</h1>
+        <p>Buyers, Traders, and Procurers. Specializing in Fancy Shapes & Rounds.<br>
+        <strong>D-J Color | FL-VS2+ | 99.99% GIA Graded</strong></p>
+        <a href="#" class="cta-button">View Live Inventory</a>
     </section>
+
+    <div class="specs-bar">
+        <span>GIA Certified</span>
+        <span>•</span>
+        <span>V360 Videos</span>
+        <span>•</span>
+        <span>Fancy Shapes</span>
+        <span>•</span>
+        <span>Overnight Shipping</span>
+    </div>
 
     <section class="values">
         <div class="container">
             <div class="grid-3">
                 <div class="value-card">
-                    <span class="icon">★</span>
-                    <h3>The Source</h3>
-                    <p>Located in the heart of NYC's Diamond District. We manufacture and wholesale directly, protecting your margins.</p>
-                </div>
-                <div class="value-card">
                     <span class="icon">💎</span>
-                    <h3>The Standard</h3>
-                    <p>We deal exclusively in GIA-certified stones. Every shape, size, and quality is in stock and ready for delivery.</p>
+                    <h3>The Inventory</h3>
+                    <p>We focus on high-quality goods: mostly white stones (D-J) ranging from Flawless to VS2+. While we carry rounds, our specialty lies in exceptional Fancy Shapes.</p>
                 </div>
                 <div class="value-card">
-                    <span class="icon">⚡</span>
-                    <h3>The Savings</h3>
-                    <p>High turnover volume allows us to consistently beat standard market list prices like Rapnet and Polygon.</p>
+                    <span class="icon">🔍</span>
+                    <h3>The Experience</h3>
+                    <p>We list on Rapnet and Polygon, but clients call us for the "Make." We provide clear V360 videos and high-res photos so you see exactly what you are buying.</p>
+                </div>
+                <div class="value-card">
+                    <span class="icon">🤝</span>
+                    <h3>The Service</h3>
+                    <p>We are traders and procurers. We offer additional support via Phone, Email, and WhatsApp to ensure you have the data you need to close the sale.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="about" id="about">
-        <div class="about-content">
-            <h2>A Legacy Built on Trust</h2>
-            <p>For over three generations, M.J. Gross Inc. has been a cornerstone of the New York diamond industry. We operate from 579 Fifth Avenue, the epicenter of the global diamond trade.</p>
-            <p>Our longevity is built on a simple promise: <strong>Respect, Honesty, and Value.</strong></p>
+    <section class="process" id="terms">
+        <div class="container">
+            <div class="process-grid">
+                <div class="process-text">
+                    <h2>Trade Terms & Memos</h2>
+                    <p>We understand the needs of the modern retailer. Our terms are designed to help you sell without the risk.</p>
+                    <br>
+                    <ul class="term-list">
+                        <li><strong>5-Day Memo:</strong> Qualified buyers receive 5-day terms to show stones to their customers.</li>
+                        <li><strong>Overnight Returns:</strong> If there is no sale, we expect goods shipped back overnight immediately.</li>
+                        <li><strong>Transparency:</strong> 99.99% of our inventory is GIA graded.</li>
+                    </ul>
+                </div>
+                <div class="process-contact">
+                    <div style="background: #fff; padding: 2rem; border: 1px solid #ddd; text-align: center;">
+                        <h3>Visit Our Office</h3>
+                        <p style="margin-bottom: 1rem;">We operate from 20 West 47th Street.</p>
+                        <p style="font-size: 0.9rem; color: #666;"><em>(We moved from 579 Fifth Ave over 15 years ago)</em></p>
+                        <br>
+                        <a href="mailto:sales@mjgross.com" style="color: var(--accent-color); font-weight: bold;">Make an Appointment →</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -353,23 +374,24 @@
             <div class="footer-col">
                 <h4>Contact Sales</h4>
                 <p>Phone: <a href="tel:2127683944">(212) 768-3944</a></p>
-                <p>Toll-Free: <a href="tel:8886547677">(888) MJ-GROSS</a></p>
                 <p>Email: <a href="mailto:sales@mjgross.com">sales@mjgross.com</a></p>
+                <p>WhatsApp: Available on Request</p>
             </div>
             <div class="footer-col">
-                <h4>Visit Us</h4>
-                <p>579 5th Avenue</p>
-                <p>New York, NY 10017</p>
+                <h4>Location</h4>
+                <p>20 West 47th Street, Suite #504</p>
+                <p>New York, NY 10036</p>
+                <p><em>By Appointment Only</em></p>
             </div>
             <div class="footer-col">
-                <h4>Inventory</h4>
-                <a href="#">Search GIA Certified Stones</a>
+                <h4>Inventory Access</h4>
+                <a href="#">Log In to Search</a>
                 <a href="#">Register for Account</a>
-                <a href="#">Partner Login</a>
+                <a href="#">View New Arrivals</a>
             </div>
         </div>
         <div class="copyright">
-            &copy; 2024 M.J. Gross Inc. All Rights Reserved.
+            &copy; 2026 M.J. Gross Inc. All Rights Reserved.
         </div>
     </footer>
 
