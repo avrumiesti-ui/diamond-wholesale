@@ -15,6 +15,7 @@
             --accent: #C5A059; /* Gold */
             --text-light: #ffffff;
             --card-bg: #ffffff;
+            --header-bg: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,12 +24,32 @@
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
             color: var(--text-light);
-            min-height: 100vh; /* Changed to min-height for mobile scrolling */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px; /* Added padding so edges don't touch screen */
+            padding: 80px 20px 20px; /* Top padding accounts for fixed header */
+        }
+
+        /* --- TOP HEADER --- */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--header-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 50px; /* Adjusted for header height */
+            width: auto;
+            display: block;
         }
 
         /* --- LAYOUT --- */
@@ -38,23 +59,7 @@
             text-align: center;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Forces everything to center */
-        }
-
-        /* --- LOGO FIX --- */
-        .logo-box {
-            background-color: #ffffff;
-            padding: 15px 25px;
-            border-radius: 6px;
-            margin-bottom: 30px;
-            display: inline-block; /* Ensures the box wraps the image tightly */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .logo-box img {
-            height: 60px; /* Fixed height for consistency */
-            width: auto;
-            display: block;
+            align-items: center;
         }
 
         /* --- CARD --- */
@@ -63,8 +68,9 @@
             color: #333;
             padding: 40px 30px;
             border-radius: 6px;
-            width: 100%; /* Full width of container */
+            width: 100%;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            margin-bottom: 30px; /* Space between card and footer */
         }
 
         h2 {
@@ -164,11 +170,10 @@
 
         /* --- CONTACT FOOTER (Centered) --- */
         .footer-info {
-            margin-top: 40px;
             text-align: center;
             font-size: 0.9rem;
             color: #aaa;
-            line-height: 1.8;
+            line-height: 1.6;
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -184,7 +189,6 @@
             text-decoration: none;
         }
         
-        /* On mobile, stack the phone/email so it's easier to read */
         .contact-line {
             display: flex;
             gap: 10px;
@@ -196,11 +200,10 @@
 
         /* --- MOBILE TWEAKS --- */
         @media (max-width: 480px) {
-            body { padding: 15px; } /* Ensure padding on small screens */
-            .logo-box img { height: 50px; }
+            body { padding-top: 90px; } /* More space for header on mobile */
+            .logo-img { height: 40px; } /* Slightly smaller logo */
             .login-card { padding: 30px 20px; }
             
-            /* Stack contact info on very small screens */
             .contact-line { flex-direction: column; gap: 2px; }
             .separator { display: none; }
         }
@@ -208,12 +211,14 @@
 </head>
 <body>
 
+    <header class="top-header">
+        <a href="#">
+            <img src="images/logo.jpg" alt="M.J. Gross Inc." class="logo-img">
+        </a>
+    </header>
+
     <div class="login-container">
         
-        <div class="logo-box">
-            <img src="images/logo.jpg" alt="M.J. Gross Inc.">
-        </div>
-
         <div class="login-card">
             <h2>Customer Login</h2>
             
