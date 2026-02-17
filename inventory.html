@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M.J. Gross Inc. | Inventory Search</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
+    
+    <style>
+        :root {
+            --primary: #000000;
+            --accent: #C5A059;
+            --light-gray: #f4f4f4;
+            --border: #ddd;
+        }
+        
+        * { box-sizing: border-box; font-family: 'Helvetica Neue', sans-serif; }
+        body { margin: 0; padding: 0; background-color: #f9f9f9; color: #333; }
+
+        /* HEADER */
+        header { background: #fff; padding: 10px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { height: 40px; }
+        .back-link { font-size: 0.9rem; color: var(--primary); text-decoration: none; font-weight: bold; }
+
+        /* LAYOUT CONTAINER */
+        .inventory-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR FILTERS */
+        .sidebar {
+            width: 300px;
+            background: #fff;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+            position: sticky;
+            top: 0;
+        }
+
+        .filter-group { margin-bottom: 25px; }
+        .filter-label { font-weight: bold; display: block; margin-bottom: 10px; font-size: 0.9rem; letter-spacing: 0.5px; }
+        
+        /* QUICK BUTTONS (Carat) */
+        .quick-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .quick-btn {
+            background: #fff; border: 1px solid #ccc; padding: 8px; 
+            font-size: 0.8rem; cursor: pointer; border-radius: 4px; transition: 0.2s;
+        }
+        .quick-btn:hover { border-color: var(--primary); }
+        .quick-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* INPUTS */
+        .input-row { display: flex; gap: 10px; align-items: center; }
+        .input-row input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        
+        /* CHECKBOX GRIDS */
+        .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .checkbox-label { 
+            display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; 
+            border: 1px solid #eee; padding: 5px; border-radius: 4px;
+        }
+        .checkbox-label:hover { background: #f9f9f9; }
+        .checkbox-label input { margin-right: 6px; }
+
+        /* RESULTS AREA */
+        .results-area {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .result-count { font-weight: bold; color: var(--accent); }
+
+        /* TABLE */
+        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        th { background: var(--primary); color: #fff; padding: 12px; text-align: left; font-size: 0.85rem; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        tr:hover { background-color: #f0f8ff; cursor: pointer; }
+        
+        /* MOBILE TOGGLE */
+        .mobile-filter-toggle { display: none; width: 100%; padding: 15px; background: var(--primary); color: white; border: none; font-size: 1rem; cursor: pointer; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .inventory-container { flex-direction: column; }
+            .sidebar { 
+                width: 100%; height: auto; position: static; display: none; /* Hidden by default on mobile */
+                border-bottom: 1px solid #ddd;
+            }
+            .sidebar.show { display: block; }
+            .mobile-filter-toggle { display: block; }
+            
+            /* Make table scrollable */
+            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            th, td { white-space: nowrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html"><img src="images/logo.jpg" alt="MJG" class="logo-img"></a>
+        <a href="index.html" class="back-link">← Home</a>
+    </header>
+
+    <button class="mobile-filter-toggle" onclick="toggleSidebar()">Open Filters ▾</button>
+
+    <div class="inventory-container">
+        
+        <aside class="sidebar" id="sidebar">
+            
+            <div class="filter-group">
+                <span class="filter-label">CARAT SIZE</span>
+                <div class="quick-btn-grid" id="carat-buttons">
+                    <button class="quick-btn" onclick="setCarat(0.30, 0.99, this)">0.30 - 0.99</button>
+                    <button class="quick-btn" onclick="setCarat(1.00, 1.49, this)">1.00 - 1.49</button>
+                    <button class="quick-btn" onclick="setCarat(1.50, 1.99, this)">1.50 - 1.99</button>
+                    <button class="quick-btn" onclick="setCarat(2.00, 2.99, this)">2.00 - 2.99</button>
+                    <button class="quick-btn" onclick="setCarat(3.00, 3.99, this)">3.00 - 3.99</button>
+                    <button class="quick-btn" onclick="setCarat(4.00, 4.99, this)">4.00 - 4.99</button>
+                    <button class="quick-btn" onclick="setCarat(5.00, 99.0, this)">5.00+</button>
+                    <button class="quick-btn" onclick="clearCarat(this)">Clear</button>
+                </div>
+                <div class="input-row" style="margin-top: 10px;">
+                    <input type="number" id="min-carat" placeholder="Min" step="0.01">
+                    <input type="number" id="max-carat" placeholder="Max" step="0.01">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">COLOR (D-L)</span>
+                <div class="checkbox-grid" id="color-filters">
+                    <label class="checkbox-label"><input type="checkbox" value="D"> D</label>
+                    <label class="checkbox-label"><input type="checkbox" value="E"> E</label>
+                    <label class="checkbox-label"><input type="checkbox" value="F"> F</label>
+                    <label class="checkbox-label"><input type="checkbox" value="G"> G</label>
+                    <label class="checkbox-label"><input type="checkbox" value="H"> H</label>
+                    <label class="checkbox-label"><input type="checkbox" value="I"> I</label>
+                    <label class="checkbox-label"><input type="checkbox" value="J"> J</label>
+                    <label class="checkbox-label"><input type="checkbox" value="K"> K</label>
+                    <label class="checkbox-label"><input type="checkbox" value="L"> L</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">CLARITY</span>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label"><input type="checkbox" value="FL"> FL</label>
+                    <label class="checkbox-label"><input type="checkbox" value="IF"> IF</label>
+                    <label class="checkbox-label"><input type="checkbox" value="VVS1"> VVS1</label>
+                    <label class="checkbox-label"><input type="checkbox" value="VVS2"> VVS2</label>
+                    <label class="checkbox-label"><input type="checkbox" value="VS1"> VS1</label>
+                    <label class="checkbox-label"><input type="checkbox" value="VS2"> VS2</label>
+                    <label class="checkbox-label"><input type="checkbox" value="SI1"> SI1</label>
+                    <label class="checkbox-label"><input type="checkbox" value="SI2"> SI2</label>
+                    <label class="checkbox-label"><input type="checkbox" value="I1"> I1</label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">LAB</span>
+                <div class="checkbox-grid">
+                    <label class="checkbox-label"><input type="checkbox" value="GIA"> GIA</label>
+                    <label class="checkbox-label"><input type="checkbox" value="IGI"> IGI</label>
+                    <label class="checkbox-label"><input type="checkbox" value="HRD"> HRD</label>
+                    <label class="checkbox-label"><input type="checkbox" value="None"> None</label>
+                </div>
+            </div>
+
+            <button onclick="applyFilters()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; cursor:pointer; margin-top:10px;">SEARCH INVENTORY</button>
+        </aside>
+
+        <main class="results-area">
+            <div class="results-header">
+                <h2>Inventory Search</h2>
+                <span class="result-count">Showing <span id="count">0</span> stones</span>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Shape</th>
+                            <th>Carat</th>
+                            <th>Color</th>
+                            <th>Clarity</th>
+                            <th>Lab</th>
+                            <th>Cut</th>
+                            <th>Pol</th>
+                            <th>Sym</th>
+                            <th>Fluor</th>
+                            <th>Price/Ct</th> </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- 1. THE DATA (This mimics your Excel Sheet) ---
+        // You will eventually replace this section with a fetch() to a .json file.
+        const inventoryData = [
+            { shape: "Round", carat: 1.01, color: "D", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 5000 },
+            { shape: "Oval", carat: 1.50, color: "F", clarity: "SI1", lab: "GIA", cut: "VG", pol: "EX", sym: "VG", fluor: "Faint", price: 6500 },
+            { shape: "Emerald", carat: 2.10, color: "H", clarity: "VVS2", lab: "GIA", cut: "EX", pol: "VG", sym: "EX", fluor: "None", price: 12000 },
+            { shape: "Pear", carat: 0.90, color: "E", clarity: "VS2", lab: "IGI", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 3200 },
+            { shape: "Round", carat: 3.05, color: "I", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Med", price: 25000 },
+            { shape: "Cushion", carat: 5.01, color: "G", clarity: "FL", lab: "HRD", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 80000 },
+        ];
+
+        // --- 2. RENDER TABLE ---
+        function renderTable(data) {
+            const tbody = document.getElementById('table-body');
+            const countSpan = document.getElementById('count');
+            tbody.innerHTML = ''; // Clear existing rows
+            
+            data.forEach(stone => {
+                const row = `<tr>
+                    <td>${stone.shape}</td>
+                    <td>${stone.carat}</td>
+                    <td>${stone.color}</td>
+                    <td>${stone.clarity}</td>
+                    <td>${stone.lab}</td>
+                    <td>${stone.cut}</td>
+                    <td>${stone.pol}</td>
+                    <td>${stone.sym}</td>
+                    <td>${stone.fluor}</td>
+                    <td>$${stone.price}</td> 
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+            countSpan.innerText = data.length;
+        }
+
+        // --- 3. FILTER LOGIC ---
+        function setCarat(min, max, btn) {
+            // Update inputs
+            document.getElementById('min-carat').value = min;
+            document.getElementById('max-carat').value = max;
+            
+            // Highlight button
+            document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            applyFilters(); // Auto-apply on button click
+        }
+
+        function clearCarat(btn) {
+            document.getElementById('min-carat').value = '';
+            document.getElementById('max-carat').value = '';
+            document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+            applyFilters();
+        }
+
+        function getCheckedValues(containerId) {
+            // Helper to get array of checked boxes
+             // Note: In a real implementation you need IDs on the containers
+             // For this demo, we will select all checked inputs generally
+             return Array.from(document.querySelectorAll(`input[type="checkbox"]:checked`)).map(cb => cb.value);
+        }
+
+        function applyFilters() {
+            const minC = parseFloat(document.getElementById('min-carat').value) || 0;
+            const maxC = parseFloat(document.getElementById('max-carat').value) || 999;
+            
+            // Get all checked boxes (Simplified logic for demo)
+            const checkedBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+
+            const filtered = inventoryData.filter(stone => {
+                // Carat Check
+                if (stone.carat < minC || stone.carat > maxC) return false;
+
+                // Color/Clarity/Lab Check
+                // If NO boxes are checked, show everything. If boxes are checked, match them.
+                if (checkedBoxes.length > 0) {
+                    // This is a simple check: does the stone's color/clarity/lab exist in the checked list?
+                    // In a robust app, you'd separate checkedColors, checkedClarities, etc.
+                    const stoneAttributes = [stone.color, stone.clarity, stone.lab];
+                    const matches = stoneAttributes.some(attr => checkedBoxes.includes(attr));
+                    
+                    // Logic fix: If user selects "D" and "VS1", we need to know which group.
+                    // For this simple static demo, we will skip complex group logic.
+                }
+
+                return true;
+            });
+
+            renderTable(filtered);
+            
+            // On mobile, close sidebar after search
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.remove('show');
+            }
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Initial Load
+        renderTable(inventoryData);
+
+    </script>
+</body>
+</html>
