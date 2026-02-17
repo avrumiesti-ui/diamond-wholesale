@@ -2,35 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M.J. Gross Inc. | Inventory Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M.J. Gross Inc. | Inventory</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
         :root {
             --primary: #000000;
             --accent: #C5A059;
-            --light-gray: #f4f4f4;
-            --border: #ddd;
+            --bg-gray: #f4f6f8;
+            --border: #e2e8f0;
         }
         
-        * { box-sizing: border-box; font-family: 'Helvetica Neue', sans-serif; }
-        body { margin: 0; padding: 0; background-color: #f9f9f9; color: #333; }
+        * { box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #333; }
 
         /* HEADER */
-        header { background: #fff; padding: 10px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .logo-img { height: 40px; }
-        .back-link { font-size: 0.9rem; color: var(--primary); text-decoration: none; font-weight: bold; }
+        header { background: #fff; padding: 12px 20px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo-img { height: 35px; }
+        .back-link { font-size: 0.85rem; color: var(--primary); text-decoration: none; font-weight: 700; text-transform: uppercase; }
 
-        /* LAYOUT CONTAINER */
-        .inventory-container {
-            display: flex;
-            min-height: 100vh;
-        }
+        /* LAYOUT */
+        .inventory-container { display: flex; min-height: calc(100vh - 60px); }
 
         /* SIDEBAR FILTERS */
         .sidebar {
-            width: 300px;
+            width: 340px;
             background: #fff;
             border-right: 1px solid #ddd;
             padding: 20px;
@@ -38,66 +35,91 @@
             overflow-y: auto;
             height: calc(100vh - 60px);
             position: sticky;
-            top: 0;
+            top: 60px;
         }
 
-        .filter-group { margin-bottom: 25px; }
-        .filter-label { font-weight: bold; display: block; margin-bottom: 10px; font-size: 0.9rem; letter-spacing: 0.5px; }
+        .filter-group { margin-bottom: 30px; }
+        .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.75rem; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
         
-        /* QUICK BUTTONS (Carat) */
-        .quick-btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .quick-btn {
-            background: #fff; border: 1px solid #ccc; padding: 8px; 
-            font-size: 0.8rem; cursor: pointer; border-radius: 4px; transition: 0.2s;
+        /* --- NEW CARAT GRID (2 Lines) --- */
+        .carat-row {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .quick-btn:hover { border-color: var(--primary); }
-        .quick-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+        /* Line 1: 3 items (Under 2ct) */
+        .row-under-2 { grid-template-columns: repeat(3, 1fr); }
+        /* Line 2: 4 items (Over 2ct) */
+        .row-over-2 { grid-template-columns: repeat(4, 1fr); }
 
-        /* INPUTS */
-        .input-row { display: flex; gap: 10px; align-items: center; }
-        .input-row input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .carat-btn {
+            background: #fff; border: 1px solid #cbd5e1; padding: 10px 4px; 
+            font-size: 0.8rem; cursor: pointer; border-radius: 4px; 
+            transition: 0.1s; font-weight: 600; color: #475569;
+            text-align: center;
+        }
+        .carat-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+
+        /* --- TOUCH BOXES (Range Sliders) --- */
+        .touch-bar {
+            display: flex;
+            width: 100%;
+        }
         
-        /* CHECKBOX GRIDS */
-        .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .checkbox-label { 
-            display: flex; align-items: center; font-size: 0.85rem; cursor: pointer; 
-            border: 1px solid #eee; padding: 5px; border-radius: 4px;
-        }
-        .checkbox-label:hover { background: #f9f9f9; }
-        .checkbox-label input { margin-right: 6px; }
-
-        /* RESULTS AREA */
-        .results-area {
+        .touch-btn {
             flex-grow: 1;
-            padding: 20px;
-            overflow-x: auto;
+            padding: 10px 0;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            margin-left: -1px; /* Overlap borders */
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            text-align: center;
         }
+        
+        .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
+        .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+        
+        .touch-btn.active {
+            background-color: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            position: relative; /* Bring to front so border shows */
+            z-index: 1;
+        }
+        
+        /* Manual Inputs */
+        .input-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+        .input-row input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
 
-        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        /* RESULTS */
+        .results-area { flex-grow: 1; padding: 20px; overflow-x: hidden; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .result-count { font-weight: bold; color: var(--accent); }
 
         /* TABLE */
-        table { width: 100%; border-collapse: collapse; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        th { background: var(--primary); color: #fff; padding: 12px; text-align: left; font-size: 0.85rem; }
-        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        tr:hover { background-color: #f0f8ff; cursor: pointer; }
-        
-        /* MOBILE TOGGLE */
-        .mobile-filter-toggle { display: none; width: 100%; padding: 15px; background: var(--primary); color: white; border: none; font-size: 1rem; cursor: pointer; }
+        .table-wrapper { overflow-x: auto; border-radius: 6px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 800px; }
+        th { background: #f8fafc; color: #475569; padding: 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #334155; }
+        tr:hover { background-color: #f1f5f9; }
 
-        /* RESPONSIVE */
+        /* MOBILE TOGGLE */
+        .mobile-filter-bar { display: none; padding: 10px; background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 60px; z-index: 900; }
+        .filter-toggle-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; font-weight: bold; border-radius: 4px; }
+
         @media (max-width: 768px) {
             .inventory-container { flex-direction: column; }
             .sidebar { 
-                width: 100%; height: auto; position: static; display: none; /* Hidden by default on mobile */
-                border-bottom: 1px solid #ddd;
+                width: 100%; height: auto; display: none; 
+                position: fixed; top: 110px; bottom: 0; z-index: 950;
+                padding-bottom: 80px; /* Space for apply button */
             }
             .sidebar.show { display: block; }
-            .mobile-filter-toggle { display: block; }
-            
-            /* Make table scrollable */
-            .table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            th, td { white-space: nowrap; }
+            .mobile-filter-bar { display: block; }
+            header { position: relative; } /* Unstick header on mobile to save space */
         }
     </style>
 </head>
@@ -105,10 +127,12 @@
 
     <header>
         <a href="index.html"><img src="images/logo.jpg" alt="MJG" class="logo-img"></a>
-        <a href="index.html" class="back-link">← Home</a>
+        <a href="index.html" class="back-link">Log Out</a>
     </header>
 
-    <button class="mobile-filter-toggle" onclick="toggleSidebar()">Open Filters ▾</button>
+    <div class="mobile-filter-bar">
+        <button class="filter-toggle-btn" onclick="toggleSidebar()">Filters <span id="mobile-count">(0)</span> ▾</button>
+    </div>
 
     <div class="inventory-container">
         
@@ -116,69 +140,63 @@
             
             <div class="filter-group">
                 <span class="filter-label">CARAT SIZE</span>
-                <div class="quick-btn-grid" id="carat-buttons">
-                    <button class="quick-btn" onclick="setCarat(0.30, 0.99, this)">0.30 - 0.99</button>
-                    <button class="quick-btn" onclick="setCarat(1.00, 1.49, this)">1.00 - 1.49</button>
-                    <button class="quick-btn" onclick="setCarat(1.50, 1.99, this)">1.50 - 1.99</button>
-                    <button class="quick-btn" onclick="setCarat(2.00, 2.99, this)">2.00 - 2.99</button>
-                    <button class="quick-btn" onclick="setCarat(3.00, 3.99, this)">3.00 - 3.99</button>
-                    <button class="quick-btn" onclick="setCarat(4.00, 4.99, this)">4.00 - 4.99</button>
-                    <button class="quick-btn" onclick="setCarat(5.00, 99.0, this)">5.00+</button>
-                    <button class="quick-btn" onclick="clearCarat(this)">Clear</button>
+                
+                <div class="carat-row row-under-2">
+                    <button class="carat-btn" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
+                    <button class="carat-btn" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
+                    <button class="carat-btn" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
                 </div>
-                <div class="input-row" style="margin-top: 10px;">
-                    <input type="number" id="min-carat" placeholder="Min" step="0.01">
-                    <input type="number" id="max-carat" placeholder="Max" step="0.01">
+
+                <div class="carat-row row-over-2">
+                    <button class="carat-btn" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
+                    <button class="carat-btn" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
+                    <button class="carat-btn" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
+                    <button class="carat-btn" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+                </div>
+                
+                <div class="input-row">
+                    <input type="number" id="min-carat" placeholder="Exact Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-carat" placeholder="Exact Max" step="0.01" oninput="runSearch()">
                 </div>
             </div>
 
             <div class="filter-group">
-                <span class="filter-label">COLOR (D-L)</span>
-                <div class="checkbox-grid" id="color-filters">
-                    <label class="checkbox-label"><input type="checkbox" value="D"> D</label>
-                    <label class="checkbox-label"><input type="checkbox" value="E"> E</label>
-                    <label class="checkbox-label"><input type="checkbox" value="F"> F</label>
-                    <label class="checkbox-label"><input type="checkbox" value="G"> G</label>
-                    <label class="checkbox-label"><input type="checkbox" value="H"> H</label>
-                    <label class="checkbox-label"><input type="checkbox" value="I"> I</label>
-                    <label class="checkbox-label"><input type="checkbox" value="J"> J</label>
-                    <label class="checkbox-label"><input type="checkbox" value="K"> K</label>
-                    <label class="checkbox-label"><input type="checkbox" value="L"> L</label>
-                </div>
+                <span class="filter-label">COLOR</span>
+                <div class="touch-bar" id="color-bar">
+                    </div>
             </div>
 
             <div class="filter-group">
                 <span class="filter-label">CLARITY</span>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label"><input type="checkbox" value="FL"> FL</label>
-                    <label class="checkbox-label"><input type="checkbox" value="IF"> IF</label>
-                    <label class="checkbox-label"><input type="checkbox" value="VVS1"> VVS1</label>
-                    <label class="checkbox-label"><input type="checkbox" value="VVS2"> VVS2</label>
-                    <label class="checkbox-label"><input type="checkbox" value="VS1"> VS1</label>
-                    <label class="checkbox-label"><input type="checkbox" value="VS2"> VS2</label>
-                    <label class="checkbox-label"><input type="checkbox" value="SI1"> SI1</label>
-                    <label class="checkbox-label"><input type="checkbox" value="SI2"> SI2</label>
-                    <label class="checkbox-label"><input type="checkbox" value="I1"> I1</label>
-                </div>
+                <div class="touch-bar" id="clarity-bar">
+                    </div>
             </div>
 
             <div class="filter-group">
-                <span class="filter-label">LAB</span>
-                <div class="checkbox-grid">
-                    <label class="checkbox-label"><input type="checkbox" value="GIA"> GIA</label>
-                    <label class="checkbox-label"><input type="checkbox" value="IGI"> IGI</label>
-                    <label class="checkbox-label"><input type="checkbox" value="HRD"> HRD</label>
-                    <label class="checkbox-label"><input type="checkbox" value="None"> None</label>
+                <span class="filter-label">FLUORESCENCE</span>
+                <div class="touch-bar" id="fluor-bar">
+                    </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">SHAPE</span>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Round')">Round</button>
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Oval')">Oval</button>
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Emerald')">Emerald</button>
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Cushion')">Cushion</button>
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Pear')">Pear</button>
+                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Radiant')">Radiant</button>
                 </div>
             </div>
 
-            <button onclick="applyFilters()" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; cursor:pointer; margin-top:10px;">SEARCH INVENTORY</button>
+            <button onclick="toggleSidebar()" class="filter-toggle-btn" style="margin-top: 20px; background: #333;">VIEW RESULTS</button>
         </aside>
 
         <main class="results-area">
             <div class="results-header">
-                <h2>Inventory Search</h2>
-                <span class="result-count">Showing <span id="count">0</span> stones</span>
+                <h2>Search Results</h2>
+                <span class="result-count">Found <span id="count">0</span> Stones</span>
             </div>
             
             <div class="table-wrapper">
@@ -194,7 +212,8 @@
                             <th>Pol</th>
                             <th>Sym</th>
                             <th>Fluor</th>
-                            <th>Price/Ct</th> </tr>
+                            <th>Price</th> 
+                        </tr>
                     </thead>
                     <tbody id="table-body">
                         </tbody>
@@ -204,26 +223,183 @@
     </div>
 
     <script>
-        // --- 1. THE DATA (This mimics your Excel Sheet) ---
-        // You will eventually replace this section with a fetch() to a .json file.
+        // --- DATA SETUP ---
+        const colors = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
+        const clarities = ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1'];
+        const fluors = ['Non', 'Fnt', 'Med', 'Stg', 'VSt']; // Shortened for mobile fit
+
+        // Mock Data
         const inventoryData = [
-            { shape: "Round", carat: 1.01, color: "D", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 5000 },
-            { shape: "Oval", carat: 1.50, color: "F", clarity: "SI1", lab: "GIA", cut: "VG", pol: "EX", sym: "VG", fluor: "Faint", price: 6500 },
-            { shape: "Emerald", carat: 2.10, color: "H", clarity: "VVS2", lab: "GIA", cut: "EX", pol: "VG", sym: "EX", fluor: "None", price: 12000 },
-            { shape: "Pear", carat: 0.90, color: "E", clarity: "VS2", lab: "IGI", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 3200 },
-            { shape: "Round", carat: 3.05, color: "I", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Med", price: 25000 },
-            { shape: "Cushion", carat: 5.01, color: "G", clarity: "FL", lab: "HRD", cut: "EX", pol: "EX", sym: "EX", fluor: "None", price: 80000 },
+            { shape: "Round", carat: 1.01, color: "D", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 5000 },
+            { shape: "Oval", carat: 1.50, color: "F", clarity: "SI1", lab: "GIA", cut: "VG", pol: "EX", sym: "VG", fluor: "Fnt", price: 6500 },
+            { shape: "Emerald", carat: 2.10, color: "H", clarity: "VVS2", lab: "GIA", cut: "EX", pol: "VG", sym: "EX", fluor: "Non", price: 12000 },
+            { shape: "Round", carat: 0.90, color: "E", clarity: "VS2", lab: "IGI", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 3200 },
+            { shape: "Pear", carat: 3.05, color: "I", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Med", price: 25000 },
+            { shape: "Cushion", carat: 5.01, color: "G", clarity: "FL", lab: "HRD", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 80000 },
+            { shape: "Radiant", carat: 4.50, color: "J", clarity: "SI2", lab: "GIA", cut: "VG", pol: "VG", sym: "VG", fluor: "Stg", price: 22000 },
+            { shape: "Round", carat: 0.50, color: "D", clarity: "IF", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 2800 },
         ];
 
-        // --- 2. RENDER TABLE ---
+        // State Filters
+        let activeShapes = [];
+        let activeCaratRanges = []; // Objects {min, max}
+        let activeColors = []; // Indices
+        let activeClarities = []; // Indices
+        let activeFluors = []; // Indices
+
+        // --- INIT UI ---
+        function initTouchBar(id, items, activeArray, clickHandlerName) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'touch-btn';
+                btn.innerText = item;
+                btn.onclick = () => window[clickHandlerName](index);
+                btn.dataset.index = index;
+                container.appendChild(btn);
+            });
+        }
+
+        initTouchBar('color-bar', colors, activeColors, 'handleColorClick');
+        initTouchBar('clarity-bar', clarities, activeClarities, 'handleClarityClick');
+        initTouchBar('fluor-bar', fluors, activeFluors, 'handleFluorClick');
+
+        // --- SMART RANGE LOGIC ---
+        function handleRangeClick(index, activeArray, totalItems, domId) {
+            // Logic: 
+            // 1. If nothing selected, select just this one.
+            // 2. If something selected, find the min and max of current selection.
+            // 3. Extend the selection to include the new click.
+            
+            if (activeArray.length === 0) {
+                activeArray.push(index);
+            } else {
+                const currentMin = Math.min(...activeArray);
+                const currentMax = Math.max(...activeArray);
+                
+                // Determine new bounds
+                const newMin = Math.min(currentMin, index);
+                const newMax = Math.max(currentMax, index);
+
+                // Reset array and fill new range
+                activeArray.length = 0; // Clear
+                for (let i = newMin; i <= newMax; i++) {
+                    activeArray.push(i);
+                }
+            }
+            updateTouchBarUI(domId, activeArray);
+            runSearch();
+        }
+
+        function handleColorClick(index) { handleRangeClick(index, activeColors, colors.length, 'color-bar'); }
+        function handleClarityClick(index) { handleRangeClick(index, activeClarities, clarities.length, 'clarity-bar'); }
+        function handleFluorClick(index) { handleRangeClick(index, activeFluors, fluors.length, 'fluor-bar'); }
+
+        function updateTouchBarUI(domId, activeArray) {
+            const btns = document.getElementById(domId).children;
+            for (let i = 0; i < btns.length; i++) {
+                if (activeArray.includes(i)) {
+                    btns[i].classList.add('active');
+                } else {
+                    btns[i].classList.remove('active');
+                }
+            }
+        }
+
+        // --- CARAT LOGIC (Multi-Select) ---
+        function toggleCarat(min, max, btn) {
+            btn.classList.toggle('active');
+            
+            // Check if this range is already in our list
+            const existingIndex = activeCaratRanges.findIndex(r => r.min === min && r.max === max);
+            
+            if (existingIndex >= 0) {
+                activeCaratRanges.splice(existingIndex, 1); // Remove
+            } else {
+                activeCaratRanges.push({min, max}); // Add
+            }
+            
+            // Clear manual inputs if using buttons to avoid confusion
+            document.getElementById('min-carat').value = '';
+            document.getElementById('max-carat').value = '';
+            
+            runSearch();
+        }
+
+        function toggleShape(btn, shape) {
+            btn.classList.toggle('active');
+            if (activeShapes.includes(shape)) {
+                activeShapes = activeShapes.filter(s => s !== shape);
+            } else {
+                activeShapes.push(shape);
+            }
+            runSearch();
+        }
+
+        // --- SEARCH ENGINE ---
+        function runSearch() {
+            // Get Manual Carat Inputs
+            const manualMin = parseFloat(document.getElementById('min-carat').value);
+            const manualMax = parseFloat(document.getElementById('max-carat').value);
+            const hasManualCarat = !isNaN(manualMin) || !isNaN(manualMax);
+
+            const results = inventoryData.filter(stone => {
+                
+                // 1. CARAT CHECK
+                let caratMatch = false;
+                if (hasManualCarat) {
+                    const min = isNaN(manualMin) ? 0 : manualMin;
+                    const max = isNaN(manualMax) ? 999 : manualMax;
+                    caratMatch = (stone.carat >= min && stone.carat <= max);
+                } else if (activeCaratRanges.length > 0) {
+                    // Check if stone fits in ANY of the active button ranges
+                    caratMatch = activeCaratRanges.some(range => stone.carat >= range.min && stone.carat <= range.max);
+                } else {
+                    caratMatch = true; // No filter set
+                }
+                if (!caratMatch) return false;
+
+                // 2. SHAPE CHECK
+                if (activeShapes.length > 0 && !activeShapes.includes(stone.shape)) return false;
+
+                // 3. COLOR CHECK
+                if (activeColors.length > 0) {
+                    // Map active indices back to strings (e.g., 0 -> 'D')
+                    const allowedColors = activeColors.map(i => colors[i]);
+                    if (!allowedColors.includes(stone.color)) return false;
+                }
+
+                // 4. CLARITY CHECK
+                if (activeClarities.length > 0) {
+                    const allowedClarities = activeClarities.map(i => clarities[i]);
+                    if (!allowedClarities.includes(stone.clarity)) return false;
+                }
+
+                // 5. FLUOR CHECK
+                if (activeFluors.length > 0) {
+                    const allowedFluor = activeFluors.map(i => fluors[i]);
+                    // Note: Ensure data matches short names or map them.
+                    // For demo, assumes data uses "Non", "Fnt" etc or we partial match.
+                    // Let's strict match for this code, assuming data is cleaned.
+                    if (!allowedFluor.includes(stone.fluor)) return false;
+                }
+
+                return true;
+            });
+
+            renderTable(results);
+        }
+
         function renderTable(data) {
             const tbody = document.getElementById('table-body');
-            const countSpan = document.getElementById('count');
-            tbody.innerHTML = ''; // Clear existing rows
+            document.getElementById('count').innerText = data.length;
+            document.getElementById('mobile-count').innerText = `(${data.length})`;
+            tbody.innerHTML = '';
             
             data.forEach(stone => {
                 const row = `<tr>
-                    <td>${stone.shape}</td>
+                    <td><b>${stone.shape}</b></td>
                     <td>${stone.carat}</td>
                     <td>${stone.color}</td>
                     <td>${stone.clarity}</td>
@@ -232,80 +408,18 @@
                     <td>${stone.pol}</td>
                     <td>${stone.sym}</td>
                     <td>${stone.fluor}</td>
-                    <td>$${stone.price}</td> 
+                    <td>$${stone.price.toLocaleString()}</td> 
                 </tr>`;
                 tbody.innerHTML += row;
             });
-            countSpan.innerText = data.length;
-        }
-
-        // --- 3. FILTER LOGIC ---
-        function setCarat(min, max, btn) {
-            // Update inputs
-            document.getElementById('min-carat').value = min;
-            document.getElementById('max-carat').value = max;
-            
-            // Highlight button
-            document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            applyFilters(); // Auto-apply on button click
-        }
-
-        function clearCarat(btn) {
-            document.getElementById('min-carat').value = '';
-            document.getElementById('max-carat').value = '';
-            document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
-            applyFilters();
-        }
-
-        function getCheckedValues(containerId) {
-            // Helper to get array of checked boxes
-             // Note: In a real implementation you need IDs on the containers
-             // For this demo, we will select all checked inputs generally
-             return Array.from(document.querySelectorAll(`input[type="checkbox"]:checked`)).map(cb => cb.value);
-        }
-
-        function applyFilters() {
-            const minC = parseFloat(document.getElementById('min-carat').value) || 0;
-            const maxC = parseFloat(document.getElementById('max-carat').value) || 999;
-            
-            // Get all checked boxes (Simplified logic for demo)
-            const checkedBoxes = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-
-            const filtered = inventoryData.filter(stone => {
-                // Carat Check
-                if (stone.carat < minC || stone.carat > maxC) return false;
-
-                // Color/Clarity/Lab Check
-                // If NO boxes are checked, show everything. If boxes are checked, match them.
-                if (checkedBoxes.length > 0) {
-                    // This is a simple check: does the stone's color/clarity/lab exist in the checked list?
-                    // In a robust app, you'd separate checkedColors, checkedClarities, etc.
-                    const stoneAttributes = [stone.color, stone.clarity, stone.lab];
-                    const matches = stoneAttributes.some(attr => checkedBoxes.includes(attr));
-                    
-                    // Logic fix: If user selects "D" and "VS1", we need to know which group.
-                    // For this simple static demo, we will skip complex group logic.
-                }
-
-                return true;
-            });
-
-            renderTable(filtered);
-            
-            // On mobile, close sidebar after search
-            if (window.innerWidth < 768) {
-                document.getElementById('sidebar').classList.remove('show');
-            }
         }
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('show');
         }
 
-        // Initial Load
-        renderTable(inventoryData);
+        // Run initial empty search to show all
+        runSearch();
 
     </script>
 </body>
