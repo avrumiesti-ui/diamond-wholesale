@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M.J. Gross Inc. | Partner Login</title>
+    <title>M.J. Gross Inc. | Customer Login</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
@@ -14,7 +14,6 @@
             --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
             --accent: #C5A059; /* Gold */
             --text-light: #ffffff;
-            --text-muted: #888888;
             --card-bg: #ffffff;
         }
 
@@ -24,33 +23,38 @@
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
             color: var(--text-light);
-            height: 100vh;
+            min-height: 100vh; /* Changed to min-height for mobile scrolling */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px; /* Added padding so edges don't touch screen */
         }
 
         /* --- LAYOUT --- */
         .login-container {
             width: 100%;
-            max-width: 420px;
-            padding: 20px;
+            max-width: 400px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Forces everything to center */
         }
 
-        /* --- LOGO --- */
-        .logo-area {
+        /* --- LOGO FIX --- */
+        .logo-box {
+            background-color: #ffffff;
+            padding: 15px 25px;
+            border-radius: 6px;
             margin-bottom: 30px;
+            display: inline-block; /* Ensures the box wraps the image tightly */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .logo-area img {
-            height: 70px; /* Adjust size based on your logo file */
+
+        .logo-box img {
+            height: 60px; /* Fixed height for consistency */
             width: auto;
-            /* If your logo has a white background, we might need a white box or rounded corners. 
-               Since the previous logo had a white bg, I'm adding a subtle glow/box to make it pop on dark bg */
-            background: #fff;
-            padding: 10px 20px;
-            border-radius: 4px;
+            display: block;
         }
 
         /* --- CARD --- */
@@ -58,8 +62,9 @@
             background: var(--card-bg);
             color: #333;
             padding: 40px 30px;
-            border-radius: 4px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 6px;
+            width: 100%; /* Full width of container */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
         h2 {
@@ -77,20 +82,27 @@
         
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: 8px;
-            font-weight: bold;
+            font-weight: 700;
             color: #555;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .form-group input {
             width: 100%;
             padding: 12px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 4px;
             font-size: 1rem;
+            background: #fafafa;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--accent);
+            outline: none;
+            background: #fff;
         }
 
         .btn-primary {
@@ -105,7 +117,8 @@
             letter-spacing: 1px;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
         }
 
         .btn-primary:hover {
@@ -126,7 +139,8 @@
             top: -10px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
         }
 
         .btn-secondary {
@@ -140,6 +154,7 @@
             font-size: 0.9rem;
             font-weight: 600;
             transition: 0.3s;
+            border-radius: 4px;
         }
         
         .btn-secondary:hover {
@@ -147,28 +162,47 @@
             color: var(--accent);
         }
 
-        /* --- CONTACT FOOTER --- */
+        /* --- CONTACT FOOTER (Centered) --- */
         .footer-info {
             margin-top: 40px;
             text-align: center;
             font-size: 0.9rem;
             color: #aaa;
             line-height: 1.8;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-info p {
+            margin-bottom: 5px;
         }
 
         .footer-info a {
             color: var(--accent);
             text-decoration: none;
-            transition: 0.2s;
         }
-        .footer-info a:hover { color: #fff; }
         
-        .separator { margin: 0 8px; color: #444; }
+        /* On mobile, stack the phone/email so it's easier to read */
+        .contact-line {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .separator { color: #444; }
 
-        /* --- MOBILE --- */
+        /* --- MOBILE TWEAKS --- */
         @media (max-width: 480px) {
+            body { padding: 15px; } /* Ensure padding on small screens */
+            .logo-box img { height: 50px; }
             .login-card { padding: 30px 20px; }
-            .logo-area img { height: 60px; }
+            
+            /* Stack contact info on very small screens */
+            .contact-line { flex-direction: column; gap: 2px; }
+            .separator { display: none; }
         }
     </style>
 </head>
@@ -176,12 +210,12 @@
 
     <div class="login-container">
         
-        <div class="logo-area">
+        <div class="logo-box">
             <img src="images/logo.jpg" alt="M.J. Gross Inc.">
         </div>
 
         <div class="login-card">
-            <h2>Partner Login</h2>
+            <h2>Customer Login</h2>
             
             <form onsubmit="event.preventDefault(); window.location.href='inventory.html';">
                 <div class="form-group">
@@ -197,7 +231,7 @@
                 <button type="submit" class="btn-primary">Log In</button>
                 
                 <div style="margin-top: 15px; font-size: 0.85rem;">
-                    <a href="#" style="color:#666; text-decoration:none;">Forgot Password?</a>
+                    <a href="#" style="color:#888; text-decoration:none;">Forgot Password?</a>
                 </div>
             </form>
 
@@ -216,13 +250,15 @@
 
         <div class="footer-info">
             <p><strong>M.J. Gross Inc.</strong></p>
-            <p>20 West 47th Street, Suite #504 <span class="separator">|</span> New York, NY 10036</p>
-            <p>
+            <p>20 West 47th Street, Suite #504 <br> New York, NY 10036</p>
+            
+            <div class="contact-line">
                 <a href="tel:2127683944">(212) 768-3944</a>
                 <span class="separator">|</span>
                 <a href="mailto:sales@mjgross.com">sales@mjgross.com</a>
-            </p>
-            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.5;">&copy; 2026 M.J. Gross Inc.</p>
+            </div>
+            
+            <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.5;">&copy; 2026 M.J. Gross Inc.</p>
         </div>
 
     </div>
