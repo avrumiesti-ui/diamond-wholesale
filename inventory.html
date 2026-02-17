@@ -12,6 +12,7 @@
             --accent: #C5A059;
             --bg-gray: #f4f6f8;
             --border: #e2e8f0;
+            --text-muted: #64748b;
         }
         
         * { box-sizing: border-box; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -27,7 +28,7 @@
 
         /* SIDEBAR FILTERS */
         .sidebar {
-            width: 340px;
+            width: 350px;
             background: #fff;
             border-right: 1px solid #ddd;
             padding: 20px;
@@ -38,89 +39,70 @@
             top: 60px;
         }
 
-        .filter-group { margin-bottom: 30px; }
-        .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.75rem; letter-spacing: 1px; color: #64748b; text-transform: uppercase; }
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        .filter-group:last-child { border-bottom: none; }
+        .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.75rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
-        /* --- NEW CARAT GRID (2 Lines) --- */
-        .carat-row {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        /* Line 1: 3 items (Under 2ct) */
-        .row-under-2 { grid-template-columns: repeat(3, 1fr); }
-        /* Line 2: 4 items (Over 2ct) */
-        .row-over-2 { grid-template-columns: repeat(4, 1fr); }
-
-        .carat-btn {
+        /* SHAPE GRID */
+        .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        
+        /* BUTTON STYLES */
+        .btn-toggle {
             background: #fff; border: 1px solid #cbd5e1; padding: 10px 4px; 
-            font-size: 0.8rem; cursor: pointer; border-radius: 4px; 
-            transition: 0.1s; font-weight: 600; color: #475569;
-            text-align: center;
+            font-size: 0.75rem; cursor: pointer; border-radius: 4px; 
+            transition: 0.1s; font-weight: 600; color: #475569; text-align: center;
         }
-        .carat-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+        .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
 
-        /* --- TOUCH BOXES (Range Sliders) --- */
-        .touch-bar {
-            display: flex;
-            width: 100%;
-        }
-        
+        /* CARAT GRID */
+        .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
+        .row-3 { grid-template-columns: repeat(3, 1fr); }
+        .row-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* TOUCH BARS (Color/Clarity/Cut) */
+        .touch-bar { display: flex; width: 100%; margin-bottom: 10px; }
         .touch-btn {
-            flex-grow: 1;
-            padding: 10px 0;
-            background: #fff;
-            border: 1px solid #cbd5e1;
-            margin-left: -1px; /* Overlap borders */
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #475569;
-            text-align: center;
+            flex-grow: 1; padding: 10px 0; background: #fff; border: 1px solid #cbd5e1;
+            margin-left: -1px; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: #475569; text-align: center;
         }
-        
         .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
         .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
-        
-        .touch-btn.active {
-            background-color: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-            position: relative; /* Bring to front so border shows */
-            z-index: 1;
-        }
-        
-        /* Manual Inputs */
-        .input-row { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
-        .input-row input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; }
+        .touch-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); z-index: 1; position: relative; }
 
-        /* RESULTS */
+        /* NUMERIC INPUTS (Depth, Table, Meas) */
+        .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+        .range-label { width: 60px; font-size: 0.8rem; font-weight: 600; color: #444; }
+        .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.85rem; }
+
+        /* RESULTS AREA */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: hidden; }
         .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .result-count { font-weight: bold; color: var(--accent); }
-
+        
         /* TABLE */
         .table-wrapper { overflow-x: auto; border-radius: 6px; border: 1px solid #e2e8f0; }
-        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 800px; }
-        th { background: #f8fafc; color: #475569; padding: 12px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
-        td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.85rem; color: #334155; }
-        tr:hover { background-color: #f1f5f9; }
+        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 1000px; }
+        th { background: #f8fafc; color: #475569; padding: 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.8rem; color: #334155; white-space: nowrap; }
+        tr:hover { background-color: #f1f5f9; cursor: pointer; }
 
-        /* MOBILE TOGGLE */
+        /* MOBILE */
         .mobile-filter-bar { display: none; padding: 10px; background: #fff; border-bottom: 1px solid #ddd; position: sticky; top: 60px; z-index: 900; }
         .filter-toggle-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; font-weight: bold; border-radius: 4px; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .inventory-container { flex-direction: column; }
             .sidebar { 
                 width: 100%; height: auto; display: none; 
-                position: fixed; top: 110px; bottom: 0; z-index: 950;
-                padding-bottom: 80px; /* Space for apply button */
+                position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000;
+                padding: 20px; overflow-y: scroll;
             }
             .sidebar.show { display: block; }
             .mobile-filter-bar { display: block; }
-            header { position: relative; } /* Unstick header on mobile to save space */
+            
+            /* Add close button for mobile sidebar */
+            .mobile-close { display: block; text-align: right; margin-bottom: 10px; font-size: 1.5rem; cursor: pointer; }
         }
+        @media (min-width: 901px) { .mobile-close { display: none; } }
     </style>
 </head>
 <body>
@@ -137,56 +119,103 @@
     <div class="inventory-container">
         
         <aside class="sidebar" id="sidebar">
-            
-            <div class="filter-group">
-                <span class="filter-label">CARAT SIZE</span>
-                
-                <div class="carat-row row-under-2">
-                    <button class="carat-btn" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
-                    <button class="carat-btn" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
-                    <button class="carat-btn" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
-                </div>
+            <div class="mobile-close" onclick="toggleSidebar()">✕</div>
 
-                <div class="carat-row row-over-2">
-                    <button class="carat-btn" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
-                    <button class="carat-btn" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
-                    <button class="carat-btn" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
-                    <button class="carat-btn" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+            <div class="filter-group">
+                <span class="filter-label">SHAPE</span>
+                <div class="shape-grid">
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Round')">Round</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Oval')">Oval</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Cushion')">Cushion</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Emerald')">Emerald</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Pear')">Pear</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Radiant')">Radiant</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Princess')">Princess</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Asscher')">Asscher</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Marquise')">Marquise</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Heart')">Heart</button>
+                    <button class="btn-toggle" onclick="toggleShape(this, 'Other')">Other</button>
                 </div>
-                
-                <div class="input-row">
-                    <input type="number" id="min-carat" placeholder="Exact Min" step="0.01" oninput="runSearch()">
-                    <input type="number" id="max-carat" placeholder="Exact Max" step="0.01" oninput="runSearch()">
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">SIZE (CARAT)</span>
+                <div class="carat-row row-3">
+                    <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
+                </div>
+                <div class="carat-row row-4">
+                    <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+                </div>
+                <div class="range-row">
+                    <input type="number" id="min-carat" class="range-input" placeholder="Min Carat" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-carat" class="range-input" placeholder="Max Carat" step="0.01" oninput="runSearch()">
                 </div>
             </div>
 
             <div class="filter-group">
                 <span class="filter-label">COLOR</span>
-                <div class="touch-bar" id="color-bar">
-                    </div>
+                <div class="touch-bar" id="color-bar"></div>
             </div>
 
             <div class="filter-group">
                 <span class="filter-label">CLARITY</span>
-                <div class="touch-bar" id="clarity-bar">
-                    </div>
+                <div class="touch-bar" id="clarity-bar"></div>
             </div>
 
             <div class="filter-group">
-                <span class="filter-label">FLUORESCENCE</span>
-                <div class="touch-bar" id="fluor-bar">
-                    </div>
+                <span class="filter-label">CUT</span>
+                <div class="touch-bar" id="cut-bar"></div>
+                
+                <span class="filter-label">POLISH</span>
+                <div class="touch-bar" id="polish-bar"></div>
+                
+                <span class="filter-label">SYMMETRY</span>
+                <div class="touch-bar" id="sym-bar"></div>
             </div>
 
             <div class="filter-group">
-                <span class="filter-label">SHAPE</span>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Round')">Round</button>
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Oval')">Oval</button>
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Emerald')">Emerald</button>
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Cushion')">Cushion</button>
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Pear')">Pear</button>
-                    <button class="carat-btn" style="flex: 1 0 30%;" onclick="toggleShape(this, 'Radiant')">Radiant</button>
+                <span class="filter-label">DEPTH %</span>
+                <div class="range-row">
+                    <input type="number" id="depth-min" class="range-input" placeholder="From" oninput="runSearch()">
+                    <input type="number" id="depth-max" class="range-input" placeholder="To" oninput="runSearch()">
+                </div>
+                
+                <span class="filter-label" style="margin-top:10px;">TABLE %</span>
+                <div class="range-row">
+                    <input type="number" id="table-min" class="range-input" placeholder="From" oninput="runSearch()">
+                    <input type="number" id="table-max" class="range-input" placeholder="To" oninput="runSearch()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">MEASUREMENTS (MM)</span>
+                <div class="range-row">
+                    <span class="range-label">L (1)</span>
+                    <input type="number" id="m1-min" class="range-input" placeholder="Min" oninput="runSearch()">
+                    <input type="number" id="m1-max" class="range-input" placeholder="Max" oninput="runSearch()">
+                </div>
+                <div class="range-row">
+                    <span class="range-label">W (2)</span>
+                    <input type="number" id="m2-min" class="range-input" placeholder="Min" oninput="runSearch()">
+                    <input type="number" id="m2-max" class="range-input" placeholder="Max" oninput="runSearch()">
+                </div>
+                <div class="range-row">
+                    <span class="range-label">D (3)</span>
+                    <input type="number" id="m3-min" class="range-input" placeholder="Min" oninput="runSearch()">
+                    <input type="number" id="m3-max" class="range-input" placeholder="Max" oninput="runSearch()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">RATIO</span>
+                <div class="range-row">
+                    <input type="number" id="ratio-min" class="range-input" placeholder="Min Ratio" step="0.01" oninput="runSearch()">
+                    <input type="number" id="ratio-max" class="range-input" placeholder="Max Ratio" step="0.01" oninput="runSearch()">
                 </div>
             </div>
 
@@ -195,7 +224,7 @@
 
         <main class="results-area">
             <div class="results-header">
-                <h2>Search Results</h2>
+                <h2>Inventory</h2>
                 <span class="result-count">Found <span id="count">0</span> Stones</span>
             </div>
             
@@ -207,189 +236,160 @@
                             <th>Carat</th>
                             <th>Color</th>
                             <th>Clarity</th>
-                            <th>Lab</th>
                             <th>Cut</th>
                             <th>Pol</th>
                             <th>Sym</th>
-                            <th>Fluor</th>
+                            <th>Flor</th>
+                            <th>Depth</th>
+                            <th>Table</th>
+                            <th>Ratio</th>
+                            <th>Meas (mm)</th>
                             <th>Price</th> 
                         </tr>
                     </thead>
-                    <tbody id="table-body">
-                        </tbody>
+                    <tbody id="table-body"></tbody>
                 </table>
             </div>
         </main>
     </div>
 
     <script>
-        // --- DATA SETUP ---
+        // --- DATA & CONFIG ---
         const colors = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
         const clarities = ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1'];
-        const fluors = ['Non', 'Fnt', 'Med', 'Stg', 'VSt']; // Shortened for mobile fit
-
-        // Mock Data
+        const grades = ['EX', 'VG', 'GD', 'FR']; // For Cut, Pol, Sym
+        
+        // Mock Data with Extended Specs
         const inventoryData = [
-            { shape: "Round", carat: 1.01, color: "D", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 5000 },
-            { shape: "Oval", carat: 1.50, color: "F", clarity: "SI1", lab: "GIA", cut: "VG", pol: "EX", sym: "VG", fluor: "Fnt", price: 6500 },
-            { shape: "Emerald", carat: 2.10, color: "H", clarity: "VVS2", lab: "GIA", cut: "EX", pol: "VG", sym: "EX", fluor: "Non", price: 12000 },
-            { shape: "Round", carat: 0.90, color: "E", clarity: "VS2", lab: "IGI", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 3200 },
-            { shape: "Pear", carat: 3.05, color: "I", clarity: "VS1", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Med", price: 25000 },
-            { shape: "Cushion", carat: 5.01, color: "G", clarity: "FL", lab: "HRD", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 80000 },
-            { shape: "Radiant", carat: 4.50, color: "J", clarity: "SI2", lab: "GIA", cut: "VG", pol: "VG", sym: "VG", fluor: "Stg", price: 22000 },
-            { shape: "Round", carat: 0.50, color: "D", clarity: "IF", lab: "GIA", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", price: 2800 },
+            { shape: "Round", carat: 1.01, color: "D", clarity: "VS1", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", depth: 61.5, table: 57, ratio: 1.00, m1: 6.45, m2: 6.48, m3: 3.98, price: 5000 },
+            { shape: "Oval", carat: 1.50, color: "F", clarity: "SI1", cut: "VG", pol: "EX", sym: "VG", fluor: "Fnt", depth: 62.0, table: 59, ratio: 1.45, m1: 9.10, m2: 6.30, m3: 3.90, price: 6500 },
+            { shape: "Emerald", carat: 2.10, color: "H", clarity: "VVS2", cut: "EX", pol: "VG", sym: "EX", fluor: "Non", depth: 66.0, table: 61, ratio: 1.35, m1: 8.50, m2: 6.30, m3: 4.15, price: 12000 },
+            { shape: "Pear", carat: 3.05, color: "I", clarity: "VS1", cut: "EX", pol: "EX", sym: "EX", fluor: "Med", depth: 60.5, table: 58, ratio: 1.60, m1: 12.2, m2: 7.60, m3: 4.60, price: 25000 },
+            { shape: "Cushion", carat: 5.01, color: "G", clarity: "FL", cut: "EX", pol: "EX", sym: "EX", fluor: "Non", depth: 68.0, table: 62, ratio: 1.10, m1: 9.80, m2: 8.90, m3: 6.05, price: 80000 },
+            { shape: "Radiant", carat: 4.50, color: "J", clarity: "SI2", cut: "VG", pol: "VG", sym: "VG", fluor: "Stg", depth: 70.0, table: 65, ratio: 1.25, m1: 10.0, m2: 8.00, m3: 5.60, price: 22000 },
         ];
 
-        // State Filters
+        // --- STATE ---
         let activeShapes = [];
-        let activeCaratRanges = []; // Objects {min, max}
-        let activeColors = []; // Indices
-        let activeClarities = []; // Indices
-        let activeFluors = []; // Indices
+        let activeCaratRanges = [];
+        let activeColors = [];
+        let activeClarities = [];
+        let activeCuts = [];
+        let activePols = [];
+        let activeSyms = [];
 
-        // --- INIT UI ---
-        function initTouchBar(id, items, activeArray, clickHandlerName) {
+        // --- UI BUILDERS ---
+        function initTouchBar(id, items, activeArray, clickHandler) {
             const container = document.getElementById(id);
             container.innerHTML = '';
             items.forEach((item, index) => {
                 const btn = document.createElement('div');
                 btn.className = 'touch-btn';
                 btn.innerText = item;
-                btn.onclick = () => window[clickHandlerName](index);
-                btn.dataset.index = index;
+                btn.onclick = () => window[clickHandler](index);
                 container.appendChild(btn);
             });
         }
 
         initTouchBar('color-bar', colors, activeColors, 'handleColorClick');
         initTouchBar('clarity-bar', clarities, activeClarities, 'handleClarityClick');
-        initTouchBar('fluor-bar', fluors, activeFluors, 'handleFluorClick');
+        initTouchBar('cut-bar', grades, activeCuts, 'handleCutClick');
+        initTouchBar('polish-bar', grades, activePols, 'handlePolClick');
+        initTouchBar('sym-bar', grades, activeSyms, 'handleSymClick');
 
-        // --- SMART RANGE LOGIC ---
-        function handleRangeClick(index, activeArray, totalItems, domId) {
-            // Logic: 
-            // 1. If nothing selected, select just this one.
-            // 2. If something selected, find the min and max of current selection.
-            // 3. Extend the selection to include the new click.
-            
-            if (activeArray.length === 0) {
-                activeArray.push(index);
-            } else {
-                const currentMin = Math.min(...activeArray);
-                const currentMax = Math.max(...activeArray);
-                
-                // Determine new bounds
-                const newMin = Math.min(currentMin, index);
-                const newMax = Math.max(currentMax, index);
-
-                // Reset array and fill new range
-                activeArray.length = 0; // Clear
-                for (let i = newMin; i <= newMax; i++) {
-                    activeArray.push(i);
-                }
+        // --- FILTER LOGIC ---
+        function handleRangeClick(index, activeArray, domId) {
+            // Smart range logic: connect D to F selects E
+            if (activeArray.length === 0) activeArray.push(index);
+            else {
+                const min = Math.min(Math.min(...activeArray), index);
+                const max = Math.max(Math.max(...activeArray), index);
+                activeArray.length = 0;
+                for (let i = min; i <= max; i++) activeArray.push(i);
             }
-            updateTouchBarUI(domId, activeArray);
+            updateTouchUI(domId, activeArray);
             runSearch();
         }
 
-        function handleColorClick(index) { handleRangeClick(index, activeColors, colors.length, 'color-bar'); }
-        function handleClarityClick(index) { handleRangeClick(index, activeClarities, clarities.length, 'clarity-bar'); }
-        function handleFluorClick(index) { handleRangeClick(index, activeFluors, fluors.length, 'fluor-bar'); }
-
-        function updateTouchBarUI(domId, activeArray) {
+        function updateTouchUI(domId, activeArray) {
             const btns = document.getElementById(domId).children;
             for (let i = 0; i < btns.length; i++) {
-                if (activeArray.includes(i)) {
-                    btns[i].classList.add('active');
-                } else {
-                    btns[i].classList.remove('active');
-                }
+                btns[i].classList.toggle('active', activeArray.includes(i));
             }
         }
 
-        // --- CARAT LOGIC (Multi-Select) ---
-        function toggleCarat(min, max, btn) {
+        // Handlers
+        window.handleColorClick = (i) => handleRangeClick(i, activeColors, 'color-bar');
+        window.handleClarityClick = (i) => handleRangeClick(i, activeClarities, 'clarity-bar');
+        window.handleCutClick = (i) => handleRangeClick(i, activeCuts, 'cut-bar');
+        window.handlePolClick = (i) => handleRangeClick(i, activePols, 'polish-bar');
+        window.handleSymClick = (i) => handleRangeClick(i, activeSyms, 'sym-bar');
+
+        window.toggleShape = (btn, shape) => {
             btn.classList.toggle('active');
-            
-            // Check if this range is already in our list
-            const existingIndex = activeCaratRanges.findIndex(r => r.min === min && r.max === max);
-            
-            if (existingIndex >= 0) {
-                activeCaratRanges.splice(existingIndex, 1); // Remove
-            } else {
-                activeCaratRanges.push({min, max}); // Add
-            }
-            
-            // Clear manual inputs if using buttons to avoid confusion
+            activeShapes.includes(shape) ? activeShapes = activeShapes.filter(s => s !== shape) : activeShapes.push(shape);
+            runSearch();
+        };
+
+        window.toggleCarat = (min, max, btn) => {
+            btn.classList.toggle('active');
+            const idx = activeCaratRanges.findIndex(r => r.min === min && r.max === max);
+            idx >= 0 ? activeCaratRanges.splice(idx, 1) : activeCaratRanges.push({min, max});
+            // Clear manual inputs
             document.getElementById('min-carat').value = '';
             document.getElementById('max-carat').value = '';
-            
             runSearch();
-        }
-
-        function toggleShape(btn, shape) {
-            btn.classList.toggle('active');
-            if (activeShapes.includes(shape)) {
-                activeShapes = activeShapes.filter(s => s !== shape);
-            } else {
-                activeShapes.push(shape);
-            }
-            runSearch();
-        }
+        };
 
         // --- SEARCH ENGINE ---
-        function runSearch() {
-            // Get Manual Carat Inputs
-            const manualMin = parseFloat(document.getElementById('min-carat').value);
-            const manualMax = parseFloat(document.getElementById('max-carat').value);
-            const hasManualCarat = !isNaN(manualMin) || !isNaN(manualMax);
+        function getVal(id) { return parseFloat(document.getElementById(id).value); }
 
-            const results = inventoryData.filter(stone => {
-                
-                // 1. CARAT CHECK
-                let caratMatch = false;
-                if (hasManualCarat) {
-                    const min = isNaN(manualMin) ? 0 : manualMin;
-                    const max = isNaN(manualMax) ? 999 : manualMax;
-                    caratMatch = (stone.carat >= min && stone.carat <= max);
-                } else if (activeCaratRanges.length > 0) {
-                    // Check if stone fits in ANY of the active button ranges
-                    caratMatch = activeCaratRanges.some(range => stone.carat >= range.min && stone.carat <= range.max);
-                } else {
-                    caratMatch = true; // No filter set
-                }
-                if (!caratMatch) return false;
+        window.runSearch = () => {
+            // Get numeric inputs
+            const minC = getVal('min-carat'), maxC = getVal('max-carat');
+            const dMin = getVal('depth-min'), dMax = getVal('depth-max');
+            const tMin = getVal('table-min'), tMax = getVal('table-max');
+            const rMin = getVal('ratio-min'), rMax = getVal('ratio-max');
+            // Measurements
+            const m1Min = getVal('m1-min'), m1Max = getVal('m1-max');
+            const m2Min = getVal('m2-min'), m2Max = getVal('m2-max');
+            const m3Min = getVal('m3-min'), m3Max = getVal('m3-max');
 
-                // 2. SHAPE CHECK
-                if (activeShapes.length > 0 && !activeShapes.includes(stone.shape)) return false;
+            const results = inventoryData.filter(s => {
+                // 1. Shape
+                if (activeShapes.length && !activeShapes.includes(s.shape)) return false;
 
-                // 3. COLOR CHECK
-                if (activeColors.length > 0) {
-                    // Map active indices back to strings (e.g., 0 -> 'D')
-                    const allowedColors = activeColors.map(i => colors[i]);
-                    if (!allowedColors.includes(stone.color)) return false;
-                }
+                // 2. Carat (Buttons OR Input)
+                let cMatch = false;
+                if (!isNaN(minC) || !isNaN(maxC)) {
+                    cMatch = (isNaN(minC) || s.carat >= minC) && (isNaN(maxC) || s.carat <= maxC);
+                } else if (activeCaratRanges.length) {
+                    cMatch = activeCaratRanges.some(r => s.carat >= r.min && s.carat <= r.max);
+                } else cMatch = true;
+                if (!cMatch) return false;
 
-                // 4. CLARITY CHECK
-                if (activeClarities.length > 0) {
-                    const allowedClarities = activeClarities.map(i => clarities[i]);
-                    if (!allowedClarities.includes(stone.clarity)) return false;
-                }
+                // 3. Color, Clarity, Cut, Pol, Sym
+                if (activeColors.length && !activeColors.map(i=>colors[i]).includes(s.color)) return false;
+                if (activeClarities.length && !activeClarities.map(i=>clarities[i]).includes(s.clarity)) return false;
+                if (activeCuts.length && !activeCuts.map(i=>grades[i]).includes(s.cut)) return false;
+                if (activePols.length && !activePols.map(i=>grades[i]).includes(s.pol)) return false;
+                if (activeSyms.length && !activeSyms.map(i=>grades[i]).includes(s.sym)) return false;
 
-                // 5. FLUOR CHECK
-                if (activeFluors.length > 0) {
-                    const allowedFluor = activeFluors.map(i => fluors[i]);
-                    // Note: Ensure data matches short names or map them.
-                    // For demo, assumes data uses "Non", "Fnt" etc or we partial match.
-                    // Let's strict match for this code, assuming data is cleaned.
-                    if (!allowedFluor.includes(stone.fluor)) return false;
-                }
+                // 4. Advanced Numbers (Depth, Table, Ratio)
+                if ((!isNaN(dMin) && s.depth < dMin) || (!isNaN(dMax) && s.depth > dMax)) return false;
+                if ((!isNaN(tMin) && s.table < tMin) || (!isNaN(tMax) && s.table > tMax)) return false;
+                if ((!isNaN(rMin) && s.ratio < rMin) || (!isNaN(rMax) && s.ratio > rMax)) return false;
+
+                // 5. Measurements (1=L, 2=W, 3=D)
+                if ((!isNaN(m1Min) && s.m1 < m1Min) || (!isNaN(m1Max) && s.m1 > m1Max)) return false;
+                if ((!isNaN(m2Min) && s.m2 < m2Min) || (!isNaN(m2Max) && s.m2 > m2Max)) return false;
+                if ((!isNaN(m3Min) && s.m3 < m3Min) || (!isNaN(m3Max) && s.m3 > m3Max)) return false;
 
                 return true;
             });
 
             renderTable(results);
-        }
+        };
 
         function renderTable(data) {
             const tbody = document.getElementById('table-body');
@@ -397,30 +397,30 @@
             document.getElementById('mobile-count').innerText = `(${data.length})`;
             tbody.innerHTML = '';
             
-            data.forEach(stone => {
+            data.forEach(s => {
                 const row = `<tr>
-                    <td><b>${stone.shape}</b></td>
-                    <td>${stone.carat}</td>
-                    <td>${stone.color}</td>
-                    <td>${stone.clarity}</td>
-                    <td>${stone.lab}</td>
-                    <td>${stone.cut}</td>
-                    <td>${stone.pol}</td>
-                    <td>${stone.sym}</td>
-                    <td>${stone.fluor}</td>
-                    <td>$${stone.price.toLocaleString()}</td> 
+                    <td><b>${s.shape}</b></td>
+                    <td>${s.carat}</td>
+                    <td>${s.color}</td>
+                    <td>${s.clarity}</td>
+                    <td>${s.cut}</td>
+                    <td>${s.pol}</td>
+                    <td>${s.sym}</td>
+                    <td>${s.fluor}</td>
+                    <td>${s.depth}%</td>
+                    <td>${s.table}%</td>
+                    <td>${s.ratio}</td>
+                    <td>${s.m1}x${s.m2}x${s.m3}</td>
+                    <td>$${s.price.toLocaleString()}</td> 
                 </tr>`;
                 tbody.innerHTML += row;
             });
         }
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-        }
-
-        // Run initial empty search to show all
+        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('show');
+        
+        // Initial run
         runSearch();
-
     </script>
 </body>
 </html>
