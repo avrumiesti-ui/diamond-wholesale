@@ -3,397 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="M.J. Gross Inc. - Procurers of Fine Diamonds. D-J Color, FL-VS2+. Serving the industry from 20 W 47th St.">
-    <title>M.J. Gross Inc. | Fine Diamond Traders & Procurers</title>
+    <title>M.J. Gross Inc. | Partner Login</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
-        /* --- RESET & VARIABLES --- */
+        /* --- VARIABLES --- */
         :root {
-            /* Updated to MATCH LOGO (Rich Black) */
-            --primary-color: #000000; 
-            --accent-color: #C5A059; /* Gold remains for luxury accent */
-            --text-light: #FFFFFF;
-            --text-dark: #333333;
-            --bg-light: #FFFFFF;
-            --bg-off-white: #F9F9F9;
+            --bg-dark: #0F172A;
+            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            --accent: #C5A059; /* Gold */
+            --text-light: #ffffff;
+            --text-muted: #888888;
+            --card-bg: #ffffff;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* --- TYPOGRAPHY --- */
-        h1, h2, h3 {
-            font-family: 'Garamond', 'Georgia', serif;
-            font-weight: 400;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: 0.3s;
-        }
-
-        /* --- NAVIGATION --- */
-        header {
-            background-color: var(--bg-light);
-            border-bottom: 1px solid #eee;
-            position: fixed;
+        /* --- LAYOUT --- */
+        .login-container {
             width: 100%;
-            top: 0;
-            z-index: 1000;
+            max-width: 420px;
+            padding: 20px;
+            text-align: center;
         }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* --- LOGO --- */
+        .logo-area {
+            margin-bottom: 30px;
         }
-
-        /* LOGO STYLING */
-        .logo-container img {
-            height: 55px; /* Adjust size as needed */
+        .logo-area img {
+            height: 70px; /* Adjust size based on your logo file */
             width: auto;
-            display: block;
+            /* If your logo has a white background, we might need a white box or rounded corners. 
+               Since the previous logo had a white bg, I'm adding a subtle glow/box to make it pop on dark bg */
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
+        /* --- CARD --- */
+        .login-card {
+            background: var(--card-bg);
+            color: #333;
+            padding: 40px 30px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
 
-        .nav-links a {
-            color: var(--primary-color);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
+        h2 {
+            font-family: 'Garamond', serif;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #000;
         }
 
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-
-        .btn-login {
-            border: 1px solid var(--primary-color);
-            padding: 0.5rem 1.5rem;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-login:hover {
-            background-color: var(--primary-color);
-            color: var(--text-light) !important;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            /* Black Gradient to match logo feel */
-            background: linear-gradient(135deg, #111111 0%, #2c2c2c 100%);
-            color: var(--text-light);
-            padding: 220px 20px 140px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 3.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-light);
-            letter-spacing: -0.5px;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto 3rem;
-            opacity: 0.9;
-            font-weight: 300;
-            color: #ddd;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: #fff;
-            padding: 1.2rem 3rem;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-radius: 2px;
-            font-weight: bold;
-        }
-
-        .cta-button:hover {
-            background-color: #b08d4b;
-            transform: translateY(-2px);
-        }
-
-        /* --- INVENTORY SPECS --- */
-        .specs-bar {
-            background-color: #f4f4f4;
-            padding: 2rem 0;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-        .specs-bar span {
-            margin: 0 15px;
-            font-weight: 600;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            display: inline-block;
-        }
-
-        /* --- VALUE PROPS --- */
-        .values {
-            padding: 80px 20px;
-            background-color: var(--bg-light);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 4rem;
-            text-align: center;
-        }
-
-        .value-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .value-card p {
-            color: #555;
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        .icon {
-            font-size: 2rem;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        /* --- TERMS & PROCESS --- */
-        .process {
-            background-color: var(--bg-off-white);
-            padding: 80px 20px;
-            border-top: 1px solid #eee;
+        /* --- FORMS --- */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
         }
         
-        .process-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            max-width: 1000px;
-            margin: 0 auto;
-            align-items: center;
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .process-text h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 1rem;
         }
 
-        .term-list li {
-            margin-bottom: 1rem;
-            list-style: none;
-            padding-left: 1.5rem;
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+        }
+
+        /* --- CREDIT APP SECTION --- */
+        .divider {
+            margin: 25px 0;
+            border-top: 1px solid #eee;
             position: relative;
         }
-        
-        .term-list li::before {
-            content: "•";
-            color: var(--accent-color);
-            font-weight: bold;
+        .divider span {
+            background: #fff;
+            color: #999;
+            padding: 0 10px;
             position: absolute;
-            left: 0;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
         }
 
-        /* --- FOOTER --- */
-        footer {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-            padding: 80px 20px 40px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-col h4 {
-            color: var(--accent-color);
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-size: 0.9rem;
-        }
-
-        .footer-col p, .footer-col a {
-            margin-bottom: 0.8rem;
-            font-size: 0.95rem;
-            opacity: 0.8;
+        .btn-secondary {
             display: block;
-            color: var(--text-light);
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: 0.3s;
         }
         
-        .footer-col a:hover {
-            color: var(--accent-color);
-            opacity: 1;
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
-        .copyright {
+        /* --- CONTACT FOOTER --- */
+        .footer-info {
+            margin-top: 40px;
             text-align: center;
-            margin-top: 5rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.8rem;
-            opacity: 0.5;
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.8;
         }
 
-        /* --- MOBILE TWEAKS --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2.8rem; line-height: 1.1; }
-            .nav-links { display: none; } 
-            .hero { padding-top: 140px; }
-            .process-grid { grid-template-columns: 1fr; }
+        .footer-info a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .footer-info a:hover { color: #fff; }
+        
+        .separator { margin: 0 8px; color: #444; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 480px) {
+            .login-card { padding: 30px 20px; }
+            .logo-area img { height: 60px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <div class="logo-container">
-                <a href="#"><img src="images/logo.jpg" alt="M.J. Gross Inc."></a>
-            </div>
-            <nav class="nav-links">
-                <a href="#about">About</a>
-                <a href="#terms">Memo Terms</a>
-                <a href="#contact">Contact</a>
-                <a href="#" class="btn-login">Login</a>
-            </nav>
+    <div class="login-container">
+        
+        <div class="logo-area">
+            <img src="images/logo.jpg" alt="M.J. Gross Inc.">
         </div>
-    </header>
 
-    <section class="hero" id="home">
-        <h1>Fine Diamonds.<br>Direct from the Source.</h1>
-        <p>Buyers, Traders, and Procurers. Specializing in Fancy Shapes & Rounds.<br>
-        <strong>D-J Color | FL-VS2+ | 99.99% GIA Graded</strong></p>
-        <a href="#" class="cta-button">View Live Inventory</a>
-    </section>
+        <div class="login-card">
+            <h2>Partner Login</h2>
+            
+            <form onsubmit="event.preventDefault(); window.location.href='inventory.html';">
+                <div class="form-group">
+                    <label for="email">Email / Username</label>
+                    <input type="text" id="email" required placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="••••••••">
+                </div>
 
-    <div class="specs-bar">
-        <span>GIA Certified</span>
-        <span>•</span>
-        <span>V360 Videos</span>
-        <span>•</span>
-        <span>Fancy Shapes</span>
-        <span>•</span>
-        <span>Overnight Shipping</span>
+                <button type="submit" class="btn-primary">Log In</button>
+                
+                <div style="margin-top: 15px; font-size: 0.85rem;">
+                    <a href="#" style="color:#666; text-decoration:none;">Forgot Password?</a>
+                </div>
+            </form>
+
+            <div class="divider">
+                <span>NEW ACCOUNTS</span>
+            </div>
+
+            <a href="#" class="btn-secondary" onclick="alert('Link this to your PDF file later!')">
+                📄 Download Credit App
+            </a>
+            
+            <p style="margin-top: 15px; font-size: 0.85rem; color: #888;">
+                New to M.J. Gross? <a href="#" style="color:var(--accent);">Register here.</a>
+            </p>
+        </div>
+
+        <div class="footer-info">
+            <p><strong>M.J. Gross Inc.</strong></p>
+            <p>20 West 47th Street, Suite #504 <span class="separator">|</span> New York, NY 10036</p>
+            <p>
+                <a href="tel:2127683944">(212) 768-3944</a>
+                <span class="separator">|</span>
+                <a href="mailto:sales@mjgross.com">sales@mjgross.com</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.8rem; opacity: 0.5;">&copy; 2026 M.J. Gross Inc.</p>
+        </div>
+
     </div>
-
-    <section class="values">
-        <div class="container">
-            <div class="grid-3">
-                <div class="value-card">
-                    <span class="icon">💎</span>
-                    <h3>The Inventory</h3>
-                    <p>We focus on high-quality goods: mostly white stones (D-J) ranging from Flawless to VS2+. While we carry rounds, our specialty lies in exceptional Fancy Shapes.</p>
-                </div>
-                <div class="value-card">
-                    <span class="icon">🔍</span>
-                    <h3>The Experience</h3>
-                    <p>We list on Rapnet and Polygon, but clients call us for the "Make." We provide clear V360 videos and high-res photos so you see exactly what you are buying.</p>
-                </div>
-                <div class="value-card">
-                    <span class="icon">🤝</span>
-                    <h3>The Service</h3>
-                    <p>We are traders and procurers. We offer additional support via Phone, Email, and WhatsApp to ensure you have the data you need to close the sale.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="process" id="terms">
-        <div class="container">
-            <div class="process-grid">
-                <div class="process-text">
-                    <h2>Trade Terms & Memos</h2>
-                    <p>We understand the needs of the modern retailer. Our terms are designed to help you sell without the risk.</p>
-                    <br>
-                    <ul class="term-list">
-                        <li><strong>5-Day Memo:</strong> Qualified buyers receive 5-day terms to show stones to their customers.</li>
-                        <li><strong>Overnight Returns:</strong> If there is no sale, we expect goods shipped back overnight immediately.</li>
-                        <li><strong>Transparency:</strong> 99.99% of our inventory is GIA graded.</li>
-                    </ul>
-                </div>
-                <div class="process-contact">
-                    <div style="background: #fff; padding: 2rem; border: 1px solid #ddd; text-align: center;">
-                        <h3>Visit Our Office</h3>
-                        <p style="margin-bottom: 1rem;">We operate from 20 West 47th Street.</p>
-                        <p style="font-size: 0.9rem; color: #666;"><em>(We moved from 579 Fifth Ave over 15 years ago)</em></p>
-                        <br>
-                        <a href="mailto:sales@mjgross.com" style="color: var(--accent-color); font-weight: bold;">Make an Appointment →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Contact Sales</h4>
-                <p>Phone: <a href="tel:2127683944">(212) 768-3944</a></p>
-                <p>Email: <a href="mailto:sales@mjgross.com">sales@mjgross.com</a></p>
-                <p>WhatsApp: Available on Request</p>
-            </div>
-            <div class="footer-col">
-                <h4>Location</h4>
-                <p>20 West 47th Street, Suite #504</p>
-                <p>New York, NY 10036</p>
-                <p><em>By Appointment Only</em></p>
-            </div>
-            <div class="footer-col">
-                <h4>Inventory Access</h4>
-                <a href="#">Log In to Search</a>
-                <a href="#">Register for Account</a>
-                <a href="#">View New Arrivals</a>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; 2026 M.J. Gross Inc. All Rights Reserved.
-        </div>
-    </footer>
 
 </body>
 </html>
