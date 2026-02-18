@@ -2,271 +2,574 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M.J. Gross Inc. | Customer Login</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>M.J. Gross Inc. | Inventory</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
-        /* --- VARIABLES --- */
         :root {
-            --bg-dark: #0F172A;
-            --bg-gradient: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            --accent: #C5A059; /* Gold */
-            --text-light: #ffffff;
-            --card-bg: #ffffff;
-            --header-bg: #ffffff;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 80px 20px 20px; /* Top padding accounts for fixed header */
-        }
-
-        /* --- TOP HEADER --- */
-        .top-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--header-bg);
-            padding: 10px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-img {
-            height: 50px; /* Adjusted for header height */
-            width: auto;
-            display: block;
-        }
-
-        /* --- LAYOUT --- */
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- CARD --- */
-        .login-card {
-            background: var(--card-bg);
-            color: #333;
-            padding: 40px 30px;
-            border-radius: 6px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            margin-bottom: 30px; /* Space between card and footer */
-        }
-
-        h2 {
-            font-family: 'Garamond', serif;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            color: #000;
-        }
-
-        /* --- FORMS --- */
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
+            --primary: #000000;
+            --accent: #C5A059;
+            --bg-gray: #f8f9fa;
+            --border: #e9ecef;
+            --text-muted: #6c757d;
+            --white: #ffffff;
+            --hover-row: #f1f3f5;
         }
         
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-            font-weight: 700;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #212529; font-size: 14px; }
+
+        /* HEADER */
+        header { background: var(--white); padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .logo-img { height: 35px; }
+        .header-controls { display: flex; gap: 15px; align-items: center; }
+        .file-upload-btn { background: var(--accent); color: white; border: none; padding: 8px 15px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+        .file-upload-btn:hover { background: #b08d4b; }
+        #csv-input { display: none; }
+
+        /* LAYOUT */
+        .inventory-container { display: flex; min-height: calc(100vh - 60px); }
+
+        /* SIDEBAR FILTERS */
+        .sidebar {
+            width: 320px;
+            background: var(--white);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+            position: sticky;
+            top: 60px;
         }
 
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-            background: #fafafa;
-        }
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .filter-group:last-child { border-bottom: none; }
+        .filter-label { font-weight: 700; display: block; margin-bottom: 12px; font-size: 0.75rem; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase; }
         
-        .form-group input:focus {
-            border-color: var(--accent);
-            outline: none;
-            background: #fff;
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 5px;
-            border-radius: 4px;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--accent);
-        }
-
-        /* --- CREDIT APP SECTION --- */
-        .divider {
-            margin: 25px 0;
-            border-top: 1px solid #eee;
-            position: relative;
-        }
-        .divider span {
-            background: #fff;
-            color: #999;
-            padding: 0 10px;
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-        }
-
-        .btn-secondary {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background-color: #fff;
-            color: #333;
-            border: 1px solid #ccc;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: 0.3s;
-            border-radius: 4px;
-        }
+        /* FILTERS UI */
+        .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .btn-toggle { background: var(--white); border: 1px solid #ced4da; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; color: #495057; text-align: center; }
+        .btn-toggle.active { background-color: var(--primary); color: var(--white); border-color: var(--primary); }
         
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+        .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
+        .row-3 { grid-template-columns: repeat(3, 1fr); }
+        .row-4 { grid-template-columns: repeat(4, 1fr); }
 
-        /* --- CONTACT FOOTER (Centered) --- */
-        .footer-info {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #aaa;
-            line-height: 1.6;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .touch-bar { display: flex; width: 100%; margin-bottom: 10px; border-radius: 4px; overflow: hidden; border: 1px solid #ced4da; }
+        .touch-btn { flex-grow: 1; padding: 8px 0; background: var(--white); border-right: 1px solid #ced4da; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: #495057; text-align: center; }
+        .touch-btn:last-child { border-right: none; }
+        .touch-btn.active { background-color: var(--primary); color: var(--white); }
 
-        .footer-info p {
-            margin-bottom: 5px;
-        }
+        .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+        .range-input { width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; font-size: 0.85rem; }
 
-        .footer-info a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+        /* RESULTS AREA */
+        .results-area { flex-grow: 1; padding: 20px; overflow-x: hidden; position: relative; }
+        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         
-        .contact-line {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        /* TABLE */
+        .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
         
-        .separator { color: #444; }
+        th { background: #f8f9fa; color: #495057; padding: 12px 10px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); white-space: nowrap; }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: #212529; white-space: nowrap; vertical-align: middle; }
+        
+        /* EXPANDABLE ROW */
+        tbody tr.data-row { cursor: pointer; transition: background 0.15s; }
+        tbody tr.data-row:hover { background-color: var(--hover-row); }
+        tbody tr.expanded { background-color: #eef2f5; border-left: 4px solid var(--accent); }
+        
+        .details-row { display: none; background: #f8f9fa; }
+        .details-row.show { display: table-row; }
+        .details-content { padding: 20px; display: flex; gap: 30px; align-items: flex-start; }
+        
+        .media-preview { width: 150px; height: 150px; background: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .media-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .media-placeholder { font-size: 0.7rem; color: #adb5bd; text-align: center; }
+        
+        .details-actions { display: flex; flex-direction: column; gap: 10px; }
+        .btn-view-product { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .btn-view-product:hover { background: #333; }
 
-        /* --- MOBILE TWEAKS --- */
-        @media (max-width: 480px) {
-            body { padding-top: 90px; } /* More space for header on mobile */
-            .logo-img { height: 40px; } /* Slightly smaller logo */
-            .login-card { padding: 30px 20px; }
-            
-            .contact-line { flex-direction: column; gap: 2px; }
-            .separator { display: none; }
+        /* PRODUCT MODAL */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(3px); }
+        .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
+        
+        .product-card { background: white; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 8px; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+        
+        .product-media { background: #f1f3f5; padding: 40px; display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; }
+        .product-media img { max-width: 100%; max-height: 300px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border-radius: 4px; background: white; }
+        
+        .product-info { padding: 40px; display: flex; flex-direction: column; }
+        .product-header { margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .product-title { font-size: 1.8rem; font-family: 'Garamond', serif; margin-bottom: 5px; color: var(--primary); }
+        .product-subtitle { font-size: 1rem; color: var(--text-muted); }
+        
+        .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .spec-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f1f1f1; padding-bottom: 5px; }
+        .spec-label { font-weight: 600; color: #868e96; font-size: 0.85rem; }
+        .spec-value { font-weight: 700; color: #212529; font-size: 0.9rem; }
+        
+        .btn-close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 2rem; cursor: pointer; color: white; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* MOBILE */
+        .mobile-filter-bar { display: none; padding: 10px; background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 60px; z-index: 900; }
+        .filter-toggle-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; font-weight: bold; border-radius: 4px; }
+        .mobile-close { display: none; }
+
+        @media (max-width: 900px) {
+            .inventory-container { flex-direction: column; }
+            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; }
+            .sidebar.show { display: block; }
+            .mobile-filter-bar { display: block; }
+            .mobile-close { display: block; text-align: right; margin-bottom: 10px; font-size: 1.5rem; cursor: pointer; }
+            .product-card { grid-template-columns: 1fr; max-height: 95vh; }
+            .product-media { padding: 20px; }
+            .btn-close-modal { color: #333; top: 10px; right: 10px; background: white; border-radius: 50%; width: 40px; height: 40px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="top-header">
-        <a href="#">
-            <img src="images/logo.jpg" alt="M.J. Gross Inc." class="logo-img">
-        </a>
+    <header>
+        <div style="display:flex; align-items:center; gap:15px;">
+            <a href="#"><img src="images/logo.jpg" alt="MJG" class="logo-img"></a>
+            <span style="font-weight:700; color:#ccc;">|</span>
+            <span style="font-size:0.9rem; font-weight:600;">INVENTORY SYSTEM</span>
+        </div>
+        <div class="header-controls">
+            <button class="file-upload-btn" onclick="document.getElementById('csv-input').click()">📂 Upload Inventory CSV</button>
+            <input type="file" id="csv-input" accept=".csv" onchange="handleFileUpload(this)">
+            <a href="index.html" style="color:#333; text-decoration:none; font-weight:600;">Log Out</a>
+        </div>
     </header>
 
-    <div class="login-container">
-        
-        <div class="login-card">
-            <h2>Customer Login</h2>
-            
-            <form onsubmit="event.preventDefault(); window.location.href='inventory.html';">
-                <div class="form-group">
-                    <label for="email">Email / Username</label>
-                    <input type="text" id="email" required placeholder="Enter your email">
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
-                </div>
-
-                <button type="submit" class="btn-primary">Log In</button>
-                
-                <div style="margin-top: 15px; font-size: 0.85rem;">
-                    <a href="#" style="color:#888; text-decoration:none;">Forgot Password?</a>
-                </div>
-            </form>
-
-            <div class="divider">
-                <span>NEW ACCOUNTS</span>
-            </div>
-
-            <a href="#" class="btn-secondary" onclick="alert('Link this to your PDF file later!')">
-                📄 Download Credit App
-            </a>
-            
-            <p style="margin-top: 15px; font-size: 0.85rem; color: #888;">
-                New to M.J. Gross? <a href="#" style="color:var(--accent);">Register here.</a>
-            </p>
-        </div>
-
-        <div class="footer-info">
-            <p><strong>M.J. Gross Inc.</strong></p>
-            <p>20 West 47th Street, Suite #504 <br> New York, NY 10036</p>
-            
-            <div class="contact-line">
-                <a href="tel:2127683944">(212) 768-3944</a>
-                <span class="separator">|</span>
-                <a href="mailto:sales@mjgross.com">sales@mjgross.com</a>
-            </div>
-            
-            <p style="margin-top: 15px; font-size: 0.75rem; opacity: 0.5;">&copy; 2026 M.J. Gross Inc.</p>
-        </div>
-
+    <div class="mobile-filter-bar">
+        <button class="filter-toggle-btn" onclick="toggleSidebar()">Filters <span id="mobile-count">(0)</span> ▾</button>
     </div>
 
+    <div class="inventory-container">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="mobile-close" onclick="toggleSidebar()">✕</div>
+            
+            <div class="filter-group">
+                <span class="filter-label">SHAPE</span>
+                <div class="shape-grid">
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Round')">Round</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Oval')">Oval</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Cushion')">Cushion</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Emerald')">Emerald</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Pear')">Pear</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Radiant')">Radiant</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Princess')">Princess</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Asscher')">Asscher</button>
+                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Marquise')">Marquise</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">WEIGHT (CARAT)</span>
+                <div class="carat-row row-3">
+                    <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
+                </div>
+                <div class="carat-row row-4">
+                    <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+                </div>
+                <div class="range-row">
+                    <input type="number" id="min-carat" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-carat" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">COLOR</span>
+                <div class="touch-bar" id="color-bar"></div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">CLARITY</span>
+                <div class="touch-bar" id="clarity-bar"></div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">CUT</span>
+                <div class="touch-bar" id="cut-bar"></div>
+            </div>
+
+            <button onclick="toggleSidebar()" class="filter-toggle-btn" style="margin-top:20px; background:#333;">VIEW RESULTS</button>
+        </aside>
+
+        <main class="results-area">
+            <div class="results-header">
+                <h2 style="font-size:1.5rem; margin:0;">Inventory</h2>
+                <span class="result-count" style="color:var(--accent); font-weight:700;">Found <span id="count">0</span> Stones</span>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <table id="inventory-table">
+                        <thead>
+                            <tr id="table-head-row">
+                                </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-overlay" id="product-modal">
+        <button class="btn-close-modal" onclick="closeModal()">×</button>
+        <div class="product-card">
+            <div class="product-media">
+                <div id="modal-media-container">
+                    <div style="width:100%; height:300px; background:#eee; display:flex; align-items:center; justify-content:center; color:#999;">No Media Available</div>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:20px;">
+                    <button class="btn-toggle" id="btn-show-img" onclick="showModalMedia('img')">Photo</button>
+                    <button class="btn-toggle" id="btn-show-vid" onclick="showModalMedia('vid')">Video</button>
+                    <button class="btn-toggle" id="btn-show-cert" onclick="showModalMedia('cert')">Certificate</button>
+                </div>
+            </div>
+            <div class="product-info">
+                <div class="product-header">
+                    <h1 class="product-title" id="modal-title">1.01 Carat Round Diamond</h1>
+                    <div class="product-subtitle" id="modal-subtitle">Stock #12345 • GIA Certified</div>
+                </div>
+                
+                <div class="specs-grid" id="modal-specs">
+                    </div>
+
+                <div style="margin-top:auto;">
+                    <div style="font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:15px;" id="modal-price">$5,000</div>
+                    <button style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:4px; font-weight:bold; font-size:1rem; cursor:pointer;">INQUIRE NOW</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CONFIG & STATE ---
+        const colors = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
+        const clarities = ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1'];
+        const cuts = ['EX', 'VG', 'GD', 'FR'];
+        
+        // Initial Dummy Data (Replaced upon CSV Upload)
+        let inventoryData = [
+            { "Stock #": "D101", "Shape": "Round", "Weight": 1.01, "Color": "D", "Clarity": "VS1", "Lab": "GIA", "Cut": "EX", "Pol": "EX", "Sym": "EX", "Fluor": "Non", "Depth": 61.5, "Table": 57, "Meas": "6.45x6.48x3.98", "Price": 5200, "Image": "", "Video": "", "Report": "" },
+            { "Stock #": "D102", "Shape": "Oval", "Weight": 1.50, "Color": "F", "Clarity": "SI1", "Lab": "GIA", "Cut": "VG", "Pol": "EX", "Sym": "VG", "Fluor": "Fnt", "Depth": 62.0, "Table": 59, "Meas": "9.10x6.30x3.90", "Price": 6500, "Image": "", "Video": "", "Report": "" }
+        ];
+
+        let activeFilters = {
+            shape: [],
+            caratRanges: [],
+            color: [],
+            clarity: [],
+            cut: []
+        };
+
+        // --- 2. CSV PARSER (The Engine) ---
+        function handleFileUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                parseCSV(text);
+            };
+            reader.readAsText(file);
+        }
+
+        function parseCSV(csvText) {
+            // Simple CSV parser handling quotes
+            const rows = [];
+            let currentRow = [];
+            let currentCell = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                if (char === '"') { inQuotes = !inQuotes; }
+                else if (char === ',' && !inQuotes) { currentRow.push(currentCell.trim()); currentCell = ''; }
+                else if ((char === '\r' || char === '\n') && !inQuotes) {
+                    if (currentCell || currentRow.length > 0) currentRow.push(currentCell.trim());
+                    if (currentRow.length > 0) rows.push(currentRow);
+                    currentRow = []; currentCell = '';
+                }
+                else { currentCell += char; }
+            }
+            if (currentCell) currentRow.push(currentCell.trim());
+            if (currentRow.length > 0) rows.push(currentRow);
+
+            // Convert to Object Array
+            const headers = rows[0];
+            const data = [];
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (row.length < headers.length) continue;
+                let obj = {};
+                headers.forEach((h, index) => obj[h.trim()] = row[index]);
+                data.push(obj);
+            }
+
+            inventoryData = data;
+            alert(`Successfully loaded ${data.length} stones!`);
+            initTableHeaders(headers);
+            runSearch();
+        }
+
+        // --- 3. UI INIT ---
+        function initTouchBar(id, items, filterKey) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'touch-btn';
+                btn.innerText = item;
+                btn.onclick = () => handleRangeClick(index, items, filterKey, id);
+                container.appendChild(btn);
+            });
+        }
+
+        function initTableHeaders(headers) {
+            const thead = document.getElementById('table-head-row');
+            thead.innerHTML = '';
+            // Define standard columns we WANT to see in the table
+            const displayCols = ["Shape", "Weight", "Color", "Clarity", "Lab", "Cut", "Pol", "Sym", "Fluor", "Depth", "Table", "Meas", "Price"];
+            
+            // Add Headers
+            displayCols.forEach(col => {
+                const th = document.createElement('th');
+                th.innerText = col === "Weight" ? "Carat" : col;
+                thead.appendChild(th);
+            });
+        }
+
+        // --- 4. LOGIC ---
+        function handleRangeClick(index, items, key, domId) {
+            let active = activeFilters[key];
+            if (active.length === 0) active.push(items[index]);
+            else {
+                // Find indices of currently active items
+                const activeIndices = active.map(val => items.indexOf(val));
+                const min = Math.min(...activeIndices, index);
+                const max = Math.max(...activeIndices, index);
+                
+                // Select everything in range
+                activeFilters[key] = [];
+                for(let i=min; i<=max; i++) activeFilters[key].push(items[i]);
+            }
+            updateTouchUI(domId, items, activeFilters[key]);
+            runSearch();
+        }
+
+        function updateTouchUI(domId, items, activeArr) {
+            const btns = document.getElementById(domId).children;
+            for(let i=0; i<btns.length; i++) {
+                btns[i].classList.toggle('active', activeArr.includes(items[i]));
+            }
+        }
+
+        function toggleFilter(btn, key, val) {
+            btn.classList.toggle('active');
+            const arr = activeFilters[key];
+            arr.includes(val) ? arr.splice(arr.indexOf(val), 1) : arr.push(val);
+            runSearch();
+        }
+
+        function toggleCarat(min, max, btn) {
+            btn.classList.toggle('active');
+            const ranges = activeFilters.caratRanges;
+            const idx = ranges.findIndex(r => r.min === min && r.max === max);
+            if(idx > -1) ranges.splice(idx, 1);
+            else ranges.push({min, max});
+            
+            document.getElementById('min-carat').value = '';
+            document.getElementById('max-carat').value = '';
+            runSearch();
+        }
+
+        // --- 5. SEARCH ENGINE ---
+        function runSearch() {
+            const minC = parseFloat(document.getElementById('min-carat').value);
+            const maxC = parseFloat(document.getElementById('max-carat').value);
+
+            const results = inventoryData.filter(item => {
+                // Normalize keys (handle case sensitivity from CSV)
+                const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())];
+
+                const shape = get('Shape') || '';
+                const weight = parseFloat(get('Weight') || get('Carat') || 0);
+                const color = get('Color') || '';
+                const clarity = get('Clarity') || '';
+                const cut = get('Cut') || '';
+
+                // Shape Filter
+                if (activeFilters.shape.length && !activeFilters.shape.some(s => shape.toLowerCase().includes(s.toLowerCase()))) return false;
+
+                // Carat Filter
+                let cMatch = false;
+                if (!isNaN(minC) || !isNaN(maxC)) {
+                    cMatch = (isNaN(minC) || weight >= minC) && (isNaN(maxC) || weight <= maxC);
+                } else if (activeFilters.caratRanges.length) {
+                    cMatch = activeFilters.caratRanges.some(r => weight >= r.min && weight <= r.max);
+                } else cMatch = true;
+                if (!cMatch) return false;
+
+                // Color/Clarity/Cut
+                if (activeFilters.color.length && !activeFilters.color.includes(color)) return false;
+                if (activeFilters.clarity.length && !activeFilters.clarity.includes(clarity)) return false;
+                if (activeFilters.cut.length && !activeFilters.cut.includes(cut)) return false;
+
+                return true;
+            });
+
+            renderTable(results);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('table-body');
+            document.getElementById('count').innerText = data.length;
+            tbody.innerHTML = '';
+
+            // Standard columns to display (Must match header)
+            const displayCols = ["Shape", "Weight", "Color", "Clarity", "Lab", "Cut", "Pol", "Sym", "Fluor", "Depth", "Table", "Meas", "Price"];
+
+            data.forEach((item, index) => {
+                // Normalize Item Keys
+                const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())] || '-';
+                
+                // DATA ROW
+                const tr = document.createElement('tr');
+                tr.className = 'data-row';
+                tr.onclick = () => toggleDetails(tr);
+                
+                let html = '';
+                displayCols.forEach(col => {
+                    let val = get(col);
+                    if(col === 'Price') val = '$' + parseFloat(val).toLocaleString();
+                    if(col === 'Weight') val = parseFloat(val).toFixed(2);
+                    html += `<td>${val}</td>`;
+                });
+                tr.innerHTML = html;
+                tbody.appendChild(tr);
+
+                // DETAILS ROW (Hidden)
+                const trDetail = document.createElement('tr');
+                trDetail.className = 'details-row';
+                
+                // Try to find media links
+                const imgLink = get('Image') !== '-' ? get('Image') : get('Image Link');
+                const vidLink = get('Video') !== '-' ? get('Video') : get('Video Link');
+                const certLink = get('Report') !== '-' ? get('Report') : get('Cert');
+
+                trDetail.innerHTML = `
+                    <td colspan="${displayCols.length}">
+                        <div class="details-content">
+                            <div class="media-preview">
+                                ${imgLink && imgLink.startsWith('http') ? `<img src="${imgLink}" onerror="this.style.display='none'">` : '<div class="media-placeholder">No Preview</div>'}
+                            </div>
+                            <div class="details-actions">
+                                <h3 style="margin:0 0 5px 0;">${get('Weight')}ct ${get('Shape')} ${get('Color')} ${get('Clarity')}</h3>
+                                <div style="font-size:0.9rem; color:#666; margin-bottom:10px;">Stock #: ${get('Stock #')}</div>
+                                <div style="display:flex; gap:10px;">
+                                    ${certLink && certLink.startsWith('http') ? `<a href="${certLink}" target="_blank" style="color:blue; text-decoration:underline;">View Certificate</a>` : ''}
+                                    ${vidLink && vidLink.startsWith('http') ? `<a href="${vidLink}" target="_blank" style="color:blue; text-decoration:underline;">Watch Video</a>` : ''}
+                                </div>
+                                <button class="btn-view-product" onclick='openModal(${JSON.stringify(item)})'>
+                                    <span>👁 View Full Specs</span>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(trDetail);
+            });
+        }
+
+        function toggleDetails(row) {
+            row.classList.toggle('expanded');
+            const next = row.nextElementSibling;
+            if(next && next.classList.contains('details-row')) {
+                next.classList.toggle('show');
+            }
+        }
+
+        // --- 6. PRODUCT MODAL ---
+        let currentModalItem = null;
+
+        function openModal(item) {
+            currentModalItem = item;
+            const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())] || '-';
+
+            document.getElementById('modal-title').innerText = `${get('Weight')} Carat ${get('Shape')} Diamond`;
+            document.getElementById('modal-subtitle').innerText = `Stock #${get('Stock #')} • ${get('Lab')} Certified`;
+            document.getElementById('modal-price').innerText = '$' + parseFloat(get('Price')).toLocaleString();
+
+            // Populate Specs
+            const specs = document.getElementById('modal-specs');
+            specs.innerHTML = '';
+            const fields = ['Color', 'Clarity', 'Cut', 'Pol', 'Sym', 'Fluor', 'Depth', 'Table', 'Meas', 'Ratio'];
+            
+            fields.forEach(f => {
+                const val = get(f);
+                specs.innerHTML += `
+                    <div class="spec-item">
+                        <span class="spec-label">${f}</span>
+                        <span class="spec-value">${val}</span>
+                    </div>
+                `;
+            });
+
+            // Media
+            showModalMedia('img'); // Default to image
+            
+            document.getElementById('product-modal').classList.add('open');
+        }
+
+        function showModalMedia(type) {
+            const container = document.getElementById('modal-media-container');
+            const get = (k) => currentModalItem[Object.keys(currentModalItem).find(key => key.toLowerCase() === k.toLowerCase())] || '';
+            
+            const img = get('Image') || get('Image Link');
+            const vid = get('Video') || get('Video Link');
+            const cert = get('Report') || get('Cert');
+
+            if (type === 'img') {
+                container.innerHTML = img ? `<img src="${img}" style="width:100%; height:auto;">` : '<div style="padding:50px;">No Image Available</div>';
+            } else if (type === 'vid') {
+                container.innerHTML = vid ? `<iframe src="${vid}" style="width:100%; height:300px; border:none;"></iframe>` : '<div style="padding:50px;">No Video Available</div>';
+            } else if (type === 'cert') {
+                container.innerHTML = cert ? `<iframe src="${cert}" style="width:100%; height:300px; border:none;"></iframe>` : '<div style="padding:50px;">No Certificate Available</div>';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.remove('open');
+        }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
+
+        // --- INIT ---
+        initTouchBar('color-bar', colors, 'color');
+        initTouchBar('clarity-bar', clarities, 'clarity');
+        initTouchBar('cut-bar', cuts, 'cut');
+        initTableHeaders([]); // Init empty headers
+        runSearch(); // Show dummy data initially
+    </script>
 </body>
 </html>
