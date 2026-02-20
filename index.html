@@ -41,7 +41,6 @@
         .inventory-container { display: none; min-height: calc(100vh - 60px); }
         .sidebar { width: 340px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
         
-        /* FILTERS UI */
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
         .btn-reset:hover { text-decoration: underline; }
@@ -50,6 +49,7 @@
         .filter-group:last-child { border-bottom: none; }
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
+        /* FILTERS UI */
         .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
         .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
@@ -67,18 +67,26 @@
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
-        /* TABLE (Desktop) */
+        /* TABLE (Desktop) - Adjusted for tight column widths */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; min-width: 1500px; }
-        th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
-        th:hover { background: #e2e8f0; }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
         
+        /* Auto-sizing table strategy */
+        table { width: max-content; min-width: 100%; border-collapse: collapse; }
+        
+        /* Tighter padding to meet the "+10 pixels" request (5px on each side) */
+        th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+        th:hover { background: #e2e8f0; }
+        td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
+        
+        /* Ensure the first spacer column stays small */
+        th:first-child, td:first-child { padding-left: 10px; }
+        th:last-child, td:last-child { padding-right: 15px; }
+
         .data-row { transition: background 0.15s; }
         .data-row:hover { background-color: var(--hover-row); }
-        .col-expand { width: 40px; text-align: center; }
-        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 24px; height: 24px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; }
+        .col-expand { width: 30px; text-align: center; }
+        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0;}
         .btn-expand:hover { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
@@ -89,12 +97,13 @@
         .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
-        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; }
-        .env-media-embed iframe, .env-media-embed img { width: 100%; height: 100%; object-fit: contain; border: none; }
+        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
+        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
+        .desktop-only { display: table-cell; }
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
@@ -114,8 +123,8 @@
             .table-container { background: transparent; box-shadow: none; }
             
             .data-row { background: var(--white); border-radius: 10px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
-            .data-row td { padding: 0; border: none; display: none; } /* Hide all cells initially */
-            td.mobile-only { display: block; } /* Show ONLY the mobile card cell */
+            .data-row td { padding: 0; border: none; display: none; } 
+            td.mobile-only { display: block; } 
             
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
             .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
@@ -199,7 +208,7 @@
                 <button class="btn-reset" onclick="resetFilters()">Reset All</button>
             </div>
             
-            <input type="text" id="search-box" placeholder="Search ID, Shape, Cert..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
+            <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
 
             <div class="filter-group">
                 <span class="filter-label">SHAPE</span>
@@ -284,7 +293,7 @@
                 <table id="inventory-table">
                     <thead>
                         <tr class="desktop-only">
-                            <th style="width:40px;"></th>
+                            <th style="width:30px;"></th>
                             <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
                             <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
                             <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
@@ -397,7 +406,19 @@
             runSearch();
         }
 
-        function getVal(row, exactHeader) { return row[exactHeader.toLowerCase()] || ''; }
+        // Safe getter with fallback matching (Fixes the "link" missing bug)
+        function getRobustVal(row, possibleKeys) {
+            for (let k of possibleKeys) {
+                let lowerK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+                let found = Object.keys(row).find(rk => rk.replace(/[^a-z0-9]/g, '') === lowerK);
+                if (found && row[found] && row[found].trim() !== '') return row[found].trim();
+            }
+            return '';
+        }
+
+        function getVal(row, exactHeader) { 
+            return row[exactHeader.toLowerCase()] || ''; 
+        }
 
         // --- 4. UI BUILDERS ---
         function initTouchBar(id, items, filterKey) {
@@ -420,19 +441,18 @@
         initTouchBar('sym-bar', config.grades, 'sym');
         initTouchBar('fluo-bar', config.fluos, 'fluo');
 
-        // --- 5. FILTER LOGIC (SMART TOGGLE) ---
+        // --- 5. FILTER LOGIC (SMART TOGGLE FIX) ---
         function handleRangeClick(index, items, key, domId) {
             let active = activeFilters[key];
             const clickedItem = items[index];
             
             if (active.length === 1 && active[0] === clickedItem) {
-                activeFilters[key] = []; // Turn off if it's the only one
+                activeFilters[key] = []; 
             } else if (active.includes(clickedItem)) {
-                activeFilters[key] = [clickedItem]; // Reset to just this one if in range
+                activeFilters[key] = [clickedItem]; 
             } else if (active.length === 0) {
-                activeFilters[key] = [clickedItem]; // Select this one
+                activeFilters[key] = [clickedItem]; 
             } else {
-                // Extend range
                 const activeIndices = active.map(val => items.indexOf(val));
                 const min = Math.min(...activeIndices, index);
                 const max = Math.max(...activeIndices, index);
@@ -515,6 +535,12 @@
                 const checkArr = (key, csvHeader) => {
                     if(!activeFilters[key].length) return true;
                     const val = getVal(row, csvHeader).toUpperCase();
+                    
+                    // Fixed Shape Matching (Round vs Radiant bug fix)
+                    if (key === 'shape' || key === 'lab' || key === 'cut' || key === 'pol' || key === 'sym' || key === 'color' || key === 'clarity') {
+                        return activeFilters[key].some(f => val === f.toUpperCase() || val.includes(f.toUpperCase()));
+                    }
+                    // Fluor handles 'Faint' vs 'FNT' via charAt
                     return activeFilters[key].some(f => val.includes(f) || val.startsWith(f.charAt(0)));
                 };
 
@@ -579,11 +605,15 @@
                 const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
                 const formatUrl = u => u.startsWith('http') ? u : `https://${u}`;
 
-                const labStr = getVal(row,'Lab');
-                const reportStr = getVal(row,'ReportPDF');
+                // Robust link fetching to ignore spaces/brackets in headers
+                const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
+                const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
+                const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
+
+                const labStr = getVal(row,'Lab') || 'CERT';
                 let labHtml = labStr;
-                if(reportStr && reportStr.trim() !== '') {
-                    labHtml = `<a href="${formatUrl(reportStr)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
+                if(report) {
+                    labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
                 // A. DESKTOP ROW 
@@ -623,14 +653,19 @@
 
                 // C. DESKTOP ENVELOPE (Embedded Media)
                 const env = document.createElement('tr');
-                env.className = 'envelope-row desktop-only'; // Hide envelope wrapper fully on mobile
+                env.className = 'envelope-row desktop-only';
                 env.id = `env-${i}`;
                 
-                const photo = getVal(row,'Photo');
-                const video = getVal(row,'Video');
-
                 const photoEmbed = photo ? `<img src="${formatUrl(photo)}" onerror="this.style.display='none'">` : '';
-                const videoEmbed = video ? `<iframe src="${formatUrl(video)}" allowfullscreen></iframe>` : '';
+                
+                let videoEmbed = '';
+                if (video) {
+                    if (video.toLowerCase().endsWith('.mp4')) {
+                        videoEmbed = `<video src="${formatUrl(video)}" controls autoplay loop muted></video>`;
+                    } else {
+                        videoEmbed = `<iframe src="${formatUrl(video)}" allowfullscreen></iframe>`;
+                    }
+                }
 
                 env.innerHTML = `
                     <td colspan="20" style="padding:0;">
@@ -639,7 +674,7 @@
                             ${videoEmbed ? `<div class="env-media-embed">${videoEmbed}</div>` : ''}
                             <div class="env-comments-box">
                                 <h4 style="margin:0 0 10px 0; color:#475569; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Comments & Notes</h4>
-                                <p style="margin:0; font-size:0.9rem; line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided for this stone.'}</p>
+                                <p style="margin:0; font-size:0.9rem; line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided.'}</p>
                             </div>
                         </div>
                     </td>
@@ -662,6 +697,10 @@
             document.getElementById('mobile-drawer').classList.add('open');
             document.getElementById('drawer-title').innerText = `${getVal(row,'Shape')} ${getVal(row,'Size')}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
             
+            const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
+            const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
+            const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
+
             const linkBtn = (link, label, icon) => {
                 if(!link || link.trim() === '') return '';
                 const url = link.startsWith('http') ? link : `https://${link}`;
@@ -675,9 +714,9 @@
                 <div style="font-size:1rem; color:#dc2626; font-weight:700; margin-bottom:20px;">Rap Disc: ${getVal(row,'Rap Disc')}% • ID: ${getVal(row,'ID')}</div>
                 
                 <div style="display:flex; gap:10px; margin-bottom:25px;">
-                    ${linkBtn(getVal(row,'Photo'), 'Photo', '📷')}
-                    ${linkBtn(getVal(row,'Video'), 'Video', '🎥')}
-                    ${linkBtn(getVal(row,'ReportPDF'), 'Cert', '📄')}
+                    ${linkBtn(photo, 'Photo', '📷')}
+                    ${linkBtn(video, 'Video', '🎥')}
+                    ${linkBtn(report, 'Cert', '📄')}
                 </div>
 
                 <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-bottom:20px;">
