@@ -18,7 +18,7 @@
         }
         
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 14px; overflow-x: hidden; }
+        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 13px; overflow-x: hidden; }
 
         /* HEADER & DROP ZONE */
         header { background: var(--white); padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
@@ -39,15 +39,39 @@
 
         /* LAYOUT */
         .inventory-container { display: none; min-height: calc(100vh - 60px); }
-        .sidebar { width: 300px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
+        
+        /* SIDEBAR FILTERS */
+        .sidebar { width: 340px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        .filter-group:last-child { border-bottom: none; }
+        .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+        
+        /* SHAPE & BUTTONS */
+        .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
+        .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+        .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
+        .row-3 { grid-template-columns: repeat(3, 1fr); }
+        .row-4 { grid-template-columns: repeat(4, 1fr); }
+
+        /* TOUCH BARS */
+        .touch-bar { display: flex; width: 100%; margin-bottom: 10px; flex-wrap: wrap; }
+        .touch-btn { flex: 1 1 auto; padding: 8px 0; background: #fff; border: 1px solid #cbd5e1; margin-left: -1px; cursor: pointer; font-size: 0.7rem; font-weight: 600; color: #475569; text-align: center; min-width: 30px; }
+        .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
+        .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+        .touch-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); z-index: 1; position: relative; }
+
+        /* NUMERIC INPUTS */
+        .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+        .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
         /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; min-width: 1200px; }
-        th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+        th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; white-space: nowrap; vertical-align: middle; }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
         
         .data-row { transition: background 0.15s; }
         .data-row:hover { background-color: var(--hover-row); }
@@ -61,23 +85,24 @@
         .envelope-row.show { display: table-row; }
         .envelope-content { padding: 20px; display: flex; gap: 30px; }
         .env-media { display: flex; gap: 15px; }
-        .env-box { width: 160px; height: 160px; background: var(--white); border: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; font-size: 0.8rem; color: #94a3b8; flex-direction: column; gap: 10px; }
+        .env-box { width: 140px; height: 140px; background: var(--white); border: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; font-size: 0.75rem; color: #94a3b8; flex-direction: column; gap: 10px; transition: 0.2s; }
+        .env-box:hover { border-color: var(--accent); color: var(--accent); background: #fffcf5; }
         .env-box img, .env-box iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
-        .env-details { flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-content: start; }
+        .env-details { flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
         .env-item { background: var(--white); padding: 10px 15px; border-radius: 4px; border: 1px solid #e2e8f0; }
-        .env-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
-        .env-val { font-size: 0.9rem; font-weight: 600; color: #0f172a; }
+        .env-label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .env-val { font-size: 0.85rem; font-weight: 600; color: #0f172a; }
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
         .desktop-only { display: table-cell; }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
             .mobile-only { display: block; }
             
             .inventory-container { flex-direction: column; }
-            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; }
+            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; }
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
@@ -95,7 +120,7 @@
             
             /* Mobile Card Layout */
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
-            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line3 { font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 6px 10px; border-radius: 4px; display: inline-block; font-family: monospace; }
             .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
@@ -110,7 +135,6 @@
             
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
             
-            /* Hide Drop text in header */
             .drop-text { display: none; }
             .drop-zone { padding: 8px; }
         }
@@ -160,9 +184,86 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
-            <div style="font-weight:bold; margin-bottom:10px;">Quick Filters</div>
+            
             <input type="text" id="search-box" placeholder="Search ID, Shape, Cert..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
-            <button onclick="toggleSidebar()" class="mobile-only" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold;">APPLY</button>
+
+            <div class="filter-group">
+                <span class="filter-label">SHAPE</span>
+                <div class="shape-grid">
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Round', this)">Round</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Oval', this)">Oval</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Cushion', this)">Cushion</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Emerald', this)">Emerald</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Pear', this)">Pear</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Radiant', this)">Radiant</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Princess', this)">Princess</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Asscher', this)">Asscher</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Marquise', this)">Marquise</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">SIZE (CARAT)</span>
+                <div class="carat-row row-3">
+                    <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
+                    <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
+                </div>
+                <div class="carat-row row-4">
+                    <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
+                    <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+                </div>
+                <div class="range-row">
+                    <input type="number" id="min-size" class="range-input" placeholder="Min Size" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-size" class="range-input" placeholder="Max Size" step="0.01" oninput="runSearch()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">COLOR</span>
+                <div class="touch-bar" id="color-bar"></div>
+                
+                <span class="filter-label" style="margin-top:15px;">CLARITY</span>
+                <div class="touch-bar" id="clarity-bar"></div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">LAB</span>
+                <div class="touch-bar" id="lab-bar"></div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">CUT</span>
+                <div class="touch-bar" id="cut-bar"></div>
+                <span class="filter-label">POLISH</span>
+                <div class="touch-bar" id="pol-bar"></div>
+                <span class="filter-label">SYMMETRY</span>
+                <div class="touch-bar" id="sym-bar"></div>
+                <span class="filter-label">FLUORESCENCE</span>
+                <div class="touch-bar" id="fluo-bar"></div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">DEPTH %</span>
+                <div class="range-row">
+                    <input type="number" id="depth-min" class="range-input" placeholder="Min" oninput="runSearch()">
+                    <input type="number" id="depth-max" class="range-input" placeholder="Max" oninput="runSearch()">
+                </div>
+                <span class="filter-label" style="margin-top:10px;">TABLE %</span>
+                <div class="range-row">
+                    <input type="number" id="table-min" class="range-input" placeholder="Min" oninput="runSearch()">
+                    <input type="number" id="table-max" class="range-input" placeholder="Max" oninput="runSearch()">
+                </div>
+                <span class="filter-label" style="margin-top:10px;">RATIO</span>
+                <div class="range-row">
+                    <input type="number" id="ratio-min" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="ratio-max" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+                </div>
+            </div>
+
+            <button onclick="toggleSidebar()" class="mobile-only" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold; position:sticky; bottom:0;">APPLY FILTERS</button>
         </aside>
 
         <main class="results-area">
@@ -210,8 +311,21 @@
         let sortCol = '';
         let sortDir = 1; // 1 = asc, -1 = desc
         
-        // Exact Headers Required
+        // Exact Headers Requested
         const reqHeaders = ["ID", "Shape", "Size", "Color", "Clarity", "Measurements", "Ratio", "Lab", "Depth", "Table", "Culet", "Girdle", "Fluo", "Cut", "Pol", "Sym", "Rap Disc", "PriceTotal", "PriceRap", "ReportPDF", "Photo", "Comments", "Video"];
+
+        // Filters State
+        let activeFilters = {
+            shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: []
+        };
+
+        const config = {
+            colors: ['D','E','F','G','H','I','J','K','L','M'],
+            clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
+            labs: ['GIA','IGI','HRD'],
+            grades: ['EX','VG','GD','FR','F'],
+            fluos: ['NON','FNT','MED','STG','VST']
+        };
 
         // --- 2. DRAG & DROP ---
         ['header-drop', 'main-drop', 'empty-state'].forEach(id => {
@@ -233,87 +347,194 @@
             reader.readAsText(file);
         }
 
-        // --- 3. CSV PARSER ---
-        function parseCSV(csvText) {
-            const rows = [];
-            let currentRow = [], currentCell = '', inQuotes = false;
-            
-            for (let i = 0; i < csvText.length; i++) {
-                const char = csvText[i];
-                if (char === '"') inQuotes = !inQuotes;
-                else if (char === ',' && !inQuotes) { currentRow.push(currentCell.trim()); currentCell = ''; }
-                else if ((char === '\r' || char === '\n') && !inQuotes) {
-                    if (currentCell || currentRow.length > 0) currentRow.push(currentCell.trim());
-                    if (currentRow.length > 0) rows.push(currentRow);
-                    currentRow = []; currentCell = '';
-                } else currentCell += char;
+        // --- 3. ROBUST CSV PARSER ---
+        // This parser handles quotes, newlines inside cells, and weird Excel artifacts perfectly.
+        function parseCSV(text) {
+            let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
+            for (l of text) {
+                if ('"' === l) {
+                    if (s && l === p) row[i] += l;
+                    s = !s;
+                } else if (',' === l && s) l = row[++i] = '';
+                else if ('\n' === l && s) {
+                    if ('\r' === p) row[i] = row[i].slice(0, -1);
+                    row = ret[++r] = [l = '']; i = 0;
+                } else row[i] += l;
+                p = l;
             }
-            if (currentCell) currentRow.push(currentCell.trim());
-            if (currentRow.length > 0) rows.push(currentRow);
-
-            const headers = rows[0];
+            
+            // Clean Headers (Remove invisible BOM characters and trim)
+            const rawHeaders = ret[0].map(h => h.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"").trim());
+            
             const data = [];
-            for (let i = 1; i < rows.length; i++) {
-                if (rows[i].length < 2) continue; // Skip empty rows
+            for (let j = 1; j < ret.length; j++) {
+                if (ret[j].length < 2 || ret[j].join('').trim() === '') continue; // Skip empty
                 let obj = {};
-                headers.forEach((h, index) => obj[h.trim()] = rows[i][index] || '');
+                rawHeaders.forEach((h, index) => {
+                    obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
+                });
                 data.push(obj);
             }
 
             inventoryData = data;
             document.getElementById('empty-state').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
-            if(window.innerWidth <= 1000) document.getElementById('mobile-tools').style.display = 'flex';
+            if(window.innerWidth <= 1100) document.getElementById('mobile-tools').style.display = 'flex';
             
             runSearch();
         }
 
-        // --- 4. SORTING ENGINE ---
+        // Safe getter for case-insensitive header mapping
+        function getVal(row, exactHeader) {
+            return row[exactHeader.toLowerCase()] || '';
+        }
+
+        // --- 4. UI BUILDERS ---
+        function initTouchBar(id, items, filterKey) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+            items.forEach((item, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'touch-btn';
+                btn.innerText = item;
+                btn.onclick = () => handleRangeClick(index, items, filterKey, id);
+                container.appendChild(btn);
+            });
+        }
+
+        initTouchBar('color-bar', config.colors, 'color');
+        initTouchBar('clarity-bar', config.clarities, 'clarity');
+        initTouchBar('lab-bar', config.labs, 'lab');
+        initTouchBar('cut-bar', config.grades, 'cut');
+        initTouchBar('pol-bar', config.grades, 'pol');
+        initTouchBar('sym-bar', config.grades, 'sym');
+        initTouchBar('fluo-bar', config.fluos, 'fluo');
+
+        // --- 5. FILTER LOGIC ---
+        function handleRangeClick(index, items, key, domId) {
+            let active = activeFilters[key];
+            if (active.length === 0) active.push(items[index]);
+            else {
+                const activeIndices = active.map(val => items.indexOf(val));
+                const min = Math.min(...activeIndices, index);
+                const max = Math.max(...activeIndices, index);
+                activeFilters[key] = [];
+                for(let i=min; i<=max; i++) activeFilters[key].push(items[i]);
+            }
+            updateTouchUI(domId, items, activeFilters[key]);
+            runSearch();
+        }
+
+        function updateTouchUI(domId, items, activeArr) {
+            const btns = document.getElementById(domId).children;
+            for(let i=0; i<btns.length; i++) {
+                btns[i].classList.toggle('active', activeArr.includes(items[i]));
+            }
+        }
+
+        function toggleFilter(key, val, btn) {
+            btn.classList.toggle('active');
+            const arr = activeFilters[key];
+            arr.includes(val) ? arr.splice(arr.indexOf(val), 1) : arr.push(val);
+            runSearch();
+        }
+
+        function toggleCarat(min, max, btn) {
+            btn.classList.toggle('active');
+            const ranges = activeFilters.caratRanges;
+            const idx = ranges.findIndex(r => r.min === min && r.max === max);
+            if(idx > -1) ranges.splice(idx, 1);
+            else ranges.push({min, max});
+            document.getElementById('min-size').value = '';
+            document.getElementById('max-size').value = '';
+            runSearch();
+        }
+
+        // --- 6. SEARCH & SORT ---
         function sortBy(col) {
             if (sortCol === col) sortDir *= -1;
             else { sortCol = col; sortDir = 1; }
-            
-            // Reset Arrows
             document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
-            const arrow = sortDir === 1 ? '↑' : '↓';
             const sp = document.getElementById('sort-' + col);
-            if(sp) sp.innerText = ' ' + arrow;
-
+            if(sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
             runSearch();
         }
 
         function mobileSort(val) {
             if(!val) return;
             const parts = val.split('-');
-            sortCol = parts[0];
-            sortDir = parts[1] === 'asc' ? 1 : -1;
+            sortCol = parts[0]; sortDir = parts[1] === 'asc' ? 1 : -1;
             runSearch();
         }
 
-        // --- 5. SEARCH & RENDER ---
+        function getNum(id) { return parseFloat(document.getElementById(id).value); }
+
         function runSearch() {
             const query = (document.getElementById('search-box')?.value || '').toLowerCase();
             
+            // Numeric inputs
+            const minS = getNum('min-size'), maxS = getNum('max-size');
+            const minD = getNum('depth-min'), maxD = getNum('depth-max');
+            const minT = getNum('table-min'), maxT = getNum('table-max');
+            const minR = getNum('ratio-min'), maxR = getNum('ratio-max');
+
             filteredData = inventoryData.filter(row => {
-                if(!query) return true;
-                // Simple search over main fields
-                return (row['ID']||'').toLowerCase().includes(query) || 
-                       (row['Shape']||'').toLowerCase().includes(query);
+                // 1. Text Search
+                if(query) {
+                    const searchable = (getVal(row,'ID') + getVal(row,'Shape') + getVal(row,'ReportPDF')).toLowerCase();
+                    if(!searchable.includes(query)) return false;
+                }
+
+                // 2. Exact Match Array Filters
+                const checkArr = (key, csvHeader) => {
+                    if(!activeFilters[key].length) return true;
+                    const val = getVal(row, csvHeader).toUpperCase();
+                    // Some fluos might be "Faint" instead of "Fnt", do partial match
+                    return activeFilters[key].some(f => val.includes(f) || val.startsWith(f.charAt(0)));
+                };
+
+                if(!checkArr('shape', 'Shape')) return false;
+                if(!checkArr('color', 'Color')) return false;
+                if(!checkArr('clarity', 'Clarity')) return false;
+                if(!checkArr('lab', 'Lab')) return false;
+                if(!checkArr('cut', 'Cut')) return false;
+                if(!checkArr('pol', 'Pol')) return false;
+                if(!checkArr('sym', 'Sym')) return false;
+                if(!checkArr('fluo', 'Fluo')) return false;
+
+                // 3. Numeric Filters
+                const size = parseFloat(getVal(row, 'Size'));
+                let sMatch = false;
+                if (!isNaN(minS) || !isNaN(maxS)) {
+                    sMatch = (isNaN(minS) || size >= minS) && (isNaN(maxS) || size <= maxS);
+                } else if (activeFilters.caratRanges.length) {
+                    sMatch = activeFilters.caratRanges.some(r => size >= r.min && size <= r.max);
+                } else sMatch = true;
+                if (!sMatch) return false;
+
+                const checkNum = (val, min, max) => {
+                    const n = parseFloat(val);
+                    if(isNaN(n)) return true; // Skip if no data
+                    if(!isNaN(min) && n < min) return false;
+                    if(!isNaN(max) && n > max) return false;
+                    return true;
+                };
+
+                if(!checkNum(getVal(row,'Depth'), minD, maxD)) return false;
+                if(!checkNum(getVal(row,'Table'), minT, maxT)) return false;
+                if(!checkNum(getVal(row,'Ratio'), minR, maxR)) return false;
+
+                return true;
             });
 
-            // Sort logic
+            // Sort
             if (sortCol) {
                 filteredData.sort((a, b) => {
-                    let valA = a[sortCol] || '';
-                    let valB = b[sortCol] || '';
-                    
-                    // Numeric check (remove $ and ,)
+                    let valA = getVal(a, sortCol);
+                    let valB = getVal(b, sortCol);
                     const numA = parseFloat(valA.replace(/[^0-9.-]+/g,""));
                     const numB = parseFloat(valB.replace(/[^0-9.-]+/g,""));
-                    
-                    if (!isNaN(numA) && !isNaN(numB)) {
-                        return (numA - numB) * sortDir;
-                    }
+                    if (!isNaN(numA) && !isNaN(numB)) return (numA - numB) * sortDir;
                     return valA.toString().localeCompare(valB.toString()) * sortDir;
                 });
             }
@@ -321,6 +542,7 @@
             renderTable();
         }
 
+        // --- 7. RENDER ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
             document.getElementById('mobile-count').innerText = `(${filteredData.length})`;
@@ -330,60 +552,64 @@
                 const tr = document.createElement('tr');
                 tr.className = 'data-row';
                 
-                // --- A. DESKTOP ROW (Hidden on Mobile) ---
-                const formatMoney = v => v ? '$' + parseFloat(v).toLocaleString() : '';
-                const formatNum = v => v ? parseFloat(v).toFixed(2) : '';
+                const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
+                const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
 
+                // A. DESKTOP ROW
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button class="btn-expand" onclick="toggleEnvelope(this, ${i})">+</button></td>
-                    <td class="desktop-only">${row['ID'] || ''}</td>
-                    <td class="desktop-only"><b>${row['Shape'] || ''}</b></td>
-                    <td class="desktop-only">${formatNum(row['Size'])}</td>
-                    <td class="desktop-only">${row['Color'] || ''}</td>
-                    <td class="desktop-only">${row['Clarity'] || ''}</td>
-                    <td class="desktop-only">${row['Lab'] || ''}</td>
-                    <td class="desktop-only">${row['Cut'] || ''}</td>
-                    <td class="desktop-only">${row['Pol'] || ''}</td>
-                    <td class="desktop-only">${row['Sym'] || ''}</td>
-                    <td class="desktop-only">${row['Fluo'] || ''}</td>
-                    <td class="desktop-only" style="color:#dc2626; font-weight:600;">${row['Rap Disc'] || ''}%</td>
-                    <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(row['PriceTotal'])}</td>
+                    <td class="desktop-only">${getVal(row,'ID')}</td>
+                    <td class="desktop-only"><b>${getVal(row,'Shape')}</b></td>
+                    <td class="desktop-only">${formatNum(getVal(row,'Size'))}</td>
+                    <td class="desktop-only">${getVal(row,'Color')}</td>
+                    <td class="desktop-only">${getVal(row,'Clarity')}</td>
+                    <td class="desktop-only">${getVal(row,'Lab')}</td>
+                    <td class="desktop-only">${getVal(row,'Cut')}</td>
+                    <td class="desktop-only">${getVal(row,'Pol')}</td>
+                    <td class="desktop-only">${getVal(row,'Sym')}</td>
+                    <td class="desktop-only">${getVal(row,'Fluo')}</td>
+                    <td class="desktop-only" style="color:#dc2626; font-weight:600;">${getVal(row,'Rap Disc')}%</td>
+                    <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(getVal(row,'PriceTotal'))}</td>
                     
                     <td class="mobile-only" onclick="openDrawer(${i})">
                         <div class="mobile-card">
-                            <div class="mc-price">${formatMoney(row['PriceTotal'])}</div>
-                            <div class="mc-rap">${row['Rap Disc'] || ''}%</div>
-                            <div class="mc-line1">${row['Shape']||''} ${formatNum(row['Size'])} ${row['Color']||''} ${row['Clarity']||''} ${row['Lab']||''}</div>
-                            <div class="mc-line2">${row['Measurements']||''} • Ratio: ${row['Ratio']||''}</div>
-                            <div class="mc-line3">D:${row['Depth']||''} T:${row['Table']||''} P:${row['Pol']||''} S:${row['Sym']||''} F:${row['Fluo']||''}</div>
+                            <div class="mc-price">${formatMoney(getVal(row,'PriceTotal'))}</div>
+                            <div class="mc-rap">${getVal(row,'Rap Disc')}%</div>
+                            <div class="mc-line1">${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))} ${getVal(row,'Color')} ${getVal(row,'Clarity')} ${getVal(row,'Lab')}</div>
+                            <div class="mc-line2">${getVal(row,'Measurements')} • Ratio: ${getVal(row,'Ratio')}</div>
+                            <div class="mc-line3">D:${getVal(row,'Depth')} T:${getVal(row,'Table')} P:${getVal(row,'Pol')} S:${getVal(row,'Sym')} F:${getVal(row,'Fluo')}</div>
                         </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
 
-                // --- DESKTOP ENVELOPE (Hidden by default) ---
+                // C. DESKTOP ENVELOPE
                 const env = document.createElement('tr');
                 env.className = 'envelope-row';
                 env.id = `env-${i}`;
                 
-                // Helper for iframes
-                const buildMedia = (link, label) => link ? `<div class="env-box"><a href="${link}" target="_blank" style="text-decoration:none; color:inherit;"><b>${label}</b><br><span style="font-size:2rem;">🔗</span><br>Click to View</a></div>` : '';
+                const buildMedia = (link, label) => {
+                    if(!link || link.trim() === '') return '';
+                    // Try to catch raw IDs vs Full URLs
+                    const url = link.startsWith('http') ? link : `https://${link}`;
+                    return `<a href="${url}" target="_blank" class="env-box" style="text-decoration:none;"><b>${label}</b><br><span style="font-size:2rem;">🔗</span><br>Click to View</a>`;
+                };
 
                 env.innerHTML = `
                     <td colspan="13" style="padding:0;">
                         <div class="envelope-content">
                             <div class="env-media">
-                                ${buildMedia(row['Photo'], 'View Photo')}
-                                ${buildMedia(row['Video'], 'View Video')}
-                                ${buildMedia(row['ReportPDF'], 'View Certificate')}
+                                ${buildMedia(getVal(row,'Photo'), 'View Photo')}
+                                ${buildMedia(getVal(row,'Video'), 'View Video')}
+                                ${buildMedia(getVal(row,'ReportPDF'), 'View Certificate')}
                             </div>
                             <div class="env-details">
-                                <div class="env-item"><div class="env-label">Measurements</div><div class="env-val">${row['Measurements']||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Ratio</div><div class="env-val">${row['Ratio']||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Depth / Table</div><div class="env-val">${row['Depth']||'-'}% / ${row['Table']||'-'}%</div></div>
-                                <div class="env-item"><div class="env-label">Culet / Girdle</div><div class="env-val">${row['Culet']||'-'} / ${row['Girdle']||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Rap Price / Total</div><div class="env-val">${formatMoney(row['PriceRap'])} / ${formatMoney(row['PriceTotal'])}</div></div>
-                                <div class="env-item" style="grid-column:span 2;"><div class="env-label">Comments</div><div class="env-val">${row['Comments']||'None'}</div></div>
+                                <div class="env-item"><div class="env-label">Measurements</div><div class="env-val">${getVal(row,'Measurements')||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Ratio</div><div class="env-val">${getVal(row,'Ratio')||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Depth / Table</div><div class="env-val">${getVal(row,'Depth')||'-'}% / ${getVal(row,'Table')||'-'}%</div></div>
+                                <div class="env-item"><div class="env-label">Culet / Girdle</div><div class="env-val">${getVal(row,'Culet')||'-'} / ${getVal(row,'Girdle')||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Rap Price / Total</div><div class="env-val">${formatMoney(getVal(row,'PriceRap'))} / ${formatMoney(getVal(row,'PriceTotal'))}</div></div>
+                                <div class="env-item" style="grid-column:span 2;"><div class="env-label">Comments</div><div class="env-val">${getVal(row,'Comments')||'None'}</div></div>
                             </div>
                         </div>
                     </td>
@@ -392,52 +618,49 @@
             });
         }
 
-        // --- 6. INTERACTIONS ---
+        // --- 8. INTERACTIONS ---
         function toggleEnvelope(btn, index) {
             const env = document.getElementById(`env-${index}`);
             const isOpen = env.classList.contains('show');
-            
-            // Close all others
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
-            
-            if (!isOpen) {
-                env.classList.add('show');
-                btn.classList.add('open');
-            }
+            if (!isOpen) { env.classList.add('show'); btn.classList.add('open'); }
         }
 
-        // Mobile Drawer Logic
         function openDrawer(index) {
             const row = filteredData[index];
             document.getElementById('mobile-drawer').classList.add('open');
-            document.getElementById('drawer-title').innerText = `${row['Shape']} ${row['Size']}ct ${row['Color']} ${row['Clarity']}`;
+            document.getElementById('drawer-title').innerText = `${getVal(row,'Shape')} ${getVal(row,'Size')}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
             
-            const linkBtn = (link, label, icon) => link ? `<a href="${link}" target="_blank" style="flex:1; padding:15px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; text-align:center; font-weight:bold; color:var(--primary); text-decoration:none; display:flex; flex-direction:column; gap:5px;"><span style="font-size:1.5rem;">${icon}</span>${label}</a>` : '';
+            const linkBtn = (link, label, icon) => {
+                if(!link || link.trim() === '') return '';
+                const url = link.startsWith('http') ? link : `https://${link}`;
+                return `<a href="${url}" target="_blank" style="flex:1; padding:15px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; text-align:center; font-weight:bold; color:var(--primary); text-decoration:none; display:flex; flex-direction:column; gap:5px;"><span style="font-size:1.5rem;">${icon}</span>${label}</a>`;
+            };
+
+            const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
 
             document.getElementById('drawer-body').innerHTML = `
-                <div style="font-size:2rem; font-weight:800; color:#059669; margin-bottom:5px;">$${parseFloat(row['PriceTotal']).toLocaleString()}</div>
-                <div style="font-size:1rem; color:#dc2626; font-weight:700; margin-bottom:20px;">Rap Disc: ${row['Rap Disc']}% • ID: ${row['ID']}</div>
+                <div style="font-size:2rem; font-weight:800; color:#059669; margin-bottom:5px;">${formatMoney(getVal(row,'PriceTotal'))}</div>
+                <div style="font-size:1rem; color:#dc2626; font-weight:700; margin-bottom:20px;">Rap Disc: ${getVal(row,'Rap Disc')}% • ID: ${getVal(row,'ID')}</div>
                 
                 <div style="display:flex; gap:10px; margin-bottom:25px;">
-                    ${linkBtn(row['Photo'], 'Photo', '📷')}
-                    ${linkBtn(row['Video'], 'Video', '🎥')}
-                    ${linkBtn(row['ReportPDF'], 'Cert', '📄')}
+                    ${linkBtn(getVal(row,'Photo'), 'Photo', '📷')}
+                    ${linkBtn(getVal(row,'Video'), 'Video', '🎥')}
+                    ${linkBtn(getVal(row,'ReportPDF'), 'Cert', '📄')}
                 </div>
 
                 <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-bottom:20px;">
                     <div style="font-weight:700; margin-bottom:5px; color:#475569;">Comments</div>
-                    <div style="font-size:0.9rem;">${row['Comments'] || 'No comments listed.'}</div>
+                    <div style="font-size:0.9rem;">${getVal(row,'Comments') || 'No comments.'}</div>
                 </div>
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">MEASUREMENTS</span><br><b>${row['Measurements']||'-'}</b></div>
-                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">RATIO</span><br><b>${row['Ratio']||'-'}</b></div>
-                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b>${row['Depth']||'-'}% / ${row['Table']||'-'}%</b></div>
-                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">CULET / GIRDLE</span><br><b>${row['Culet']||'-'} / ${row['Girdle']||'-'}</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">MEASUREMENTS</span><br><b>${getVal(row,'Measurements')||'-'}</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">RATIO</span><br><b>${getVal(row,'Ratio')||'-'}</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b>${getVal(row,'Depth')||'-'}% / ${getVal(row,'Table')||'-'}%</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">CULET / GIRDLE</span><br><b>${getVal(row,'Culet')||'-'} / ${getVal(row,'Girdle')||'-'}</b></div>
                 </div>
-                
-                <button style="width:100%; padding:15px; background:var(--primary); color:white; font-weight:bold; border:none; border-radius:8px; margin-top:30px; font-size:1rem;">CONTACT TO BUY</button>
             `;
         }
 
