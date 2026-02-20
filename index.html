@@ -40,29 +40,37 @@
         /* LAYOUT */
         .inventory-container { display: none; min-height: calc(100vh - 60px); }
         .sidebar { width: 340px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
+        
+        /* FILTERS UI */
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
+        .btn-reset:hover { text-decoration: underline; }
+
         .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
         .filter-group:last-child { border-bottom: none; }
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
-        /* FILTERS UI */
         .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
         .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+        
         .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
         .row-3 { grid-template-columns: repeat(3, 1fr); }
         .row-4 { grid-template-columns: repeat(4, 1fr); }
+        
         .touch-bar { display: flex; width: 100%; margin-bottom: 10px; flex-wrap: wrap; }
         .touch-btn { flex: 1 1 auto; padding: 8px 0; background: #fff; border: 1px solid #cbd5e1; margin-left: -1px; cursor: pointer; font-size: 0.7rem; font-weight: 600; color: #475569; text-align: center; min-width: 30px; }
         .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
         .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
         .touch-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); z-index: 1; position: relative; }
+        
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
         /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; min-width: 1500px; /* Wider for more columns */ }
+        table { width: 100%; border-collapse: collapse; min-width: 1500px; }
         th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
@@ -74,7 +82,6 @@
         .btn-expand:hover { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
-        /* Clickable Lab Link */
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
         .lab-link:hover { color: #1d4ed8; }
 
@@ -88,31 +95,28 @@
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
-        .desktop-only { display: table-cell; }
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
             .mobile-only { display: block; }
-            .mobile-only-flex { display: flex !important; }
             
             .inventory-container { flex-direction: column; }
             .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; }
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
-            /* Mobile Sort & Filter Bar */
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
             
             /* Table to Cards */
-            table, thead, tbody, th, td, tr { display: block; width: 100%; min-width: 100%; }
+            table, tbody, tr { display: block; width: 100%; min-width: 100%; }
             thead { display: none; }
             .table-container { background: transparent; box-shadow: none; }
             
             .data-row { background: var(--white); border-radius: 10px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
-            .data-row td { padding: 0; border: none; }
+            .data-row td { padding: 0; border: none; display: none; } /* Hide all cells initially */
+            td.mobile-only { display: block; } /* Show ONLY the mobile card cell */
             
-            /* Mobile Card Layout */
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
             .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
@@ -126,17 +130,13 @@
             .drawer-content { background: var(--white); width: 100%; height: 85vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; overflow: hidden; }
             .drawer-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; }
-            
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
             
             .drop-text { display: none; }
             .drop-zone { padding: 8px; }
-
-            /* Switch Empty state language for mobile */
             .desktop-text { display: none; }
             .mobile-text { display: block; }
         }
-
         @media (min-width: 1101px) {
             .mobile-text { display: none; }
             .desktop-text { display: block; }
@@ -164,17 +164,14 @@
     <div class="empty-state" id="empty-state">
         <label for="csv-input-giant" class="giant-drop" id="main-drop">
             <div class="giant-icon">📥</div>
-            
             <div class="desktop-text">
                 <h2 style="margin:0 0 10px 0;">Load Inventory Data</h2>
                 <p style="color:#64748b; margin:0;">Drag and drop your CSV file here to begin.</p>
             </div>
-            
             <div class="mobile-text">
                 <h2 style="margin:0 0 10px 0;">Tap to Browse Files</h2>
                 <p style="color:#64748b; margin:0;">Open your file manager to select your inventory CSV.</p>
             </div>
-            
             <input type="file" id="csv-input-giant" accept=".csv" onchange="handleFileUpload(this)" style="display:none;">
         </label>
     </div>
@@ -196,6 +193,11 @@
         
         <aside class="sidebar" id="sidebar">
             <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
+            
+            <div class="sidebar-header">
+                <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
+                <button class="btn-reset" onclick="resetFilters()">Reset All</button>
+            </div>
             
             <input type="text" id="search-box" placeholder="Search ID, Shape, Cert..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
 
@@ -280,8 +282,8 @@
         <main class="results-area">
             <div class="table-container">
                 <table id="inventory-table">
-                    <thead class="desktop-only">
-                        <tr>
+                    <thead>
+                        <tr class="desktop-only">
                             <th style="width:40px;"></th>
                             <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
                             <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
@@ -329,10 +331,6 @@
         let sortCol = '';
         let sortDir = 1; 
         
-        // Exact Headers Requested
-        const reqHeaders = ["ID", "Shape", "Size", "Color", "Clarity", "Measurements", "Ratio", "Lab", "Depth", "Table", "Culet", "Girdle", "Fluo", "Cut", "Pol", "Sym", "Rap Disc", "PriceTotal", "PriceRap", "ReportPDF", "Photo", "Comments", "Video"];
-
-        // Filters State
         let activeFilters = {
             shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: []
         };
@@ -422,17 +420,26 @@
         initTouchBar('sym-bar', config.grades, 'sym');
         initTouchBar('fluo-bar', config.fluos, 'fluo');
 
-        // --- 5. FILTER LOGIC ---
+        // --- 5. FILTER LOGIC (SMART TOGGLE) ---
         function handleRangeClick(index, items, key, domId) {
             let active = activeFilters[key];
-            if (active.length === 0) active.push(items[index]);
-            else {
+            const clickedItem = items[index];
+            
+            if (active.length === 1 && active[0] === clickedItem) {
+                activeFilters[key] = []; // Turn off if it's the only one
+            } else if (active.includes(clickedItem)) {
+                activeFilters[key] = [clickedItem]; // Reset to just this one if in range
+            } else if (active.length === 0) {
+                activeFilters[key] = [clickedItem]; // Select this one
+            } else {
+                // Extend range
                 const activeIndices = active.map(val => items.indexOf(val));
                 const min = Math.min(...activeIndices, index);
                 const max = Math.max(...activeIndices, index);
                 activeFilters[key] = [];
                 for(let i=min; i<=max; i++) activeFilters[key].push(items[i]);
             }
+            
             updateTouchUI(domId, items, activeFilters[key]);
             runSearch();
         }
@@ -459,6 +466,17 @@
             else ranges.push({min, max});
             document.getElementById('min-size').value = '';
             document.getElementById('max-size').value = '';
+            runSearch();
+        }
+
+        function resetFilters() {
+            activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [] };
+            document.getElementById('search-box').value = '';
+            document.querySelectorAll('.range-input').forEach(input => input.value = '');
+            document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
+            ['color-bar', 'clarity-bar', 'lab-bar', 'cut-bar', 'pol-bar', 'sym-bar', 'fluo-bar'].forEach(id => {
+                Array.from(document.getElementById(id).children).forEach(btn => btn.classList.remove('active'));
+            });
             runSearch();
         }
 
@@ -561,15 +579,14 @@
                 const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
                 const formatUrl = u => u.startsWith('http') ? u : `https://${u}`;
 
-                // Process Report Link within Lab name
                 const labStr = getVal(row,'Lab');
                 const reportStr = getVal(row,'ReportPDF');
                 let labHtml = labStr;
                 if(reportStr && reportStr.trim() !== '') {
-                    labHtml = `<a href="${formatUrl(reportStr)}" target="_blank" class="lab-link">${labStr}</a>`;
+                    labHtml = `<a href="${formatUrl(reportStr)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW (20 Columns)
+                // A. DESKTOP ROW 
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button class="btn-expand" onclick="toggleEnvelope(this, ${i})">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -606,7 +623,7 @@
 
                 // C. DESKTOP ENVELOPE (Embedded Media)
                 const env = document.createElement('tr');
-                env.className = 'envelope-row';
+                env.className = 'envelope-row desktop-only'; // Hide envelope wrapper fully on mobile
                 env.id = `env-${i}`;
                 
                 const photo = getVal(row,'Photo');
