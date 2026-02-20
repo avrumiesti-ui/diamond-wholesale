@@ -3,167 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>M.J. Gross Inc. | Inventory</title>
+    <title>M.J. Gross Inc. | Inventory App</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
         :root {
             --primary: #000000;
             --accent: #C5A059;
-            --bg-gray: #f8f9fa;
-            --border: #e9ecef;
-            --text-muted: #6c757d;
+            --bg-gray: #f4f6f8;
+            --border: #e2e8f0;
+            --text-muted: #64748b;
             --white: #ffffff;
-            --hover-row: #f1f3f5;
+            --hover-row: #f8fafc;
         }
         
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #212529; font-size: 14px; }
+        body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 14px; overflow-x: hidden; }
 
         /* HEADER & DROP ZONE */
-        header { 
-            background: var(--white); 
-            padding: 10px 20px; 
-            border-bottom: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: sticky; top: 0; z-index: 1000; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.03); 
-        }
-        
+        header { background: var(--white); padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-section { display: flex; align-items: center; gap: 15px; }
-        .logo-img { height: 40px; }
+        .logo-img { height: 35px; }
+        .header-controls { display: flex; gap: 15px; align-items: center; }
 
-        .header-controls { display: flex; gap: 20px; align-items: center; }
-
-        /* DROP ZONE STYLING */
-        .drop-zone {
-            border: 2px dashed #cbd5e1;
-            border-radius: 6px;
-            padding: 8px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f8fafc;
-            transition: all 0.2s;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .drop-zone:hover { background: #f1f5f9; border-color: var(--accent); }
-        .drop-zone.dragover { background: #ecfdf5; border-color: #10b981; }
-        
-        .drop-icon { font-size: 1.2rem; }
-        .drop-text { font-size: 0.8rem; font-weight: 600; color: #64748b; display: flex; flex-direction: column; line-height: 1.1; }
-        .drop-sub { font-size: 0.7rem; font-weight: 400; opacity: 0.7; }
-
+        .drop-zone { border: 2px dashed #cbd5e1; border-radius: 6px; padding: 6px 15px; display: flex; align-items: center; gap: 10px; background: #f8fafc; cursor: pointer; transition: 0.2s; }
+        .drop-zone:hover, .drop-zone.dragover { background: #ecfdf5; border-color: #10b981; }
+        .drop-text { font-size: 0.8rem; font-weight: 600; color: #475569; display: flex; flex-direction: column; line-height: 1.2; }
         #csv-input { display: none; }
 
-        .logout-link {
-            font-weight: 700;
-            color: #ef4444; /* Red for logout */
-            text-decoration: none;
-            font-size: 0.85rem;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background 0.2s;
-        }
-        .logout-link:hover { background: #fee2e2; }
+        /* EMPTY STATE (Giant Drop Zone) */
+        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
+        .giant-drop { border: 3px dashed #cbd5e1; border-radius: 12px; padding: 60px; background: var(--white); max-width: 600px; width: 100%; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .giant-drop:hover, .giant-drop.dragover { border-color: var(--accent); background: #fffcf5; transform: translateY(-5px); }
+        .giant-icon { font-size: 4rem; margin-bottom: 15px; }
 
         /* LAYOUT */
-        .inventory-container { display: flex; min-height: calc(100vh - 70px); }
+        .inventory-container { display: none; min-height: calc(100vh - 60px); }
+        .sidebar { width: 300px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
 
-        /* SIDEBAR FILTERS */
-        .sidebar {
-            width: 300px;
-            background: var(--white);
-            border-right: 1px solid var(--border);
-            padding: 20px;
-            flex-shrink: 0;
-            overflow-y: auto;
-            height: calc(100vh - 70px);
-            position: sticky;
-            top: 70px;
-        }
-
-        .filter-group { margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .filter-group:last-child { border-bottom: none; }
-        .filter-label { font-weight: 700; display: block; margin-bottom: 12px; font-size: 0.75rem; letter-spacing: 0.5px; color: var(--text-muted); text-transform: uppercase; }
-        
-        /* FILTERS UI */
-        .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-        .btn-toggle { background: var(--white); border: 1px solid #ced4da; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; color: #495057; text-align: center; }
-        .btn-toggle.active { background-color: var(--primary); color: var(--white); border-color: var(--primary); }
-        
-        .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
-        .row-3 { grid-template-columns: repeat(3, 1fr); }
-        .row-4 { grid-template-columns: repeat(4, 1fr); }
-
-        .touch-bar { display: flex; width: 100%; margin-bottom: 10px; border-radius: 4px; overflow: hidden; border: 1px solid #ced4da; }
-        .touch-btn { flex-grow: 1; padding: 8px 0; background: var(--white); border-right: 1px solid #ced4da; cursor: pointer; font-size: 0.75rem; font-weight: 600; color: #495057; text-align: center; }
-        .touch-btn:last-child { border-right: none; }
-        .touch-btn.active { background-color: var(--primary); color: var(--white); }
-
-        .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
-        .range-input { width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px; font-size: 0.85rem; }
-
-        /* RESULTS AREA */
-        .results-area { flex-grow: 1; padding: 20px; overflow-x: hidden; position: relative; }
-        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        
-        /* TABLE */
+        /* TABLE (Desktop) */
+        .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        .table-wrapper { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+        th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+        th:hover { background: #e2e8f0; }
+        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; white-space: nowrap; vertical-align: middle; }
         
-        th { background: #f8f9fa; color: #495057; padding: 12px 10px; text-align: left; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); white-space: nowrap; }
-        td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.85rem; color: #212529; white-space: nowrap; vertical-align: middle; }
-        
-        /* EXPANDABLE ROW */
-        tbody tr.data-row { cursor: pointer; transition: background 0.15s; }
-        tbody tr.data-row:hover { background-color: var(--hover-row); }
-        tbody tr.expanded { background-color: #eef2f5; border-left: 4px solid var(--accent); }
-        
-        .details-row { display: none; background: #f8f9fa; }
-        .details-row.show { display: table-row; }
-        .details-content { padding: 20px; display: flex; gap: 30px; align-items: flex-start; }
-        
-        .media-preview { width: 150px; height: 150px; background: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        .media-preview img { width: 100%; height: 100%; object-fit: cover; }
-        .media-placeholder { font-size: 0.7rem; color: #adb5bd; text-align: center; }
-        
-        .details-actions { display: flex; flex-direction: column; gap: 10px; }
-        .btn-view-product { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .btn-view-product:hover { background: #333; }
+        .data-row { transition: background 0.15s; }
+        .data-row:hover { background-color: var(--hover-row); }
+        .col-expand { width: 40px; text-align: center; }
+        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 24px; height: 24px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; }
+        .btn-expand:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
-        /* MODAL */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; padding: 20px; backdrop-filter: blur(3px); }
-        .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
-        
-        .product-card { background: white; width: 100%; max-width: 900px; max-height: 90vh; border-radius: 8px; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
-        .product-media { background: #f1f3f5; padding: 40px; display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; }
-        .product-info { padding: 40px; display: flex; flex-direction: column; }
-        
-        .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .spec-item { display: flex; justify-content: space-between; border-bottom: 1px solid #f1f1f1; padding-bottom: 5px; }
-        .spec-label { font-weight: 600; color: #868e96; font-size: 0.85rem; }
-        .spec-value { font-weight: 700; color: #212529; font-size: 0.9rem; }
-        
-        .btn-close-modal { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 2rem; cursor: pointer; color: white; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        /* ENVELOPE ROW (Desktop Details) */
+        .envelope-row { display: none; background: #f1f5f9; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
+        .envelope-row.show { display: table-row; }
+        .envelope-content { padding: 20px; display: flex; gap: 30px; }
+        .env-media { display: flex; gap: 15px; }
+        .env-box { width: 160px; height: 160px; background: var(--white); border: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; font-size: 0.8rem; color: #94a3b8; flex-direction: column; gap: 10px; }
+        .env-box img, .env-box iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
+        .env-details { flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-content: start; }
+        .env-item { background: var(--white); padding: 10px 15px; border-radius: 4px; border: 1px solid #e2e8f0; }
+        .env-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+        .env-val { font-size: 0.9rem; font-weight: 600; color: #0f172a; }
 
-        /* MOBILE */
-        .mobile-filter-bar { display: none; padding: 10px; background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 60px; z-index: 900; }
-        .filter-toggle-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; font-weight: bold; border-radius: 4px; }
-        
-        @media (max-width: 900px) {
+        /* MOBILE SPECIFIC CSS */
+        .mobile-only { display: none; }
+        .desktop-only { display: table-cell; }
+
+        @media (max-width: 1000px) {
+            .desktop-only { display: none !important; }
+            .mobile-only { display: block; }
+            
             .inventory-container { flex-direction: column; }
             .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; }
             .sidebar.show { display: block; }
-            .mobile-filter-bar { display: block; }
-            .product-card { grid-template-columns: 1fr; }
-            .drop-text { display: none; } /* Compact header on mobile */
+            .results-area { padding: 10px; }
+            
+            /* Mobile Sort & Filter Bar */
+            .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+            .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+            
+            /* Table to Cards */
+            table, thead, tbody, th, td, tr { display: block; width: 100%; min-width: 100%; }
+            thead { display: none; }
+            .table-container { background: transparent; box-shadow: none; }
+            
+            .data-row { background: var(--white); border-radius: 10px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
+            .data-row td { padding: 0; border: none; }
+            
+            /* Mobile Card Layout */
+            .mobile-card { display: flex; flex-direction: column; gap: 8px; }
+            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
+            .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
+            .mc-line3 { font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 6px 10px; border-radius: 4px; display: inline-block; font-family: monospace; }
+            .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
+            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #dc2626; }
+            
+            /* Drawer (Mobile Full Details) */
+            .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
+            .drawer-overlay.open { display: flex; }
+            .drawer-content { background: var(--white); width: 100%; height: 85vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; overflow: hidden; }
+            .drawer-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
+            .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; }
+            
+            @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+            
+            /* Hide Drop text in header */
+            .drop-text { display: none; }
             .drop-zone { padding: 8px; }
         }
     </style>
@@ -172,200 +120,133 @@
 
     <header>
         <div class="logo-section">
-            <a href="#"><img src="images/logo.jpg" alt="MJG" class="logo-img"></a>
-            <span style="font-weight:700; color:#ccc;">|</span>
-            <span style="font-size:0.9rem; font-weight:600; color:#333;">INVENTORY SYSTEM</span>
+            <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
+            <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
+            <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">INVENTORY</span>
         </div>
         
         <div class="header-controls">
-            <label for="csv-input" class="drop-zone" id="drop-area">
-                <span class="drop-icon">📂</span>
-                <span class="drop-text">
-                    Upload Inventory
-                    <span class="drop-sub">Drag CSV here</span>
-                </span>
+            <label for="csv-input" class="drop-zone" id="header-drop">
+                <span style="font-size:1.2rem;">📂</span>
+                <span class="drop-text">Upload File<span style="font-size:0.7rem; font-weight:400;">Drag CSV here</span></span>
                 <input type="file" id="csv-input" accept=".csv" onchange="handleFileUpload(this)">
             </label>
-
-            <a href="index.html" class="logout-link">Log Out</a>
         </div>
     </header>
 
-    <div class="mobile-filter-bar">
-        <button class="filter-toggle-btn" onclick="toggleSidebar()">Filters <span id="mobile-count">(0)</span> ▾</button>
+    <div class="empty-state" id="empty-state">
+        <label for="csv-input-giant" class="giant-drop" id="main-drop">
+            <div class="giant-icon">📥</div>
+            <h2 style="margin:0 0 10px 0;">Load Inventory Data</h2>
+            <p style="color:#64748b; margin:0;">Drag and drop your CSV file here to begin.</p>
+            <input type="file" id="csv-input-giant" accept=".csv" onchange="handleFileUpload(this)" style="display:none;">
+        </label>
     </div>
 
-    <div class="inventory-container">
+    <div class="mobile-only mobile-tools" id="mobile-tools" style="display:none;">
+        <button class="btn-mobile-tool" onclick="toggleSidebar()"><span><span id="mobile-count">(0)</span> Filters</span> <span>⚙️</span></button>
+        <select class="btn-mobile-tool" onchange="mobileSort(this.value)" style="appearance:none; padding-right:30px;">
+            <option value="">Sort By...</option>
+            <option value="Size-asc">Size (Low to High)</option>
+            <option value="Size-desc">Size (High to Low)</option>
+            <option value="PriceTotal-asc">Price (Low to High)</option>
+            <option value="PriceTotal-desc">Price (High to Low)</option>
+            <option value="Rap Disc-asc">Rap Disc (Low to High)</option>
+            <option value="Rap Disc-desc">Rap Disc (High to Low)</option>
+        </select>
+    </div>
+
+    <div class="inventory-container" id="app-container">
         
         <aside class="sidebar" id="sidebar">
-            <div style="text-align:right; margin-bottom:10px; cursor:pointer; font-size:1.5rem;" onclick="toggleSidebar()">✕</div>
-            
-            <div class="filter-group">
-                <span class="filter-label">SHAPE</span>
-                <div class="shape-grid">
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Round')">Round</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Oval')">Oval</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Cushion')">Cushion</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Emerald')">Emerald</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Pear')">Pear</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Radiant')">Radiant</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Princess')">Princess</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Asscher')">Asscher</button>
-                    <button class="btn-toggle" onclick="toggleFilter(this, 'shape', 'Marquise')">Marquise</button>
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <span class="filter-label">WEIGHT (CARAT)</span>
-                <div class="carat-row row-3">
-                    <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
-                    <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
-                    <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
-                </div>
-                <div class="carat-row row-4">
-                    <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
-                    <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
-                    <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
-                    <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
-                </div>
-                <div class="range-row">
-                    <input type="number" id="min-carat" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
-                    <input type="number" id="max-carat" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
-                </div>
-            </div>
-
-            <div class="filter-group">
-                <span class="filter-label">COLOR</span>
-                <div class="touch-bar" id="color-bar"></div>
-            </div>
-
-            <div class="filter-group">
-                <span class="filter-label">CLARITY</span>
-                <div class="touch-bar" id="clarity-bar"></div>
-            </div>
-
-            <div class="filter-group">
-                <span class="filter-label">CUT</span>
-                <div class="touch-bar" id="cut-bar"></div>
-            </div>
-
-            <button onclick="toggleSidebar()" class="filter-toggle-btn" style="margin-top:20px; background:#333;">VIEW RESULTS</button>
+            <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
+            <div style="font-weight:bold; margin-bottom:10px;">Quick Filters</div>
+            <input type="text" id="search-box" placeholder="Search ID, Shape, Cert..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
+            <button onclick="toggleSidebar()" class="mobile-only" style="width:100%; padding:12px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold;">APPLY</button>
         </aside>
 
         <main class="results-area">
-            <div class="results-header">
-                <h2 style="font-size:1.5rem; margin:0;">Inventory</h2>
-                <span class="result-count" style="color:var(--accent); font-weight:700;">Found <span id="count">0</span> Stones</span>
-            </div>
-            
             <div class="table-container">
-                <div class="table-wrapper">
-                    <table id="inventory-table">
-                        <thead>
-                            <tr id="table-head-row">
-                                </tr>
-                        </thead>
-                        <tbody id="table-body">
-                            </tbody>
-                    </table>
-                </div>
+                <table id="inventory-table">
+                    <thead class="desktop-only">
+                        <tr>
+                            <th style="width:40px;"></th>
+                            <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
+                            <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
+                            <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
+                            <th onclick="sortBy('Color')">Col <span id="sort-Color"></span></th>
+                            <th onclick="sortBy('Clarity')">Clar <span id="sort-Clarity"></span></th>
+                            <th onclick="sortBy('Lab')">Lab <span id="sort-Lab"></span></th>
+                            <th onclick="sortBy('Cut')">Cut <span id="sort-Cut"></span></th>
+                            <th onclick="sortBy('Pol')">Pol <span id="sort-Pol"></span></th>
+                            <th onclick="sortBy('Sym')">Sym <span id="sort-Sym"></span></th>
+                            <th onclick="sortBy('Fluo')">Flor <span id="sort-Fluo"></span></th>
+                            <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
+                            <th onclick="sortBy('PriceTotal')">Total $ <span id="sort-PriceTotal"></span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        </tbody>
+                </table>
             </div>
         </main>
     </div>
 
-    <div class="modal-overlay" id="product-modal">
-        <button class="btn-close-modal" onclick="closeModal()">×</button>
-        <div class="product-card">
-            <div class="product-media">
-                <div id="modal-media-container" style="width:100%; display:flex; justify-content:center;"></div>
-                <div style="display:flex; gap:10px; margin-top:20px;">
-                    <button class="btn-toggle" onclick="showModalMedia('img')">Photo</button>
-                    <button class="btn-toggle" onclick="showModalMedia('vid')">Video</button>
-                    <button class="btn-toggle" onclick="showModalMedia('cert')">Certificate</button>
-                </div>
+    <div class="drawer-overlay" id="mobile-drawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <div id="drawer-title" style="font-size:1.2rem; font-weight:800; color:var(--primary);"></div>
+                <button onclick="closeDrawer()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">✕</button>
             </div>
-            <div class="product-info">
-                <div style="border-bottom:1px solid #eee; padding-bottom:20px; margin-bottom:20px;">
-                    <h1 style="font-size:1.8rem; margin:0; color:var(--primary);" id="modal-title"></h1>
-                    <div style="color:#777;" id="modal-subtitle"></div>
+            <div class="drawer-body" id="drawer-body">
                 </div>
-                <div class="specs-grid" id="modal-specs"></div>
-                <div style="margin-top:auto;">
-                    <div style="font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:15px;" id="modal-price"></div>
-                    <button style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:4px; font-weight:bold; font-size:1rem; cursor:pointer;">INQUIRE NOW</button>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        // --- 1. CONFIG & DRAG/DROP LOGIC ---
-        const dropArea = document.getElementById('drop-area');
+        // --- 1. CONFIG & STATE ---
+        let inventoryData = [];
+        let filteredData = [];
+        let sortCol = '';
+        let sortDir = 1; // 1 = asc, -1 = desc
+        
+        // Exact Headers Required
+        const reqHeaders = ["ID", "Shape", "Size", "Color", "Clarity", "Measurements", "Ratio", "Lab", "Depth", "Table", "Culet", "Girdle", "Fluo", "Cut", "Pol", "Sym", "Rap Disc", "PriceTotal", "PriceRap", "ReportPDF", "Photo", "Comments", "Video"];
 
-        // Prevent default drag behaviors
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
+        // --- 2. DRAG & DROP ---
+        ['header-drop', 'main-drop', 'empty-state'].forEach(id => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dragover'); });
+            el.addEventListener('dragleave', e => { el.classList.remove('dragover'); });
+            el.addEventListener('drop', e => {
+                e.preventDefault(); el.classList.remove('dragover');
+                if(e.dataTransfer.files.length) handleFiles(e.dataTransfer.files[0]);
+            });
         });
 
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
+        function handleFileUpload(input) { if(input.files.length) handleFiles(input.files[0]); }
 
-        // Highlight drop area when item is dragged over it
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight(e) { dropArea.classList.add('dragover'); }
-        function unhighlight(e) { dropArea.classList.remove('dragover'); }
-
-        // Handle Drop
-        dropArea.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-
-        function handleFileUpload(input) {
-            handleFiles(input.files);
-        }
-
-        function handleFiles(files) {
-            const file = files[0];
-            if (!file) return;
+        function handleFiles(file) {
             const reader = new FileReader();
-            reader.onload = function(e) { parseCSV(e.target.result); };
+            reader.onload = e => parseCSV(e.target.result);
             reader.readAsText(file);
         }
 
-        // --- 2. CSV PARSER ---
-        let inventoryData = [];
-        let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], cut: [] };
-
+        // --- 3. CSV PARSER ---
         function parseCSV(csvText) {
             const rows = [];
-            let currentRow = [];
-            let currentCell = '';
-            let inQuotes = false;
+            let currentRow = [], currentCell = '', inQuotes = false;
             
             for (let i = 0; i < csvText.length; i++) {
                 const char = csvText[i];
-                if (char === '"') { inQuotes = !inQuotes; }
+                if (char === '"') inQuotes = !inQuotes;
                 else if (char === ',' && !inQuotes) { currentRow.push(currentCell.trim()); currentCell = ''; }
                 else if ((char === '\r' || char === '\n') && !inQuotes) {
                     if (currentCell || currentRow.length > 0) currentRow.push(currentCell.trim());
                     if (currentRow.length > 0) rows.push(currentRow);
                     currentRow = []; currentCell = '';
-                }
-                else { currentCell += char; }
+                } else currentCell += char;
             }
             if (currentCell) currentRow.push(currentCell.trim());
             if (currentRow.length > 0) rows.push(currentRow);
@@ -373,185 +254,195 @@
             const headers = rows[0];
             const data = [];
             for (let i = 1; i < rows.length; i++) {
-                const row = rows[i];
-                if (row.length < headers.length) continue;
+                if (rows[i].length < 2) continue; // Skip empty rows
                 let obj = {};
-                headers.forEach((h, index) => obj[h.trim()] = row[index]);
+                headers.forEach((h, index) => obj[h.trim()] = rows[i][index] || '');
                 data.push(obj);
             }
 
             inventoryData = data;
-            alert(`Loaded ${data.length} stones.`);
-            initTableHeaders();
-            runSearch();
-        }
-
-        // --- 3. UI BUILDERS ---
-        const colors = ['D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
-        const clarities = ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1'];
-        const cuts = ['EX', 'VG', 'GD', 'FR'];
-
-        function initTouchBar(id, items, filterKey) {
-            const container = document.getElementById(id);
-            container.innerHTML = '';
-            items.forEach((item, index) => {
-                const btn = document.createElement('div');
-                btn.className = 'touch-btn';
-                btn.innerText = item;
-                btn.onclick = () => handleRangeClick(index, items, filterKey, id);
-                container.appendChild(btn);
-            });
-        }
-
-        function initTableHeaders() {
-            const thead = document.getElementById('table-head-row');
-            thead.innerHTML = '';
-            const displayCols = ["Shape", "Weight", "Color", "Clarity", "Lab", "Cut", "Pol", "Sym", "Fluor", "Depth", "Table", "Meas", "Price"];
-            displayCols.forEach(col => {
-                const th = document.createElement('th');
-                th.innerText = col === "Weight" ? "Carat" : col;
-                thead.appendChild(th);
-            });
-        }
-
-        // --- 4. FILTER LOGIC ---
-        function handleRangeClick(index, items, key, domId) {
-            let active = activeFilters[key];
-            if (active.length === 0) active.push(items[index]);
-            else {
-                const activeIndices = active.map(val => items.indexOf(val));
-                const min = Math.min(...activeIndices, index);
-                const max = Math.max(...activeIndices, index);
-                activeFilters[key] = [];
-                for(let i=min; i<=max; i++) activeFilters[key].push(items[i]);
-            }
-            updateTouchUI(domId, items, activeFilters[key]);
-            runSearch();
-        }
-
-        function updateTouchUI(domId, items, activeArr) {
-            const btns = document.getElementById(domId).children;
-            for(let i=0; i<btns.length; i++) {
-                btns[i].classList.toggle('active', activeArr.includes(items[i]));
-            }
-        }
-
-        function toggleFilter(btn, key, val) {
-            btn.classList.toggle('active');
-            const arr = activeFilters[key];
-            arr.includes(val) ? arr.splice(arr.indexOf(val), 1) : arr.push(val);
-            runSearch();
-        }
-
-        function toggleCarat(min, max, btn) {
-            btn.classList.toggle('active');
-            const ranges = activeFilters.caratRanges;
-            const idx = ranges.findIndex(r => r.min === min && r.max === max);
-            if(idx > -1) ranges.splice(idx, 1);
-            else ranges.push({min, max});
-            document.getElementById('min-carat').value = '';
-            document.getElementById('max-carat').value = '';
-            runSearch();
-        }
-
-        // --- 5. SEARCH ENGINE ---
-        function runSearch() {
-            const minC = parseFloat(document.getElementById('min-carat').value);
-            const maxC = parseFloat(document.getElementById('max-carat').value);
-
-            const results = inventoryData.filter(item => {
-                const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())] || '';
-                const shape = get('Shape');
-                const weight = parseFloat(get('Weight') || get('Carat') || 0);
-                const color = get('Color');
-                const clarity = get('Clarity');
-                const cut = get('Cut');
-
-                if (activeFilters.shape.length && !activeFilters.shape.some(s => shape.toLowerCase().includes(s.toLowerCase()))) return false;
-                
-                let cMatch = false;
-                if (!isNaN(minC) || !isNaN(maxC)) {
-                    cMatch = (isNaN(minC) || weight >= minC) && (isNaN(maxC) || weight <= maxC);
-                } else if (activeFilters.caratRanges.length) {
-                    cMatch = activeFilters.caratRanges.some(r => weight >= r.min && weight <= r.max);
-                } else cMatch = true;
-                if (!cMatch) return false;
-
-                if (activeFilters.color.length && !activeFilters.color.includes(color)) return false;
-                if (activeFilters.clarity.length && !activeFilters.clarity.includes(clarity)) return false;
-                if (activeFilters.cut.length && !activeFilters.cut.includes(cut)) return false;
-
-                return true;
-            });
-
-            renderTable(results);
-        }
-
-        function renderTable(data) {
-            const tbody = document.getElementById('table-body');
-            document.getElementById('count').innerText = data.length;
-            tbody.innerHTML = '';
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('app-container').style.display = 'flex';
+            if(window.innerWidth <= 1000) document.getElementById('mobile-tools').style.display = 'flex';
             
-            const displayCols = ["Shape", "Weight", "Color", "Clarity", "Lab", "Cut", "Pol", "Sym", "Fluor", "Depth", "Table", "Meas", "Price"];
+            runSearch();
+        }
 
-            data.forEach(item => {
-                const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())] || '-';
+        // --- 4. SORTING ENGINE ---
+        function sortBy(col) {
+            if (sortCol === col) sortDir *= -1;
+            else { sortCol = col; sortDir = 1; }
+            
+            // Reset Arrows
+            document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
+            const arrow = sortDir === 1 ? '↑' : '↓';
+            const sp = document.getElementById('sort-' + col);
+            if(sp) sp.innerText = ' ' + arrow;
+
+            runSearch();
+        }
+
+        function mobileSort(val) {
+            if(!val) return;
+            const parts = val.split('-');
+            sortCol = parts[0];
+            sortDir = parts[1] === 'asc' ? 1 : -1;
+            runSearch();
+        }
+
+        // --- 5. SEARCH & RENDER ---
+        function runSearch() {
+            const query = (document.getElementById('search-box')?.value || '').toLowerCase();
+            
+            filteredData = inventoryData.filter(row => {
+                if(!query) return true;
+                // Simple search over main fields
+                return (row['ID']||'').toLowerCase().includes(query) || 
+                       (row['Shape']||'').toLowerCase().includes(query);
+            });
+
+            // Sort logic
+            if (sortCol) {
+                filteredData.sort((a, b) => {
+                    let valA = a[sortCol] || '';
+                    let valB = b[sortCol] || '';
+                    
+                    // Numeric check (remove $ and ,)
+                    const numA = parseFloat(valA.replace(/[^0-9.-]+/g,""));
+                    const numB = parseFloat(valB.replace(/[^0-9.-]+/g,""));
+                    
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        return (numA - numB) * sortDir;
+                    }
+                    return valA.toString().localeCompare(valB.toString()) * sortDir;
+                });
+            }
+
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            document.getElementById('mobile-count').innerText = `(${filteredData.length})`;
+            tbody.innerHTML = '';
+
+            filteredData.forEach((row, i) => {
                 const tr = document.createElement('tr');
                 tr.className = 'data-row';
                 
-                let html = '';
-                displayCols.forEach(col => {
-                    let val = get(col);
-                    if(col === 'Price') val = '$' + parseFloat(val).toLocaleString();
-                    if(col === 'Weight') val = parseFloat(val).toFixed(2);
-                    html += `<td>${val}</td>`;
-                });
-                tr.innerHTML = html;
-                tr.onclick = () => openModal(item); // Click row opens modal directly
+                // --- A. DESKTOP ROW (Hidden on Mobile) ---
+                const formatMoney = v => v ? '$' + parseFloat(v).toLocaleString() : '';
+                const formatNum = v => v ? parseFloat(v).toFixed(2) : '';
+
+                tr.innerHTML = `
+                    <td class="col-expand desktop-only"><button class="btn-expand" onclick="toggleEnvelope(this, ${i})">+</button></td>
+                    <td class="desktop-only">${row['ID'] || ''}</td>
+                    <td class="desktop-only"><b>${row['Shape'] || ''}</b></td>
+                    <td class="desktop-only">${formatNum(row['Size'])}</td>
+                    <td class="desktop-only">${row['Color'] || ''}</td>
+                    <td class="desktop-only">${row['Clarity'] || ''}</td>
+                    <td class="desktop-only">${row['Lab'] || ''}</td>
+                    <td class="desktop-only">${row['Cut'] || ''}</td>
+                    <td class="desktop-only">${row['Pol'] || ''}</td>
+                    <td class="desktop-only">${row['Sym'] || ''}</td>
+                    <td class="desktop-only">${row['Fluo'] || ''}</td>
+                    <td class="desktop-only" style="color:#dc2626; font-weight:600;">${row['Rap Disc'] || ''}%</td>
+                    <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(row['PriceTotal'])}</td>
+                    
+                    <td class="mobile-only" onclick="openDrawer(${i})">
+                        <div class="mobile-card">
+                            <div class="mc-price">${formatMoney(row['PriceTotal'])}</div>
+                            <div class="mc-rap">${row['Rap Disc'] || ''}%</div>
+                            <div class="mc-line1">${row['Shape']||''} ${formatNum(row['Size'])} ${row['Color']||''} ${row['Clarity']||''} ${row['Lab']||''}</div>
+                            <div class="mc-line2">${row['Measurements']||''} • Ratio: ${row['Ratio']||''}</div>
+                            <div class="mc-line3">D:${row['Depth']||''} T:${row['Table']||''} P:${row['Pol']||''} S:${row['Sym']||''} F:${row['Fluo']||''}</div>
+                        </div>
+                    </td>
+                `;
                 tbody.appendChild(tr);
+
+                // --- DESKTOP ENVELOPE (Hidden by default) ---
+                const env = document.createElement('tr');
+                env.className = 'envelope-row';
+                env.id = `env-${i}`;
+                
+                // Helper for iframes
+                const buildMedia = (link, label) => link ? `<div class="env-box"><a href="${link}" target="_blank" style="text-decoration:none; color:inherit;"><b>${label}</b><br><span style="font-size:2rem;">🔗</span><br>Click to View</a></div>` : '';
+
+                env.innerHTML = `
+                    <td colspan="13" style="padding:0;">
+                        <div class="envelope-content">
+                            <div class="env-media">
+                                ${buildMedia(row['Photo'], 'View Photo')}
+                                ${buildMedia(row['Video'], 'View Video')}
+                                ${buildMedia(row['ReportPDF'], 'View Certificate')}
+                            </div>
+                            <div class="env-details">
+                                <div class="env-item"><div class="env-label">Measurements</div><div class="env-val">${row['Measurements']||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Ratio</div><div class="env-val">${row['Ratio']||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Depth / Table</div><div class="env-val">${row['Depth']||'-'}% / ${row['Table']||'-'}%</div></div>
+                                <div class="env-item"><div class="env-label">Culet / Girdle</div><div class="env-val">${row['Culet']||'-'} / ${row['Girdle']||'-'}</div></div>
+                                <div class="env-item"><div class="env-label">Rap Price / Total</div><div class="env-val">${formatMoney(row['PriceRap'])} / ${formatMoney(row['PriceTotal'])}</div></div>
+                                <div class="env-item" style="grid-column:span 2;"><div class="env-label">Comments</div><div class="env-val">${row['Comments']||'None'}</div></div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(env);
             });
         }
 
-        // --- 6. MODAL ---
-        let currentModalItem = null;
-        function openModal(item) {
-            currentModalItem = item;
-            document.getElementById('product-modal').classList.add('open');
-            const get = (k) => item[Object.keys(item).find(key => key.toLowerCase() === k.toLowerCase())] || '-';
+        // --- 6. INTERACTIONS ---
+        function toggleEnvelope(btn, index) {
+            const env = document.getElementById(`env-${index}`);
+            const isOpen = env.classList.contains('show');
             
-            document.getElementById('modal-title').innerText = `${get('Weight')} Carat ${get('Shape')}`;
-            document.getElementById('modal-subtitle').innerText = `Stock #${get('Stock #')} • ${get('Lab')} Certified`;
-            document.getElementById('modal-price').innerText = '$' + parseFloat(get('Price')).toLocaleString();
-
-            // Specs
-            const specs = document.getElementById('modal-specs');
-            specs.innerHTML = '';
-            ['Color', 'Clarity', 'Cut', 'Pol', 'Sym', 'Fluor', 'Depth', 'Table', 'Meas'].forEach(f => {
-                specs.innerHTML += `<div class="spec-item"><span class="spec-label">${f}</span><span class="spec-value">${get(f)}</span></div>`;
-            });
-
-            showModalMedia('img');
+            // Close all others
+            document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
+            document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
+            
+            if (!isOpen) {
+                env.classList.add('show');
+                btn.classList.add('open');
+            }
         }
 
-        function showModalMedia(type) {
-            const container = document.getElementById('modal-media-container');
-            const get = (k) => currentModalItem[Object.keys(currentModalItem).find(key => key.toLowerCase() === k.toLowerCase())] || '';
-            const img = get('Image') || get('Image Link');
-            const vid = get('Video') || get('Video Link');
-            const cert = get('Report') || get('Cert');
+        // Mobile Drawer Logic
+        function openDrawer(index) {
+            const row = filteredData[index];
+            document.getElementById('mobile-drawer').classList.add('open');
+            document.getElementById('drawer-title').innerText = `${row['Shape']} ${row['Size']}ct ${row['Color']} ${row['Clarity']}`;
+            
+            const linkBtn = (link, label, icon) => link ? `<a href="${link}" target="_blank" style="flex:1; padding:15px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; text-align:center; font-weight:bold; color:var(--primary); text-decoration:none; display:flex; flex-direction:column; gap:5px;"><span style="font-size:1.5rem;">${icon}</span>${label}</a>` : '';
 
-            if (type === 'img') container.innerHTML = img ? `<img src="${img}" style="max-height:300px; max-width:100%;">` : 'No Image';
-            if (type === 'vid') container.innerHTML = vid ? `<iframe src="${vid}" style="width:100%; height:300px; border:none;"></iframe>` : 'No Video';
-            if (type === 'cert') container.innerHTML = cert ? `<iframe src="${cert}" style="width:100%; height:300px; border:none;"></iframe>` : 'No Cert';
+            document.getElementById('drawer-body').innerHTML = `
+                <div style="font-size:2rem; font-weight:800; color:#059669; margin-bottom:5px;">$${parseFloat(row['PriceTotal']).toLocaleString()}</div>
+                <div style="font-size:1rem; color:#dc2626; font-weight:700; margin-bottom:20px;">Rap Disc: ${row['Rap Disc']}% • ID: ${row['ID']}</div>
+                
+                <div style="display:flex; gap:10px; margin-bottom:25px;">
+                    ${linkBtn(row['Photo'], 'Photo', '📷')}
+                    ${linkBtn(row['Video'], 'Video', '🎥')}
+                    ${linkBtn(row['ReportPDF'], 'Cert', '📄')}
+                </div>
+
+                <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-bottom:20px;">
+                    <div style="font-weight:700; margin-bottom:5px; color:#475569;">Comments</div>
+                    <div style="font-size:0.9rem;">${row['Comments'] || 'No comments listed.'}</div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">MEASUREMENTS</span><br><b>${row['Measurements']||'-'}</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">RATIO</span><br><b>${row['Ratio']||'-'}</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b>${row['Depth']||'-'}% / ${row['Table']||'-'}%</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">CULET / GIRDLE</span><br><b>${row['Culet']||'-'} / ${row['Girdle']||'-'}</b></div>
+                </div>
+                
+                <button style="width:100%; padding:15px; background:var(--primary); color:white; font-weight:bold; border:none; border-radius:8px; margin-top:30px; font-size:1rem;">CONTACT TO BUY</button>
+            `;
         }
 
-        function closeModal() { document.getElementById('product-modal').classList.remove('open'); }
+        function closeDrawer() { document.getElementById('mobile-drawer').classList.remove('open'); }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
-
-        // Init
-        initTouchBar('color-bar', colors, 'color');
-        initTouchBar('clarity-bar', clarities, 'clarity');
-        initTouchBar('cut-bar', cuts, 'cut');
     </script>
 </body>
 </html>
