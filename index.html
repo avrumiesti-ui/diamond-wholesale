@@ -67,27 +67,22 @@
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
-        /* TABLE (Desktop) - Adjusted for tight column widths */
+        /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        
-        /* Auto-sizing table strategy */
         table { width: max-content; min-width: 100%; border-collapse: collapse; }
         
-        /* Tighter padding to meet the "+10 pixels" request (5px on each side) */
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
-        
-        /* Ensure the first spacer column stays small */
         th:first-child, td:first-child { padding-left: 10px; }
         th:last-child, td:last-child { padding-right: 15px; }
 
-        .data-row { transition: background 0.15s; }
+        .data-row { transition: background 0.15s; cursor: pointer; } /* Added cursor pointer */
         .data-row:hover { background-color: var(--hover-row); }
         .col-expand { width: 30px; text-align: center; }
-        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0;}
-        .btn-expand:hover { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0; cursor: pointer; pointer-events: none;} /* Pointer events none so row click handles it */
+        .data-row:hover .btn-expand { border-color: var(--primary); color: var(--primary); }
         .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
@@ -117,7 +112,6 @@
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
             
-            /* Table to Cards */
             table, tbody, tr { display: block; width: 100%; min-width: 100%; }
             thead { display: none; }
             .table-container { background: transparent; box-shadow: none; }
@@ -126,6 +120,8 @@
             .data-row td { padding: 0; border: none; display: none; } 
             td.mobile-only { display: block; } 
             
+            .envelope-row { display: none !important; } /* Hard hide envelopes on mobile */
+
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
             .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
@@ -406,7 +402,6 @@
             runSearch();
         }
 
-        // Safe getter with fallback matching (Fixes the "link" missing bug)
         function getRobustVal(row, possibleKeys) {
             for (let k of possibleKeys) {
                 let lowerK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -536,11 +531,9 @@
                     if(!activeFilters[key].length) return true;
                     const val = getVal(row, csvHeader).toUpperCase();
                     
-                    // Fixed Shape Matching (Round vs Radiant bug fix)
                     if (key === 'shape' || key === 'lab' || key === 'cut' || key === 'pol' || key === 'sym' || key === 'color' || key === 'clarity') {
                         return activeFilters[key].some(f => val === f.toUpperCase() || val.includes(f.toUpperCase()));
                     }
-                    // Fluor handles 'Faint' vs 'FNT' via charAt
                     return activeFilters[key].some(f => val.includes(f) || val.startsWith(f.charAt(0)));
                 };
 
@@ -601,11 +594,16 @@
                 const tr = document.createElement('tr');
                 tr.className = 'data-row';
                 
+                // Make entire row clickable
+                tr.onclick = () => {
+                    if (window.innerWidth <= 1100) openDrawer(i);
+                    else toggleEnvelope(i);
+                };
+
                 const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
                 const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
                 const formatUrl = u => u.startsWith('http') ? u : `https://${u}`;
 
-                // Robust link fetching to ignore spaces/brackets in headers
                 const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
                 const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
@@ -618,7 +616,7 @@
 
                 // A. DESKTOP ROW 
                 tr.innerHTML = `
-                    <td class="col-expand desktop-only"><button class="btn-expand" onclick="toggleEnvelope(this, ${i})">+</button></td>
+                    <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
                     <td class="desktop-only"><b>${getVal(row,'Shape')}</b></td>
                     <td class="desktop-only">${formatNum(getVal(row,'Size'))}</td>
@@ -639,7 +637,7 @@
                     <td class="desktop-only" style="color:#dc2626; font-weight:600;">${getVal(row,'Rap Disc')}%</td>
                     <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(getVal(row,'PriceTotal'))}</td>
                     
-                    <td class="mobile-only" onclick="openDrawer(${i})">
+                    <td class="mobile-only">
                         <div class="mobile-card">
                             <div class="mc-price">${formatMoney(getVal(row,'PriceTotal'))}</div>
                             <div class="mc-rap">${getVal(row,'Rap Disc')}%</div>
@@ -653,17 +651,20 @@
 
                 // C. DESKTOP ENVELOPE (Embedded Media)
                 const env = document.createElement('tr');
-                env.className = 'envelope-row desktop-only';
+                // Removed desktop-only bug to keep it closed properly
+                env.className = 'envelope-row';
                 env.id = `env-${i}`;
                 
                 const photoEmbed = photo ? `<img src="${formatUrl(photo)}" onerror="this.style.display='none'">` : '';
                 
                 let videoEmbed = '';
                 if (video) {
-                    if (video.toLowerCase().endsWith('.mp4')) {
-                        videoEmbed = `<video src="${formatUrl(video)}" controls autoplay loop muted></video>`;
+                    const vUrl = formatUrl(video);
+                    if (vUrl.toLowerCase().endsWith('.mp4')) {
+                        videoEmbed = `<video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain;"></video>`;
                     } else {
-                        videoEmbed = `<iframe src="${formatUrl(video)}" allowfullscreen></iframe>`;
+                        // Ideal for V360 / iframe links
+                        videoEmbed = `<iframe src="${vUrl}" allowfullscreen style="width:100%; height:100%; border:none;"></iframe>`;
                     }
                 }
 
@@ -684,12 +685,20 @@
         }
 
         // --- 8. INTERACTIONS ---
-        function toggleEnvelope(btn, index) {
+        function toggleEnvelope(index) {
             const env = document.getElementById(`env-${index}`);
+            const btn = document.getElementById(`btn-exp-${index}`);
             const isOpen = env.classList.contains('show');
+            
+            // Close all others
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
-            if (!isOpen) { env.classList.add('show'); btn.classList.add('open'); }
+            
+            // Open clicked
+            if (!isOpen) { 
+                env.classList.add('show'); 
+                if(btn) btn.classList.add('open'); 
+            }
         }
 
         function openDrawer(index) {
