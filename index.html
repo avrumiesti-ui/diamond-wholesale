@@ -31,7 +31,7 @@
         .drop-text { font-size: 0.8rem; font-weight: 600; color: #475569; display: flex; flex-direction: column; line-height: 1.2; }
         #csv-input { display: none; }
 
-        /* EMPTY STATE (Giant Drop Zone) */
+        /* EMPTY STATE */
         .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
         .giant-drop { border: 3px dashed #cbd5e1; border-radius: 12px; padding: 60px; background: var(--white); max-width: 600px; width: 100%; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .giant-drop:hover, .giant-drop.dragover { border-color: var(--accent); background: #fffcf5; transform: translateY(-5px); }
@@ -39,36 +39,30 @@
 
         /* LAYOUT */
         .inventory-container { display: none; min-height: calc(100vh - 60px); }
-        
-        /* SIDEBAR FILTERS */
         .sidebar { width: 340px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
         .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
         .filter-group:last-child { border-bottom: none; }
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
-        /* SHAPE & BUTTONS */
+        /* FILTERS UI */
         .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
         .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
         .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
         .row-3 { grid-template-columns: repeat(3, 1fr); }
         .row-4 { grid-template-columns: repeat(4, 1fr); }
-
-        /* TOUCH BARS */
         .touch-bar { display: flex; width: 100%; margin-bottom: 10px; flex-wrap: wrap; }
         .touch-btn { flex: 1 1 auto; padding: 8px 0; background: #fff; border: 1px solid #cbd5e1; margin-left: -1px; cursor: pointer; font-size: 0.7rem; font-weight: 600; color: #475569; text-align: center; min-width: 30px; }
         .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
         .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
         .touch-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); z-index: 1; position: relative; }
-
-        /* NUMERIC INPUTS */
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
         /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+        table { width: 100%; border-collapse: collapse; min-width: 1500px; /* Wider for more columns */ }
         th { background: #f8fafc; color: #475569; padding: 12px 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 12px 10px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
@@ -80,18 +74,17 @@
         .btn-expand:hover { background: var(--primary); color: white; border-color: var(--primary); }
         .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
-        /* ENVELOPE ROW (Desktop Details) */
-        .envelope-row { display: none; background: #f1f5f9; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
+        /* Clickable Lab Link */
+        .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .lab-link:hover { color: #1d4ed8; }
+
+        /* ENVELOPE ROW (Desktop Open Media) */
+        .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
-        .envelope-content { padding: 20px; display: flex; gap: 30px; }
-        .env-media { display: flex; gap: 15px; }
-        .env-box { width: 140px; height: 140px; background: var(--white); border: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; text-align: center; font-size: 0.75rem; color: #94a3b8; flex-direction: column; gap: 10px; transition: 0.2s; }
-        .env-box:hover { border-color: var(--accent); color: var(--accent); background: #fffcf5; }
-        .env-box img, .env-box iframe { width: 100%; height: 100%; object-fit: cover; border: none; }
-        .env-details { flex-grow: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-content: start; }
-        .env-item { background: var(--white); padding: 10px 15px; border-radius: 4px; border: 1px solid #e2e8f0; }
-        .env-label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
-        .env-val { font-size: 0.85rem; font-weight: 600; color: #0f172a; }
+        .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
+        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; }
+        .env-media-embed iframe, .env-media-embed img { width: 100%; height: 100%; object-fit: contain; border: none; }
+        .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
@@ -100,6 +93,7 @@
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
             .mobile-only { display: block; }
+            .mobile-only-flex { display: flex !important; }
             
             .inventory-container { flex-direction: column; }
             .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; }
@@ -126,7 +120,7 @@
             .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
             .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #dc2626; }
             
-            /* Drawer (Mobile Full Details) */
+            /* Drawer */
             .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
             .drawer-overlay.open { display: flex; }
             .drawer-content { background: var(--white); width: 100%; height: 85vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; overflow: hidden; }
@@ -137,6 +131,15 @@
             
             .drop-text { display: none; }
             .drop-zone { padding: 8px; }
+
+            /* Switch Empty state language for mobile */
+            .desktop-text { display: none; }
+            .mobile-text { display: block; }
+        }
+
+        @media (min-width: 1101px) {
+            .mobile-text { display: none; }
+            .desktop-text { display: block; }
         }
     </style>
 </head>
@@ -152,7 +155,7 @@
         <div class="header-controls">
             <label for="csv-input" class="drop-zone" id="header-drop">
                 <span style="font-size:1.2rem;">📂</span>
-                <span class="drop-text">Upload File<span style="font-size:0.7rem; font-weight:400;">Drag CSV here</span></span>
+                <span class="drop-text">Upload File<span style="font-size:0.7rem; font-weight:400;">Drag or tap CSV</span></span>
                 <input type="file" id="csv-input" accept=".csv" onchange="handleFileUpload(this)">
             </label>
         </div>
@@ -161,8 +164,17 @@
     <div class="empty-state" id="empty-state">
         <label for="csv-input-giant" class="giant-drop" id="main-drop">
             <div class="giant-icon">📥</div>
-            <h2 style="margin:0 0 10px 0;">Load Inventory Data</h2>
-            <p style="color:#64748b; margin:0;">Drag and drop your CSV file here to begin.</p>
+            
+            <div class="desktop-text">
+                <h2 style="margin:0 0 10px 0;">Load Inventory Data</h2>
+                <p style="color:#64748b; margin:0;">Drag and drop your CSV file here to begin.</p>
+            </div>
+            
+            <div class="mobile-text">
+                <h2 style="margin:0 0 10px 0;">Tap to Browse Files</h2>
+                <p style="color:#64748b; margin:0;">Open your file manager to select your inventory CSV.</p>
+            </div>
+            
             <input type="file" id="csv-input-giant" accept=".csv" onchange="handleFileUpload(this)" style="display:none;">
         </label>
     </div>
@@ -224,7 +236,6 @@
             <div class="filter-group">
                 <span class="filter-label">COLOR</span>
                 <div class="touch-bar" id="color-bar"></div>
-                
                 <span class="filter-label" style="margin-top:15px;">CLARITY</span>
                 <div class="touch-bar" id="clarity-bar"></div>
             </div>
@@ -277,11 +288,18 @@
                             <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
                             <th onclick="sortBy('Color')">Col <span id="sort-Color"></span></th>
                             <th onclick="sortBy('Clarity')">Clar <span id="sort-Clarity"></span></th>
+                            <th onclick="sortBy('Measurements')">Meas <span id="sort-Measurements"></span></th>
+                            <th onclick="sortBy('Ratio')">Ratio <span id="sort-Ratio"></span></th>
                             <th onclick="sortBy('Lab')">Lab <span id="sort-Lab"></span></th>
                             <th onclick="sortBy('Cut')">Cut <span id="sort-Cut"></span></th>
                             <th onclick="sortBy('Pol')">Pol <span id="sort-Pol"></span></th>
                             <th onclick="sortBy('Sym')">Sym <span id="sort-Sym"></span></th>
                             <th onclick="sortBy('Fluo')">Flor <span id="sort-Fluo"></span></th>
+                            <th onclick="sortBy('Depth')">Dep% <span id="sort-Depth"></span></th>
+                            <th onclick="sortBy('Table')">Tab% <span id="sort-Table"></span></th>
+                            <th onclick="sortBy('Culet')">Cul <span id="sort-Culet"></span></th>
+                            <th onclick="sortBy('Girdle')">Grd <span id="sort-Girdle"></span></th>
+                            <th onclick="sortBy('PriceRap')">Rap $ <span id="sort-PriceRap"></span></th>
                             <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
                             <th onclick="sortBy('PriceTotal')">Total $ <span id="sort-PriceTotal"></span></th>
                         </tr>
@@ -309,7 +327,7 @@
         let inventoryData = [];
         let filteredData = [];
         let sortCol = '';
-        let sortDir = 1; // 1 = asc, -1 = desc
+        let sortDir = 1; 
         
         // Exact Headers Requested
         const reqHeaders = ["ID", "Shape", "Size", "Color", "Clarity", "Measurements", "Ratio", "Lab", "Depth", "Table", "Culet", "Girdle", "Fluo", "Cut", "Pol", "Sym", "Rap Disc", "PriceTotal", "PriceRap", "ReportPDF", "Photo", "Comments", "Video"];
@@ -327,7 +345,7 @@
             fluos: ['NON','FNT','MED','STG','VST']
         };
 
-        // --- 2. DRAG & DROP ---
+        // --- 2. DRAG & DROP / FILE MANAGER ---
         ['header-drop', 'main-drop', 'empty-state'].forEach(id => {
             const el = document.getElementById(id);
             if(!el) return;
@@ -348,7 +366,6 @@
         }
 
         // --- 3. ROBUST CSV PARSER ---
-        // This parser handles quotes, newlines inside cells, and weird Excel artifacts perfectly.
         function parseCSV(text) {
             let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
             for (l of text) {
@@ -363,12 +380,10 @@
                 p = l;
             }
             
-            // Clean Headers (Remove invisible BOM characters and trim)
             const rawHeaders = ret[0].map(h => h.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"").trim());
-            
             const data = [];
             for (let j = 1; j < ret.length; j++) {
-                if (ret[j].length < 2 || ret[j].join('').trim() === '') continue; // Skip empty
+                if (ret[j].length < 2 || ret[j].join('').trim() === '') continue; 
                 let obj = {};
                 rawHeaders.forEach((h, index) => {
                     obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
@@ -384,10 +399,7 @@
             runSearch();
         }
 
-        // Safe getter for case-insensitive header mapping
-        function getVal(row, exactHeader) {
-            return row[exactHeader.toLowerCase()] || '';
-        }
+        function getVal(row, exactHeader) { return row[exactHeader.toLowerCase()] || ''; }
 
         // --- 4. UI BUILDERS ---
         function initTouchBar(id, items, filterKey) {
@@ -471,25 +483,20 @@
 
         function runSearch() {
             const query = (document.getElementById('search-box')?.value || '').toLowerCase();
-            
-            // Numeric inputs
             const minS = getNum('min-size'), maxS = getNum('max-size');
             const minD = getNum('depth-min'), maxD = getNum('depth-max');
             const minT = getNum('table-min'), maxT = getNum('table-max');
             const minR = getNum('ratio-min'), maxR = getNum('ratio-max');
 
             filteredData = inventoryData.filter(row => {
-                // 1. Text Search
                 if(query) {
-                    const searchable = (getVal(row,'ID') + getVal(row,'Shape') + getVal(row,'ReportPDF')).toLowerCase();
+                    const searchable = (getVal(row,'ID') + getVal(row,'Shape')).toLowerCase();
                     if(!searchable.includes(query)) return false;
                 }
 
-                // 2. Exact Match Array Filters
                 const checkArr = (key, csvHeader) => {
                     if(!activeFilters[key].length) return true;
                     const val = getVal(row, csvHeader).toUpperCase();
-                    // Some fluos might be "Faint" instead of "Fnt", do partial match
                     return activeFilters[key].some(f => val.includes(f) || val.startsWith(f.charAt(0)));
                 };
 
@@ -502,7 +509,6 @@
                 if(!checkArr('sym', 'Sym')) return false;
                 if(!checkArr('fluo', 'Fluo')) return false;
 
-                // 3. Numeric Filters
                 const size = parseFloat(getVal(row, 'Size'));
                 let sMatch = false;
                 if (!isNaN(minS) || !isNaN(maxS)) {
@@ -514,7 +520,7 @@
 
                 const checkNum = (val, min, max) => {
                     const n = parseFloat(val);
-                    if(isNaN(n)) return true; // Skip if no data
+                    if(isNaN(n)) return true; 
                     if(!isNaN(min) && n < min) return false;
                     if(!isNaN(max) && n > max) return false;
                     return true;
@@ -527,7 +533,6 @@
                 return true;
             });
 
-            // Sort
             if (sortCol) {
                 filteredData.sort((a, b) => {
                     let valA = getVal(a, sortCol);
@@ -542,7 +547,7 @@
             renderTable();
         }
 
-        // --- 7. RENDER ---
+        // --- 7. RENDER DESKTOP & MOBILE ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
             document.getElementById('mobile-count').innerText = `(${filteredData.length})`;
@@ -554,8 +559,17 @@
                 
                 const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
                 const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
+                const formatUrl = u => u.startsWith('http') ? u : `https://${u}`;
 
-                // A. DESKTOP ROW
+                // Process Report Link within Lab name
+                const labStr = getVal(row,'Lab');
+                const reportStr = getVal(row,'ReportPDF');
+                let labHtml = labStr;
+                if(reportStr && reportStr.trim() !== '') {
+                    labHtml = `<a href="${formatUrl(reportStr)}" target="_blank" class="lab-link">${labStr}</a>`;
+                }
+
+                // A. DESKTOP ROW (20 Columns)
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button class="btn-expand" onclick="toggleEnvelope(this, ${i})">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -563,11 +577,18 @@
                     <td class="desktop-only">${formatNum(getVal(row,'Size'))}</td>
                     <td class="desktop-only">${getVal(row,'Color')}</td>
                     <td class="desktop-only">${getVal(row,'Clarity')}</td>
-                    <td class="desktop-only">${getVal(row,'Lab')}</td>
+                    <td class="desktop-only">${getVal(row,'Measurements')}</td>
+                    <td class="desktop-only">${getVal(row,'Ratio')}</td>
+                    <td class="desktop-only">${labHtml}</td>
                     <td class="desktop-only">${getVal(row,'Cut')}</td>
                     <td class="desktop-only">${getVal(row,'Pol')}</td>
                     <td class="desktop-only">${getVal(row,'Sym')}</td>
                     <td class="desktop-only">${getVal(row,'Fluo')}</td>
+                    <td class="desktop-only">${getVal(row,'Depth')}%</td>
+                    <td class="desktop-only">${getVal(row,'Table')}%</td>
+                    <td class="desktop-only">${getVal(row,'Culet')}</td>
+                    <td class="desktop-only">${getVal(row,'Girdle')}</td>
+                    <td class="desktop-only">${formatMoney(getVal(row,'PriceRap'))}</td>
                     <td class="desktop-only" style="color:#dc2626; font-weight:600;">${getVal(row,'Rap Disc')}%</td>
                     <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(getVal(row,'PriceTotal'))}</td>
                     
@@ -583,33 +604,25 @@
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE
+                // C. DESKTOP ENVELOPE (Embedded Media)
                 const env = document.createElement('tr');
                 env.className = 'envelope-row';
                 env.id = `env-${i}`;
                 
-                const buildMedia = (link, label) => {
-                    if(!link || link.trim() === '') return '';
-                    // Try to catch raw IDs vs Full URLs
-                    const url = link.startsWith('http') ? link : `https://${link}`;
-                    return `<a href="${url}" target="_blank" class="env-box" style="text-decoration:none;"><b>${label}</b><br><span style="font-size:2rem;">🔗</span><br>Click to View</a>`;
-                };
+                const photo = getVal(row,'Photo');
+                const video = getVal(row,'Video');
+
+                const photoEmbed = photo ? `<img src="${formatUrl(photo)}" onerror="this.style.display='none'">` : '';
+                const videoEmbed = video ? `<iframe src="${formatUrl(video)}" allowfullscreen></iframe>` : '';
 
                 env.innerHTML = `
-                    <td colspan="13" style="padding:0;">
-                        <div class="envelope-content">
-                            <div class="env-media">
-                                ${buildMedia(getVal(row,'Photo'), 'View Photo')}
-                                ${buildMedia(getVal(row,'Video'), 'View Video')}
-                                ${buildMedia(getVal(row,'ReportPDF'), 'View Certificate')}
-                            </div>
-                            <div class="env-details">
-                                <div class="env-item"><div class="env-label">Measurements</div><div class="env-val">${getVal(row,'Measurements')||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Ratio</div><div class="env-val">${getVal(row,'Ratio')||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Depth / Table</div><div class="env-val">${getVal(row,'Depth')||'-'}% / ${getVal(row,'Table')||'-'}%</div></div>
-                                <div class="env-item"><div class="env-label">Culet / Girdle</div><div class="env-val">${getVal(row,'Culet')||'-'} / ${getVal(row,'Girdle')||'-'}</div></div>
-                                <div class="env-item"><div class="env-label">Rap Price / Total</div><div class="env-val">${formatMoney(getVal(row,'PriceRap'))} / ${formatMoney(getVal(row,'PriceTotal'))}</div></div>
-                                <div class="env-item" style="grid-column:span 2;"><div class="env-label">Comments</div><div class="env-val">${getVal(row,'Comments')||'None'}</div></div>
+                    <td colspan="20" style="padding:0;">
+                        <div class="env-showcase">
+                            ${photoEmbed ? `<div class="env-media-embed">${photoEmbed}</div>` : ''}
+                            ${videoEmbed ? `<div class="env-media-embed">${videoEmbed}</div>` : ''}
+                            <div class="env-comments-box">
+                                <h4 style="margin:0 0 10px 0; color:#475569; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Comments & Notes</h4>
+                                <p style="margin:0; font-size:0.9rem; line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided for this stone.'}</p>
                             </div>
                         </div>
                     </td>
