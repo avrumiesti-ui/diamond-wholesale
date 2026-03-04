@@ -67,7 +67,6 @@
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
         
-        /* Auto Width Table engine + 10px padding request (5px each side) */
         table { width: max-content; min-width: 100%; border-collapse: collapse; }
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
@@ -85,7 +84,7 @@
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
         .lab-link:hover { color: #1d4ed8; }
 
-        /* ENVELOPE ROW (Desktop Open Media) */
+        /* ENVELOPE ROW */
         .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
@@ -96,6 +95,7 @@
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
+        .desktop-only { display: table-cell; }
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
@@ -124,7 +124,9 @@
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line3 { font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 6px 10px; border-radius: 4px; display: inline-block; font-family: monospace; }
             .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
-            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #dc2626; }
+            
+            /* Removed red coloring for rap disc */
+            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
             
             /* Drawer */
             .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
@@ -162,8 +164,10 @@
             <option value="">Sort By...</option>
             <option value="Size-asc">Size (Low to High)</option>
             <option value="Size-desc">Size (High to Low)</option>
-            <option value="PriceTotal-asc">Price (Low to High)</option>
-            <option value="PriceTotal-desc">Price (High to Low)</option>
+            <option value="Total Price-asc">Total $ (Low to High)</option>
+            <option value="Total Price-desc">Total $ (High to Low)</option>
+            <option value="Price-asc">Price/Ct (Low to High)</option>
+            <option value="Price-desc">Price/Ct (High to Low)</option>
             <option value="Rap Disc-asc">Rap Disc (Low to High)</option>
             <option value="Rap Disc-desc">Rap Disc (High to Low)</option>
         </select>
@@ -281,9 +285,10 @@
                             <th onclick="sortBy('Table')">Tab% <span id="sort-Table"></span></th>
                             <th onclick="sortBy('Culet')">Cul <span id="sort-Culet"></span></th>
                             <th onclick="sortBy('Girdle')">Grd <span id="sort-Girdle"></span></th>
-                            <th onclick="sortBy('PriceRap')">Rap $ <span id="sort-PriceRap"></span></th>
+                            <th onclick="sortBy('Rap')">Rap $ <span id="sort-Rap"></span></th>
                             <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
-                            <th onclick="sortBy('PriceTotal')">Total $ <span id="sort-PriceTotal"></span></th>
+                            <th onclick="sortBy('Price')">Price/Ct <span id="sort-Price"></span></th>
+                            <th onclick="sortBy('Total Price')">Total $ <span id="sort-Total Price"></span></th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -578,6 +583,7 @@
                     if (!u) return '';
                     return u.startsWith('http') ? u : `https://${u}`;
                 };
+                const formatPct = v => v && v.toString().trim() !== '' ? v + '%' : '';
 
                 const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
@@ -589,7 +595,7 @@
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW 
+                // A. DESKTOP ROW (Now mapping exactly to requested 4 price columns)
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -604,18 +610,19 @@
                     <td class="desktop-only">${getVal(row,'Pol')}</td>
                     <td class="desktop-only">${getVal(row,'Sym')}</td>
                     <td class="desktop-only">${getVal(row,'Fluo')}</td>
-                    <td class="desktop-only">${getVal(row,'Depth')}%</td>
-                    <td class="desktop-only">${getVal(row,'Table')}%</td>
+                    <td class="desktop-only">${formatPct(getVal(row,'Depth'))}</td>
+                    <td class="desktop-only">${formatPct(getVal(row,'Table'))}</td>
                     <td class="desktop-only">${getVal(row,'Culet')}</td>
                     <td class="desktop-only">${getVal(row,'Girdle')}</td>
-                    <td class="desktop-only">${formatMoney(getVal(row,'PriceRap'))}</td>
-                    <td class="desktop-only" style="color:#dc2626; font-weight:600;">${getVal(row,'Rap Disc')}%</td>
-                    <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(getVal(row,'PriceTotal'))}</td>
+                    <td class="desktop-only">${formatMoney(getVal(row,'Rap'))}</td>
+                    <td class="desktop-only" style="font-weight:600;">${formatPct(getVal(row,'Rap Disc'))}</td>
+                    <td class="desktop-only">${formatMoney(getVal(row,'Price'))}</td>
+                    <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoney(getVal(row,'Total Price'))}</td>
                     
                     <td class="mobile-only">
                         <div class="mobile-card">
-                            <div class="mc-price">${formatMoney(getVal(row,'PriceTotal'))}</div>
-                            <div class="mc-rap">${getVal(row,'Rap Disc')}%</div>
+                            <div class="mc-price">${formatMoney(getVal(row,'Total Price'))}</div>
+                            <div class="mc-rap">${formatPct(getVal(row,'Rap Disc'))}</div>
                             <div class="mc-line1">${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))} ${getVal(row,'Color')} ${getVal(row,'Clarity')} ${getVal(row,'Lab')}</div>
                             <div class="mc-line2">${getVal(row,'Measurements')} • Ratio: ${getVal(row,'Ratio')}</div>
                             <div class="mc-line3">D:${getVal(row,'Depth')} T:${getVal(row,'Table')} P:${getVal(row,'Pol')} S:${getVal(row,'Sym')} F:${getVal(row,'Fluo')}</div>
@@ -629,9 +636,8 @@
                 env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
                 
-                // We do NOT write the iframes yet. We store the URLs to be triggered later.
                 env.innerHTML = `
-                    <td colspan="20" style="padding:0;">
+                    <td colspan="21" style="padding:0;">
                         <div class="env-showcase">
                             <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-loaded="false">
                                 </div>
@@ -652,11 +658,9 @@
             const btn = document.getElementById(`btn-exp-${index}`);
             const isOpen = env.classList.contains('show');
             
-            // Close all others
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
             
-            // Open clicked
             if (!isOpen) { 
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
@@ -679,12 +683,11 @@
                         }
                     }
                     mediaCont.innerHTML = html;
-                    mediaCont.dataset.loaded = "true"; // Prevent re-loading on future clicks
+                    mediaCont.dataset.loaded = "true"; 
                 }
             }
         }
 
-        // Mobile drawer remains unchanged
         function openDrawer(index) {
             const row = filteredData[index];
             document.getElementById('mobile-drawer').classList.add('open');
@@ -701,10 +704,11 @@
             };
 
             const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
+            const formatPct = v => v && v.toString().trim() !== '' ? v + '%' : '';
 
             document.getElementById('drawer-body').innerHTML = `
-                <div style="font-size:2rem; font-weight:800; color:#059669; margin-bottom:5px;">${formatMoney(getVal(row,'PriceTotal'))}</div>
-                <div style="font-size:1rem; color:#dc2626; font-weight:700; margin-bottom:20px;">Rap Disc: ${getVal(row,'Rap Disc')}% • ID: ${getVal(row,'ID')}</div>
+                <div style="font-size:2rem; font-weight:800; color:#059669; margin-bottom:5px;">${formatMoney(getVal(row,'Total Price'))} <span style="font-size:1rem; color:#475569; font-weight:600;">(${formatMoney(getVal(row,'Price'))}/ct)</span></div>
+                <div style="font-size:1rem; color:#475569; font-weight:700; margin-bottom:20px;">Rap Disc: ${formatPct(getVal(row,'Rap Disc'))} • Rap: ${formatMoney(getVal(row,'Rap'))} • ID: ${getVal(row,'ID')}</div>
                 
                 <div style="display:flex; gap:10px; margin-bottom:25px;">
                     ${linkBtn(photo, 'Photo', '📷')}
@@ -720,7 +724,7 @@
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
                     <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">MEASUREMENTS</span><br><b>${getVal(row,'Measurements')||'-'}</b></div>
                     <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">RATIO</span><br><b>${getVal(row,'Ratio')||'-'}</b></div>
-                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b>${getVal(row,'Depth')||'-'}% / ${getVal(row,'Table')||'-'}%</b></div>
+                    <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b>${formatPct(getVal(row,'Depth'))} / ${formatPct(getVal(row,'Table'))}</b></div>
                     <div><span style="font-size:0.75rem; color:#64748b; font-weight:bold;">CULET / GIRDLE</span><br><b>${getVal(row,'Culet')||'-'} / ${getVal(row,'Girdle')||'-'}</b></div>
                 </div>
             `;
