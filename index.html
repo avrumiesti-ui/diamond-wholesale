@@ -65,7 +65,7 @@
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
         .mm-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); width: 15px; }
 
-        /* SUMMARY DASHBOARD */
+        /* SUMMARY DASHBOARD (Desktop) */
         .summary-dashboard { display: flex; gap: 10px; background: var(--white); padding: 10px 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 15px; flex-wrap: wrap; }
         .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 10px; min-width: 80px; }
         .sum-card:last-child { border-right: none; padding-right: 0; }
@@ -100,11 +100,11 @@
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
         .media-container { display: flex; gap: 20px; flex-direction: row; flex-wrap: wrap; }
         .env-media-wrapper { display: flex; flex-direction: column; gap: 8px; width: 250px; flex-shrink: 0; }
-        .env-media-embed { width: 100%; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; }
-        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; border: none; }
+        .env-media-embed { width: 100%; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: flex-start; justify-content: center; position: relative; }
+        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
-        /* MEDIA POPUP MODAL (Desktop) */
+        /* MEDIA POPUP MODAL */
         .media-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
         .media-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
         .media-modal-content { background: var(--white); width: 100%; max-width: 1200px; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
@@ -122,15 +122,21 @@
             .mobile-only { display: block; }
             
             .inventory-container { flex-direction: column; padding: 0; }
-            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; background: var(--white); }
+            
+            /* Sidebar stretches to full height */
+            .sidebar { width: 100%; display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 0; background: var(--white); height: 100dvh; box-sizing: border-box; overflow-y: auto; }
             .sidebar.show { display: block; }
+            
+            /* Pin the apply button precisely to bottom */
+            .apply-btn-wrapper { position: sticky; bottom: 0; background: var(--white); padding: 15px 0 20px 0; margin-top: 20px; border-top: 1px solid var(--border); }
+
             .results-area { padding: 10px; }
             
-            /* Mobile Dashboard sizing: 40/60 ratio */
-            .summary-dashboard { display: grid; grid-template-columns: 4fr 6fr; gap: 8px; padding: 10px; }
-            .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 8px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; }
-            .sum-label { font-size: 0.58rem; } 
-            .sum-val { font-size: 0.85rem; } 
+            /* Mobile Dashboard sizing: 3 Cols (20% - 33.3% - remaining), Fonts dropped 10% */
+            .summary-dashboard { display: grid; grid-template-columns: 20% 33.33% 1fr; gap: 8px; padding: 10px; }
+            .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 6px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; min-width: 0;}
+            .sum-label { font-size: 0.58rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;} 
+            .sum-val { font-size: 0.78rem; } 
 
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
@@ -145,24 +151,28 @@
             
             .envelope-row { display: none !important; }
 
-            /* Mobile Card Adjustments */
             .mobile-card { display: flex; flex-direction: column; gap: 6px; }
-            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 100px; }
+            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
             .mc-line2, .mc-line3 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line4 { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
             
-            /* Identical Price Fonts in Card */
+            /* Identical Price Fonts in Card (Reduced by 20%) */
             .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; display: flex; flex-direction: column; gap: 2px; }
-            .mc-price { font-weight: 800; font-size: 1.1rem; color: #059669; line-height: 1; }
+            .mc-price { font-weight: 800; font-size: 0.88rem; color: #059669; line-height: 1; }
             
             .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
             
             /* Drawer Details */
-            .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
+            .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; align-items: flex-end; }
             .drawer-overlay.open { display: flex; }
             .drawer-content { background: var(--white); width: 100%; height: 90vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; overflow: hidden; }
             .drawer-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; }
+            
+            /* Full size drawer photo */
+            .drawer-photo-box { width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+            .drawer-photo-box img { width: 100%; height: auto; border-radius: 8px; }
+
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         }
@@ -214,7 +224,7 @@
                 <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
                 <button class="btn-reset" onclick="resetFilters()">Reset All</button>
             </div>
-            
+
             <div class="filter-group">
                 <span class="filter-label">SHAPE</span>
                 <div class="shape-grid">
@@ -310,9 +320,11 @@
                 <div class="touch-bar" id="lab-bar"></div>
             </div>
             
-            <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
+            <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;" onkeyup="runSearch()">
 
-            <button onclick="toggleSidebar()" class="mobile-only" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold; position:sticky; bottom:0;">APPLY FILTERS</button>
+            <div class="apply-btn-wrapper mobile-only">
+                <button onclick="toggleSidebar()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold;">APPLY FILTERS</button>
+            </div>
         </aside>
 
         <main class="results-area">
@@ -323,20 +335,20 @@
                     <span class="sum-val" id="tot-count">0</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Total Carats</span>
-                    <span class="sum-val" id="tot-carats">0.00</span>
-                </div>
-                <div class="sum-card">
                     <span class="sum-label">Total Rap</span>
                     <span class="sum-val" id="tot-rap">$0.00</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Avg Disc</span>
-                    <span class="sum-val" id="avg-rap-disc">0.00%</span>
-                </div>
-                <div class="sum-card">
                     <span class="sum-label">Avg / Ct</span>
                     <span class="sum-val" id="avg-price-ct">$0.00</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Carats</span>
+                    <span class="sum-val" id="tot-carats">0.00</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Avg Disc</span>
+                    <span class="sum-val" id="avg-rap-disc">0.00%</span>
                 </div>
                 <div class="sum-card">
                     <span class="sum-label">Total Price</span>
@@ -460,7 +472,6 @@
                     obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
                 });
                 
-                // Parse split measurements for easy filtering
                 let measRaw = obj['measurements'] || '';
                 let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
                 obj['measl'] = parts[0] || '';
@@ -718,6 +729,8 @@
                 const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
                 const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
+
+                const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${getVal(row,'ID')}`;
                 
                 // IMPORTANT: PDFs natively open in a new tab instead of a buggy iframe
                 const labStr = getVal(row,'Lab') || 'CERT';
@@ -772,8 +785,6 @@
                 const env = document.createElement('tr');
                 env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
-                
-                const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${getVal(row,'ID')}`;
                 
                 env.innerHTML = `
                     <td colspan="23" style="padding:0;">
@@ -840,7 +851,7 @@
         }
 
         function openMediaModal(url, type, title) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden'; // Lock background scroll
             document.getElementById('media-modal-title').innerText = title;
             const body = document.getElementById('media-modal-body');
             
@@ -867,7 +878,7 @@
         // MOBILE DRAWER
         function openDrawer(index) {
             const row = filteredData[index];
-            document.body.style.overflow = 'hidden'; // Lock background
+            document.body.style.overflow = 'hidden'; 
             document.getElementById('mobile-drawer').classList.add('open');
             
             const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
@@ -881,25 +892,34 @@
 
             const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
-            // Video opens in modal, Cert opens natively to prevent PDF iframe errors on mobile
+            // Fixed Logic: Always show buttons. Gray out if no link exists.
             const modalBtn = (link, label, icon, type) => {
-                if(!link || link.trim() === '') return '';
-                return `<button onclick="openMediaModal('${formatUrl(link)}', '${type}', '${modalTitle.replace(/'/g, "\\'")}')" style="flex:1; padding:8px 10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:var(--primary); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.9rem;"><span style="font-size:1.2rem;">${icon}</span>${label}</button>`;
+                const isDis = (!link || link.trim() === '');
+                const bg = isDis ? '#f1f5f9' : '#f8fafc';
+                const col = isDis ? '#94a3b8' : 'var(--primary)';
+                const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}', '${type}', '${modalTitle.replace(/'/g, "\\'")}')"`;
+                const cur = isDis ? 'default' : 'pointer';
+                return `<button ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:${col}; cursor:${cur}; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</button>`;
             };
+
             const certBtn = (link, label, icon) => {
-                if(!link || link.trim() === '') return '';
-                return `<a href="${formatUrl(link)}" target="_blank" style="flex:1; padding:8px 10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:var(--primary); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.9rem;"><span style="font-size:1.2rem;">${icon}</span>${label}</a>`;
+                const isDis = (!link || link.trim() === '');
+                const bg = isDis ? '#f1f5f9' : '#f8fafc';
+                const col = isDis ? '#94a3b8' : 'var(--primary)';
+                const ev = isDis ? '' : `href="${formatUrl(link)}" target="_blank"`;
+                const tag = isDis ? 'div' : 'a';
+                return `<${tag} ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:${col}; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</${tag}>`;
             };
 
             const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
             const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
 
-            // Full square photo block for drawer
+            // Photo without fixed aspect ratio, using drawer width
             let photoEmbedHtml = '';
             if(photo) {
                 photoEmbedHtml = `
-                <div style="width:100%; aspect-ratio: 1/1; background:#f1f5f9; border-radius:8px; overflow:hidden; margin-bottom:15px; display:flex; align-items:center; justify-content:center; border:1px solid #e2e8f0;">
-                    <img src="${formatUrl(photo)}" style="width:100%; height:100%; object-fit:contain;" onerror="this.style.display='none'">
+                <div style="width:100%; display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
+                    <img src="${formatUrl(photo)}" style="width:100%; height:auto; border-radius:8px;" onerror="this.style.display='none'">
                 </div>`;
             }
 
@@ -908,8 +928,9 @@
                 ${photoEmbedHtml}
 
                 <div style="display:flex; gap:10px; margin-bottom:20px; justify-content:center;">
-                    ${modalBtn(video, 'Video', '🎥', video.toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
-                    ${certBtn(report, 'Cert', '📄')}
+                    ${modalBtn(photo, 'Photo', '📷', 'img')}
+                    ${modalBtn(video, 'Video', '🎥', (video||'').toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
+                    ${certBtn(report, 'Report', '📄')}
                 </div>
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
@@ -922,11 +943,11 @@
                 <div style="padding-top:15px; border-top:1px solid #e2e8f0; margin-bottom:20px;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
                         <div style="font-size:1rem; color:#475569; font-weight:700; display:flex; align-items:center;">Price/Ct:</div>
-                        <div style="font-size:1.4rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Price'))}</div>
+                        <div style="font-size:1.1rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Price'))}</div>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                         <div style="font-size:0.95rem; color:#64748b; font-weight:600;">Total Price:</div>
-                        <div style="font-size:1.4rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Total Price'))}</div>
+                        <div style="font-size:1.1rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Total Price'))}</div>
                     </div>
                     
                     <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
