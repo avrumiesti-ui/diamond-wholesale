@@ -15,13 +15,15 @@
             --text-muted: #64748b;
             --white: #ffffff;
             --hover-row: #f8fafc;
+            --max-w: 1200px;
         }
         
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 13px; overflow-x: hidden; }
 
         /* HEADER */
-        header { background: var(--white); padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; width: 100%; }
+        .header-inner { max-width: var(--max-w); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; }
         .logo-section { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 35px; }
         .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 15px; align-items: center;}
@@ -33,15 +35,15 @@
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* LAYOUT */
-        .inventory-container { display: none; min-height: calc(100vh - 60px); }
-        .sidebar { width: 340px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
+        /* LAYOUT (Constrained to 1200px) */
+        .inventory-container { display: none; min-height: calc(100vh - 60px); max-width: var(--max-w); margin: 0 auto; width: 100%; }
+        .sidebar { width: 320px; background: var(--bg-gray); border-right: 1px solid var(--border); padding: 20px 20px 20px 0; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; }
         
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
         .btn-reset:hover { text-decoration: underline; }
 
-        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; }
+        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; }
         .filter-group:last-child { border-bottom: none; }
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
@@ -63,23 +65,21 @@
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
-        /* SUMMARY DASHBOARD (TOTALS) */
-        .summary-dashboard { display: flex; gap: 15px; background: var(--white); padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border); margin-bottom: 20px; flex-wrap: wrap; }
-        .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 15px; min-width: 100px; }
+        /* SUMMARY DASHBOARD (Subtle Font Sizes) */
+        .summary-dashboard { display: flex; gap: 10px; background: var(--white); padding: 10px 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 15px; flex-wrap: wrap; }
+        .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 10px; min-width: 80px; }
         .sum-card:last-child { border-right: none; padding-right: 0; }
-        .sum-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .sum-val { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
-        .sum-val.green { color: #059669; }
-        .sum-val.red { color: #dc2626; }
+        .sum-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
+        .sum-val { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
 
         /* TABLE (Desktop) */
-        .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
-        .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        .results-area { flex-grow: 1; padding: 20px 0 20px 20px; overflow: hidden; display: flex; flex-direction: column; }
+        .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; flex-grow: 1; border: 1px solid var(--border); }
         
         table { width: max-content; min-width: 100%; border-collapse: collapse; }
-        th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
+        th { background: #f8fafc; color: #475569; padding: 12px 6px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; z-index: 10; }
         th:hover { background: #e2e8f0; }
-        td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
+        td { padding: 10px 6px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
         
         th:first-child, td:first-child { padding-left: 15px; }
         th:last-child, td:last-child { padding-right: 15px; }
@@ -99,8 +99,8 @@
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
         .media-container { display: flex; gap: 20px; }
-        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: flex-start; justify-content: center; position: relative; flex-shrink: 0; } /* align-items flex-start added here */
-        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; } /* object-position top added here */
+        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: flex-start; justify-content: center; position: relative; flex-shrink: 0; }
+        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
         /* MOBILE SPECIFIC CSS */
@@ -111,34 +111,35 @@
             .desktop-only { display: none !important; }
             .mobile-only { display: block; }
             
-            .inventory-container { flex-direction: column; }
-            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; }
+            .inventory-container { flex-direction: column; padding: 0; }
+            .sidebar { width: 100%; display: none; position: fixed; top: 0; bottom: 0; left: 0; right: 0; z-index: 2000; padding: 20px; padding-bottom: 100px; background: var(--white); }
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
-            .summary-dashboard { flex-wrap: wrap; gap: 10px; padding: 10px; }
-            .sum-card { flex: 1 1 30%; border-right: none; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; min-width: 80px;}
-            .sum-val { font-size: 1.1rem; }
+            .summary-dashboard { gap: 8px; padding: 10px; }
+            .sum-card { flex: 1 1 30%; border-right: none; background: #f8fafc; padding: 8px; border-radius: 4px; border: 1px solid #e2e8f0; min-width: 80px;}
 
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
             
             table, tbody, tr { display: block; width: 100%; min-width: 100%; }
             thead { display: none; }
-            .table-container { background: transparent; box-shadow: none; }
+            .table-container { background: transparent; box-shadow: none; border: none; }
             
-            .data-row { background: var(--white); border-radius: 10px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
+            .data-row { background: var(--white); border-radius: 8px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
             .data-row td { padding: 0; border: none; display: none; } 
             td.mobile-only { display: block; } 
             
             .envelope-row { display: none !important; }
 
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
-            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
+            .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 100px; }
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line3 { font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 6px 10px; border-radius: 4px; display: inline-block; font-family: monospace; }
-            .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
-            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #dc2626; } /* Brought back red for easy visibility on mobile */
+            .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; }
+            .mc-price { font-weight: 800; font-size: 1.1rem; color: #059669; line-height: 1; }
+            .mc-price-ct { font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px; }
+            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
             
             /* Drawer */
             .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
@@ -153,14 +154,16 @@
 <body>
 
     <header>
-        <div class="logo-section">
-            <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
-            <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
-            <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
-        </div>
-        <div class="header-controls">
-            <span id="update-status">Updating...</span>
-            <a href="index.html" class="logout-btn">Exit</a>
+        <div class="header-inner">
+            <div class="logo-section">
+                <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
+                <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
+                <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
+            </div>
+            <div class="header-controls">
+                <span id="update-status">Updating...</span>
+                <a href="index.html" class="logout-btn">Exit</a>
+            </div>
         </div>
     </header>
 
@@ -288,20 +291,20 @@
                     <span class="sum-val" id="tot-carats">0.00</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Total Rap ($)</span>
+                    <span class="sum-label">Total Rap</span>
                     <span class="sum-val" id="tot-rap">$0</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Avg Rap Disc</span>
-                    <span class="sum-val red" id="avg-rap-disc">0%</span>
+                    <span class="sum-label">Avg Disc</span>
+                    <span class="sum-val" id="avg-rap-disc">0%</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Avg Price/Ct</span>
-                    <span class="sum-val green" id="avg-price-ct">$0</span>
+                    <span class="sum-label">Avg / Ct</span>
+                    <span class="sum-val" id="avg-price-ct">$0</span>
                 </div>
                 <div class="sum-card">
-                    <span class="sum-label">Total Price ($)</span>
-                    <span class="sum-val green" id="tot-price">$0</span>
+                    <span class="sum-label">Total Price</span>
+                    <span class="sum-val" id="tot-price">$0</span>
                 </div>
             </div>
 
@@ -315,7 +318,9 @@
                             <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
                             <th onclick="sortBy('Color')">Col <span id="sort-Color"></span></th>
                             <th onclick="sortBy('Clarity')">Clar <span id="sort-Clarity"></span></th>
-                            <th onclick="sortBy('Measurements')">Meas <span id="sort-Measurements"></span></th>
+                            <th onclick="sortBy('measl')">L <span id="sort-measl"></span></th>
+                            <th onclick="sortBy('measw')">W <span id="sort-measw"></span></th>
+                            <th onclick="sortBy('measd')">D <span id="sort-measd"></span></th>
                             <th onclick="sortBy('Ratio')">Ratio <span id="sort-Ratio"></span></th>
                             <th onclick="sortBy('Lab')">Lab <span id="sort-Lab"></span></th>
                             <th onclick="sortBy('Cut')">Cut <span id="sort-Cut"></span></th>
@@ -361,7 +366,6 @@
             shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: []
         };
 
-        // Removed 'M' color per request
         const config = {
             colors: ['D','E','F','G','H','I','J','K','L'],
             clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
@@ -413,6 +417,14 @@
                 rawHeaders.forEach((h, index) => {
                     obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
                 });
+                
+                // Parse split measurements during import
+                let measRaw = obj['measurements'] || '';
+                let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
+                obj['measl'] = parts[0] || '';
+                obj['measw'] = parts[1] || '';
+                obj['measd'] = parts[2] || '';
+                
                 data.push(obj);
             }
 
@@ -424,7 +436,6 @@
             runSearch();
         }
 
-        // Clean Number Function (Strips $, commas, spaces)
         function safeParseFloat(val) {
             if (!val) return NaN;
             const cleaned = val.toString().replace(/[$,\s]/g, '');
@@ -632,6 +643,7 @@
                 tRap += (size * rapPerCt);
             });
 
+            // Mathematical logic exactly as requested
             let avgPriceCt = tCarats > 0 ? (tPrice / tCarats) : 0;
             let avgRapDisc = tRap > 0 ? ((tPrice / tRap) - 1) * 100 : 0;
 
@@ -672,7 +684,7 @@
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW 
+                // A. DESKTOP ROW (With Split L/W/D)
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -680,7 +692,9 @@
                     <td class="desktop-only">${formatNum(getVal(row,'Size'))}</td>
                     <td class="desktop-only">${getVal(row,'Color')}</td>
                     <td class="desktop-only">${getVal(row,'Clarity')}</td>
-                    <td class="desktop-only">${getVal(row,'Measurements')}</td>
+                    <td class="desktop-only">${getVal(row,'measl')}</td>
+                    <td class="desktop-only">${getVal(row,'measw')}</td>
+                    <td class="desktop-only">${getVal(row,'measd')}</td>
                     <td class="desktop-only">${getVal(row,'Ratio')}</td>
                     <td class="desktop-only">${labHtml}</td>
                     <td class="desktop-only">${getVal(row,'Cut')}</td>
@@ -698,23 +712,26 @@
                     
                     <td class="mobile-only">
                         <div class="mobile-card">
-                            <div class="mc-price">${formatMoney(getVal(row,'Total Price'))}</div>
+                            <div class="mc-price-wrap">
+                                <div class="mc-price">${formatMoney(getVal(row,'Total Price'))}</div>
+                                <div class="mc-price-ct">${formatMoney(getVal(row,'Price'))}/ct</div>
+                            </div>
                             <div class="mc-rap">${formatPct(getVal(row,'Rap Disc'))}</div>
                             <div class="mc-line1">${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))} ${getVal(row,'Color')} ${getVal(row,'Clarity')} ${getVal(row,'Lab')}</div>
-                            <div class="mc-line2">${getVal(row,'Measurements')} • Ratio: ${getVal(row,'Ratio')}</div>
+                            <div class="mc-line2">L: ${getVal(row,'measl')} W: ${getVal(row,'measw')} D: ${getVal(row,'measd')} • Ratio: ${getVal(row,'Ratio')}</div>
                             <div class="mc-line3">D:${getVal(row,'Depth')} T:${getVal(row,'Table')} P:${getVal(row,'Pol')} S:${getVal(row,'Sym')} F:${getVal(row,'Fluo')}</div>
                         </div>
                     </td>
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE (With Lazy Loading Attributes)
+                // C. DESKTOP ENVELOPE (Span 23 columns due to new split measurements)
                 const env = document.createElement('tr');
                 env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
                 
                 env.innerHTML = `
-                    <td colspan="21" style="padding:0;">
+                    <td colspan="23" style="padding:0;">
                         <div class="env-showcase">
                             <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-loaded="false">
                                 </div>
@@ -742,7 +759,6 @@
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
                 
-                // LAZY LOAD TRIGGER
                 const mediaCont = document.getElementById(`media-container-${index}`);
                 if (mediaCont && mediaCont.dataset.loaded === "false") {
                     const pUrl = mediaCont.dataset.photo;
