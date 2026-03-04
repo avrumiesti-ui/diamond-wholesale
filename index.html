@@ -64,11 +64,11 @@
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
         /* SUMMARY DASHBOARD (TOTALS) */
-        .summary-dashboard { display: flex; gap: 20px; background: var(--white); padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border); margin-bottom: 20px; }
-        .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
-        .sum-card:last-child { border-right: none; }
-        .sum-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
-        .sum-val { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+        .summary-dashboard { display: flex; gap: 15px; background: var(--white); padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border); margin-bottom: 20px; flex-wrap: wrap; }
+        .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 15px; min-width: 100px; }
+        .sum-card:last-child { border-right: none; padding-right: 0; }
+        .sum-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .sum-val { font-size: 1.3rem; font-weight: 800; color: var(--primary); }
         .sum-val.green { color: #059669; }
         .sum-val.red { color: #dc2626; }
 
@@ -77,8 +77,6 @@
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
         
         table { width: max-content; min-width: 100%; border-collapse: collapse; }
-        
-        /* Table Layout Fix: Removed desktop-only display conflict */
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
@@ -101,8 +99,8 @@
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
         .media-container { display: flex; gap: 20px; }
-        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
-        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; border: none; }
+        .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: flex-start; justify-content: center; position: relative; flex-shrink: 0; } /* align-items flex-start added here */
+        .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; } /* object-position top added here */
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
         /* MOBILE SPECIFIC CSS */
@@ -118,9 +116,8 @@
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
-            /* Wrap Summary Dashboard on Mobile */
             .summary-dashboard { flex-wrap: wrap; gap: 10px; padding: 10px; }
-            .sum-card { flex: 1 1 45%; border-right: none; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; }
+            .sum-card { flex: 1 1 30%; border-right: none; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; min-width: 80px;}
             .sum-val { font-size: 1.1rem; }
 
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -141,7 +138,7 @@
             .mc-line2 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line3 { font-size: 0.75rem; color: #64748b; background: #f1f5f9; padding: 6px 10px; border-radius: 4px; display: inline-block; font-family: monospace; }
             .mc-price { position: absolute; top: 15px; right: 15px; font-weight: 800; font-size: 1.1rem; color: #059669; }
-            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
+            .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #dc2626; } /* Brought back red for easy visibility on mobile */
             
             /* Drawer */
             .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end; }
@@ -212,6 +209,7 @@
                     <button class="btn-toggle" onclick="toggleFilter('shape', 'Princess', this)">Princess</button>
                     <button class="btn-toggle" onclick="toggleFilter('shape', 'Asscher', this)">Asscher</button>
                     <button class="btn-toggle" onclick="toggleFilter('shape', 'Marquise', this)">Marquise</button>
+                    <button class="btn-toggle" onclick="toggleFilter('shape', 'Heart', this)">Heart</button>
                 </div>
             </div>
 
@@ -282,7 +280,7 @@
             
             <div class="summary-dashboard">
                 <div class="sum-card">
-                    <span class="sum-label">Total Stones</span>
+                    <span class="sum-label">Stones</span>
                     <span class="sum-val" id="tot-count">0</span>
                 </div>
                 <div class="sum-card">
@@ -291,7 +289,15 @@
                 </div>
                 <div class="sum-card">
                     <span class="sum-label">Total Rap ($)</span>
-                    <span class="sum-val red" id="tot-rap">$0</span>
+                    <span class="sum-val" id="tot-rap">$0</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Avg Rap Disc</span>
+                    <span class="sum-val red" id="avg-rap-disc">0%</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Avg Price/Ct</span>
+                    <span class="sum-val green" id="avg-price-ct">$0</span>
                 </div>
                 <div class="sum-card">
                     <span class="sum-label">Total Price ($)</span>
@@ -355,8 +361,9 @@
             shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: []
         };
 
+        // Removed 'M' color per request
         const config = {
-            colors: ['D','E','F','G','H','I','J','K','L','M'],
+            colors: ['D','E','F','G','H','I','J','K','L'],
             clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
             labs: ['GIA','IGI','HRD'],
             grades: ['EX','VG','GD','FR','F'],
@@ -625,10 +632,16 @@
                 tRap += (size * rapPerCt);
             });
 
-            document.getElementById('tot-count').innerText = filteredData.length;
+            let avgPriceCt = tCarats > 0 ? (tPrice / tCarats) : 0;
+            let avgRapDisc = tRap > 0 ? ((tPrice / tRap) - 1) * 100 : 0;
+
+            document.getElementById('tot-count').innerText = filteredData.length.toLocaleString();
             document.getElementById('tot-carats').innerText = tCarats.toFixed(2);
-            document.getElementById('tot-price').innerText = '$' + tPrice.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
             document.getElementById('tot-rap').innerText = '$' + Math.round(tRap).toLocaleString();
+            document.getElementById('tot-price').innerText = '$' + Math.round(tPrice).toLocaleString();
+            
+            document.getElementById('avg-price-ct').innerText = '$' + Math.round(avgPriceCt).toLocaleString();
+            document.getElementById('avg-rap-disc').innerText = avgRapDisc.toFixed(2) + '%';
             
             tbody.innerHTML = '';
 
@@ -729,7 +742,7 @@
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
                 
-                // LAZY LOAD TRIGGER: Only fetch media when envelope opens
+                // LAZY LOAD TRIGGER
                 const mediaCont = document.getElementById(`media-container-${index}`);
                 if (mediaCont && mediaCont.dataset.loaded === "false") {
                     const pUrl = mediaCont.dataset.photo;
@@ -741,7 +754,7 @@
                     }
                     if (vUrl && vUrl !== '') {
                         if (vUrl.toLowerCase().endsWith('.mp4')) {
-                            html += `<div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain;"></video></div>`;
+                            html += `<div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain; object-position:top;"></video></div>`;
                         } else {
                             html += `<div class="env-media-embed"><iframe src="${vUrl}" allowfullscreen style="width:100%; height:100%; border:none;"></iframe></div>`;
                         }
