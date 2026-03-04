@@ -43,11 +43,10 @@
         .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
         .btn-reset:hover { text-decoration: underline; }
 
-        .filter-group { margin-bottom: 25px; border-bottom: 1px solid #e2e8f0; padding-bottom: 20px; }
-        .filter-group:last-child { border-bottom: none; }
+        /* Filter layout tweaks: Removed section lines */
+        .filter-group { margin-bottom: 20px; } 
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
         
-        /* FILTERS UI */
         .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
         .btn-toggle.active { background-color: var(--primary); color: #fff; border-color: var(--primary); }
@@ -64,6 +63,7 @@
         
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
+        .mm-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); width: 15px; }
 
         /* SUMMARY DASHBOARD */
         .summary-dashboard { display: flex; gap: 10px; background: var(--white); padding: 10px 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid var(--border); margin-bottom: 15px; flex-wrap: wrap; }
@@ -98,13 +98,12 @@
         .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
-        .media-container { display: flex; gap: 20px; }
         .env-media-wrapper { display: flex; flex-direction: column; gap: 8px; width: 250px; flex-shrink: 0; }
         .env-media-embed { width: 100%; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: flex-start; justify-content: center; position: relative; }
         .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
-        /* MEDIA POPUP MODAL (Desktop) */
+        /* MEDIA POPUP MODAL */
         .media-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
         .media-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
         .media-modal-content { background: var(--white); width: 100%; max-width: 1200px; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
@@ -115,7 +114,6 @@
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
-        .desktop-only { display: table-cell; }
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
@@ -126,8 +124,11 @@
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
-            .summary-dashboard { gap: 8px; padding: 10px; }
-            .sum-card { flex: 1 1 30%; border-right: none; background: #f8fafc; padding: 8px; border-radius: 4px; border: 1px solid #e2e8f0; min-width: 80px;}
+            /* Mobile Dashboard sizing: 10% smaller fonts, 40/60 ratio */
+            .summary-dashboard { display: grid; grid-template-columns: 4fr 6fr; gap: 8px; padding: 10px; }
+            .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 8px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; }
+            .sum-label { font-size: 0.58rem; } 
+            .sum-val { font-size: 0.85rem; } 
 
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
@@ -139,7 +140,6 @@
             .data-row { background: var(--white); border-radius: 8px; margin-bottom: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
             .data-row td { padding: 0; border: none; display: none; } 
             td.mobile-only { display: block; } 
-            
             .envelope-row { display: none !important; }
 
             .mobile-card { display: flex; flex-direction: column; gap: 6px; }
@@ -149,7 +149,7 @@
             
             .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; }
             .mc-price { font-weight: 800; font-size: 1.1rem; color: #059669; line-height: 1; }
-            .mc-price-ct { font-size: 0.75rem; color: #64748b; font-weight: 600; margin-top: 4px; }
+            .mc-price-ct { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-top: 4px; }
             .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
             
             /* Drawer */
@@ -159,6 +159,7 @@
             .drawer-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         }
     </style>
 </head>
@@ -190,10 +191,10 @@
             <option value="">Sort By...</option>
             <option value="Size-asc">Size (Low to High)</option>
             <option value="Size-desc">Size (High to Low)</option>
-            <option value="Total Price-asc">Total $ (Low to High)</option>
-            <option value="Total Price-desc">Total $ (High to Low)</option>
             <option value="Price-asc">Price/Ct (Low to High)</option>
             <option value="Price-desc">Price/Ct (High to Low)</option>
+            <option value="Total Price-asc">Total $ (Low to High)</option>
+            <option value="Total Price-desc">Total $ (High to Low)</option>
             <option value="Rap Disc-asc">Rap Disc (Low to High)</option>
             <option value="Rap Disc-desc">Rap Disc (High to Low)</option>
         </select>
@@ -208,8 +209,6 @@
                 <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
                 <button class="btn-reset" onclick="resetFilters()">Reset All</button>
             </div>
-            
-            <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
 
             <div class="filter-group">
                 <span class="filter-label">SHAPE</span>
@@ -254,11 +253,6 @@
             </div>
 
             <div class="filter-group">
-                <span class="filter-label">LAB</span>
-                <div class="touch-bar" id="lab-bar"></div>
-            </div>
-
-            <div class="filter-group">
                 <span class="filter-label">CUT</span>
                 <div class="touch-bar" id="cut-bar"></div>
                 <span class="filter-label">POLISH</span>
@@ -286,6 +280,32 @@
                     <input type="number" id="ratio-max" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
                 </div>
             </div>
+
+            <div class="filter-group">
+                <span class="filter-label">MEASUREMENTS (MM)</span>
+                <div class="range-row">
+                    <span class="mm-label">L</span>
+                    <input type="number" id="min-l" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-l" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+                </div>
+                <div class="range-row">
+                    <span class="mm-label">W</span>
+                    <input type="number" id="min-w" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-w" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+                </div>
+                <div class="range-row">
+                    <span class="mm-label">D</span>
+                    <input type="number" id="min-d" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+                    <input type="number" id="max-d" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">LAB</span>
+                <div class="touch-bar" id="lab-bar"></div>
+            </div>
+            
+            <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; margin-bottom:20px;" onkeyup="runSearch()">
 
             <button onclick="toggleSidebar()" class="mobile-only" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:4px; font-weight:bold; position:sticky; bottom:0;">APPLY FILTERS</button>
         </aside>
@@ -383,9 +403,7 @@
         let sortCol = '';
         let sortDir = 1; 
         
-        let activeFilters = {
-            shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: []
-        };
+        let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [] };
 
         const config = {
             colors: ['D','E','F','G','H','I','J','K','L'],
@@ -437,6 +455,7 @@
                     obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
                 });
                 
+                // Parse split measurements for easy filtering
                 let measRaw = obj['measurements'] || '';
                 let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
                 obj['measl'] = parts[0] || '';
@@ -469,9 +488,7 @@
             return '';
         }
 
-        function getVal(row, exactHeader) { 
-            return row[exactHeader.toLowerCase()] || ''; 
-        }
+        function getVal(row, exactHeader) { return row[exactHeader.toLowerCase()] || ''; }
 
         function initTouchBar(id, items, filterKey) {
             const container = document.getElementById(id);
@@ -497,13 +514,10 @@
             let active = activeFilters[key];
             const clickedItem = items[index];
             
-            if (active.length === 1 && active[0] === clickedItem) {
-                activeFilters[key] = []; 
-            } else if (active.includes(clickedItem)) {
-                activeFilters[key] = [clickedItem]; 
-            } else if (active.length === 0) {
-                activeFilters[key] = [clickedItem]; 
-            } else {
+            if (active.length === 1 && active[0] === clickedItem) activeFilters[key] = []; 
+            else if (active.includes(clickedItem)) activeFilters[key] = [clickedItem]; 
+            else if (active.length === 0) activeFilters[key] = [clickedItem]; 
+            else {
                 const activeIndices = active.map(val => items.indexOf(val));
                 const min = Math.min(...activeIndices, index);
                 const max = Math.max(...activeIndices, index);
@@ -576,6 +590,12 @@
             const maxT = safeParseFloat(document.getElementById('table-max').value);
             const minR = safeParseFloat(document.getElementById('ratio-min').value);
             const maxR = safeParseFloat(document.getElementById('ratio-max').value);
+            const minL = safeParseFloat(document.getElementById('min-l').value);
+            const maxL = safeParseFloat(document.getElementById('max-l').value);
+            const minW = safeParseFloat(document.getElementById('min-w').value);
+            const maxW = safeParseFloat(document.getElementById('max-w').value);
+            const minDmm = safeParseFloat(document.getElementById('min-d').value);
+            const maxDmm = safeParseFloat(document.getElementById('max-d').value);
 
             filteredData = inventoryData.filter(row => {
                 if(query) {
@@ -621,6 +641,9 @@
                 if(!checkNum(getVal(row,'Depth'), minD, maxD)) return false;
                 if(!checkNum(getVal(row,'Table'), minT, maxT)) return false;
                 if(!checkNum(getVal(row,'Ratio'), minR, maxR)) return false;
+                if(!checkNum(getVal(row,'measl'), minL, maxL)) return false;
+                if(!checkNum(getVal(row,'measw'), minW, maxW)) return false;
+                if(!checkNum(getVal(row,'measd'), minDmm, maxDmm)) return false;
 
                 return true;
             });
@@ -642,9 +665,6 @@
         // --- 7. RENDER DESKTOP & MOBILE ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
-            
-            // Format to exactly 2 decimal places for all money calculations
-            const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
             
             let tCarats = 0;
             let tPrice = 0;
@@ -682,6 +702,7 @@
                     else toggleEnvelope(i);
                 };
 
+                const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
                 const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
                 const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
                 const formatUrl = u => {
@@ -693,13 +714,13 @@
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
                 const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
 
+                const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${getVal(row,'ID')}`;
+                
                 const labStr = getVal(row,'Lab') || 'CERT';
                 let labHtml = labStr;
                 if(report) {
-                    labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
+                    labHtml = `<span class="lab-link" onclick="event.stopPropagation(); openMediaModal('${formatUrl(report)}', 'iframe', '${modalTitle.replace(/'/g, "\\'")}');">${labStr}</span>`;
                 }
-
-                const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${getVal(row,'ID')}`;
 
                 // A. DESKTOP ROW 
                 tr.innerHTML = `
@@ -730,8 +751,8 @@
                     <td class="mobile-only">
                         <div class="mobile-card">
                             <div class="mc-price-wrap">
-                                <div class="mc-price">${formatMoneyFull(getVal(row,'Total Price'))}</div>
-                                <div class="mc-price-ct">${formatMoneyFull(getVal(row,'Price'))}/ct</div>
+                                <div class="mc-price">${formatMoneyFull(getVal(row,'Price'))}/ct</div>
+                                <div class="mc-price-ct">${formatMoneyFull(getVal(row,'Total Price'))} total</div>
                             </div>
                             <div class="mc-rap">${formatPct(getVal(row,'Rap Disc'))}</div>
                             <div class="mc-line1">${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))} ${getVal(row,'Color')} ${getVal(row,'Clarity')} ${getVal(row,'Lab')}</div>
@@ -751,7 +772,7 @@
                 env.innerHTML = `
                     <td colspan="23" style="padding:0;">
                         <div class="env-showcase">
-                            <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-title="${modalTitle}" data-loaded="false">
+                            <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-title="${modalTitle.replace(/'/g, "\\'")}" data-loaded="false">
                                 </div>
                             <div class="env-comments-box">
                                 <h4 style="margin:0 0 10px 0; color:#475569; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Comments & Notes</h4>
@@ -814,6 +835,7 @@
 
         // DESKTOP FULL SCREEN MODAL
         function openMediaModal(url, type, title) {
+            document.body.style.overflow = 'hidden'; // Lock background scroll
             document.getElementById('media-modal-title').innerText = title;
             const body = document.getElementById('media-modal-body');
             
@@ -830,17 +852,24 @@
 
         function closeMediaModal() {
             document.getElementById('media-modal').classList.remove('open');
-            document.getElementById('media-modal-body').innerHTML = ''; 
+            document.getElementById('media-modal-body').innerHTML = ''; // Stops playing video/iframe
+            
+            // Only unlock scroll if the mobile drawer isn't also open underneath
+            if (!document.getElementById('mobile-drawer').classList.contains('open')) {
+                document.body.style.overflow = ''; 
+            }
         }
 
         // MOBILE DRAWER
         function openDrawer(index) {
             const row = filteredData[index];
+            document.body.style.overflow = 'hidden'; // Lock background scroll
             document.getElementById('mobile-drawer').classList.add('open');
             
             const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
             const titleStr = `${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
             document.getElementById('drawer-title').innerText = titleStr;
+            const modalTitle = `${titleStr} - ID: ${getVal(row,'ID')}`;
             
             const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
             const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
@@ -848,10 +877,9 @@
 
             const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
-            const linkBtn = (link, label, icon) => {
+            const modalBtn = (link, label, icon, type) => {
                 if(!link || link.trim() === '') return '';
-                // Smaller, more compact buttons
-                return `<a href="${formatUrl(link)}" target="_blank" style="padding:8px 15px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:var(--primary); text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px; font-size:0.9rem;"><span style="font-size:1.2rem;">${icon}</span>${label}</a>`;
+                return `<button onclick="openMediaModal('${formatUrl(link)}', '${type}', '${modalTitle.replace(/'/g, "\\'")}')" style="flex:1; padding:8px 10px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:var(--primary); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.9rem;"><span style="font-size:1.2rem;">${icon}</span>${label}</button>`;
             };
 
             const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
@@ -859,7 +887,7 @@
 
             let photoEmbedHtml = '';
             if(photo) {
-                photoEmbedHtml = `<div style="width:100%; height:280px; background:#f1f5f9; border-radius:8px; overflow:hidden; margin-bottom:15px; display:flex; align-items:flex-start; justify-content:center;"><img src="${formatUrl(photo)}" style="width:100%; height:100%; object-fit:contain; object-position:top;" onerror="this.style.display='none'"></div>`;
+                photoEmbedHtml = `<div style="width:100%; background:#f1f5f9; border-radius:8px; overflow:hidden; margin-bottom:15px; display:flex; align-items:flex-start; justify-content:center;"><img src="${formatUrl(photo)}" style="width:100%; height:auto; object-fit:contain;" onerror="this.style.display='none'"></div>`;
             }
 
             document.getElementById('drawer-body').innerHTML = `
@@ -867,8 +895,8 @@
                 ${photoEmbedHtml}
 
                 <div style="display:flex; gap:10px; margin-bottom:20px; justify-content:center;">
-                    ${linkBtn(video, 'Video', '🎥')}
-                    ${linkBtn(report, 'Certificate', '📄')}
+                    ${modalBtn(video, 'Video', '🎥', video.toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
+                    ${modalBtn(report, 'Cert', '📄', 'iframe')}
                 </div>
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
@@ -879,23 +907,24 @@
                 </div>
 
                 <div style="padding-top:15px; border-top:1px solid #e2e8f0; margin-bottom:20px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <div style="font-size:1rem; color:#475569; font-weight:700;">Total Price:</div>
-                        <div style="font-size:1rem; color:#475569; font-weight:700;">${formatMoneyFull(getVal(row,'Total Price'))}</div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+                        <div style="font-size:1rem; color:#475569; font-weight:700; display:flex; align-items:center;">Price/Ct:</div>
+                        <div style="font-size:1.6rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Price'))}</div>
                     </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <div style="font-size:1rem; color:#475569; font-weight:700;">Price/Ct:</div>
-                        <div style="font-size:1rem; color:#475569; font-weight:700;">${formatMoneyFull(getVal(row,'Price'))}</div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                        <div style="font-size:0.95rem; color:#64748b; font-weight:600;">Total Price:</div>
+                        <div style="font-size:0.95rem; color:#64748b; font-weight:700;">${formatMoneyFull(getVal(row,'Total Price'))}</div>
                     </div>
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; margin-top:10px;">
+                    
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Rap Disc:</div>
                         <div style="font-size:0.9rem; color:#dc2626; font-weight:700;">${formatPct(getVal(row,'Rap Disc'))}</div>
                     </div>
-                    <div style="display:flex; justify-content:space-between;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Rap Value:</div>
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">${formatMoneyFull(getVal(row,'Rap'))}/ct</div>
                     </div>
-                    <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                    <div style="display:flex; justify-content:space-between;">
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Stock ID:</div>
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">${getVal(row,'ID')}</div>
                     </div>
@@ -908,7 +937,10 @@
             `;
         }
 
-        function closeDrawer() { document.getElementById('mobile-drawer').classList.remove('open'); }
+        function closeDrawer() { 
+            document.body.style.overflow = ''; 
+            document.getElementById('mobile-drawer').classList.remove('open'); 
+        }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
     </script>
 </body>
