@@ -63,14 +63,26 @@
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
 
+        /* SUMMARY DASHBOARD (TOTALS) */
+        .summary-dashboard { display: flex; gap: 20px; background: var(--white); padding: 15px 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--border); margin-bottom: 20px; }
+        .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+        .sum-card:last-child { border-right: none; }
+        .sum-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .sum-val { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+        .sum-val.green { color: #059669; }
+        .sum-val.red { color: #dc2626; }
+
         /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
+        
         table { width: max-content; min-width: 100%; border-collapse: collapse; }
         
+        /* Table Layout Fix: Removed desktop-only display conflict */
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
+        
         th:first-child, td:first-child { padding-left: 15px; }
         th:last-child, td:last-child { padding-right: 15px; }
 
@@ -106,6 +118,11 @@
             .sidebar.show { display: block; }
             .results-area { padding: 10px; }
             
+            /* Wrap Summary Dashboard on Mobile */
+            .summary-dashboard { flex-wrap: wrap; gap: 10px; padding: 10px; }
+            .sum-card { flex: 1 1 45%; border-right: none; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; }
+            .sum-val { font-size: 1.1rem; }
+
             .mobile-tools { display: flex; gap: 10px; background: var(--white); padding: 10px; border-bottom: 1px solid var(--border); position: sticky; top: 56px; z-index: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
             
@@ -157,7 +174,7 @@
     </div>
 
     <div class="mobile-only mobile-tools" id="mobile-tools" style="display:none;">
-        <button class="btn-mobile-tool" onclick="toggleSidebar()"><span><span id="mobile-count">(0)</span> Filters</span> <span>⚙️</span></button>
+        <button class="btn-mobile-tool" onclick="toggleSidebar()"><span>Filters</span> <span>⚙️</span></button>
         <select class="btn-mobile-tool" onchange="mobileSort(this.value)" style="appearance:none; padding-right:30px;">
             <option value="">Sort By...</option>
             <option value="Size-asc">Size (Low to High)</option>
@@ -262,10 +279,30 @@
         </aside>
 
         <main class="results-area">
+            
+            <div class="summary-dashboard">
+                <div class="sum-card">
+                    <span class="sum-label">Total Stones</span>
+                    <span class="sum-val" id="tot-count">0</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Total Carats</span>
+                    <span class="sum-val" id="tot-carats">0.00</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Total Rap ($)</span>
+                    <span class="sum-val red" id="tot-rap">$0</span>
+                </div>
+                <div class="sum-card">
+                    <span class="sum-label">Total Price ($)</span>
+                    <span class="sum-val green" id="tot-price">$0</span>
+                </div>
+            </div>
+
             <div class="table-container">
                 <table id="inventory-table">
                     <thead>
-                        <tr class="desktop-only">
+                        <tr>
                             <th style="width:30px;"></th>
                             <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
                             <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
@@ -380,10 +417,10 @@
             runSearch();
         }
 
-        // Fixes Excel numbers wrapped in quotes with commas (e.g. "1,500")
+        // Clean Number Function (Strips $, commas, spaces)
         function safeParseFloat(val) {
             if (!val) return NaN;
-            const cleaned = val.toString().replace(/[$,]/g, '');
+            const cleaned = val.toString().replace(/[$,\s]/g, '');
             return parseFloat(cleaned);
         }
 
@@ -572,7 +609,27 @@
         // --- 7. RENDER DESKTOP & MOBILE ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
-            document.getElementById('mobile-count').innerText = `(${filteredData.length})`;
+            
+            // CALCULATE TOTALS DASHBOARD
+            let tCarats = 0;
+            let tPrice = 0;
+            let tRap = 0;
+
+            filteredData.forEach(row => {
+                let size = safeParseFloat(getVal(row, 'Size')) || 0;
+                let tp = safeParseFloat(getVal(row, 'Total Price')) || 0;
+                let rapPerCt = safeParseFloat(getVal(row, 'Rap')) || 0;
+                
+                tCarats += size;
+                tPrice += tp;
+                tRap += (size * rapPerCt);
+            });
+
+            document.getElementById('tot-count').innerText = filteredData.length;
+            document.getElementById('tot-carats').innerText = tCarats.toFixed(2);
+            document.getElementById('tot-price').innerText = '$' + tPrice.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            document.getElementById('tot-rap').innerText = '$' + Math.round(tRap).toLocaleString();
+            
             tbody.innerHTML = '';
 
             filteredData.forEach((row, i) => {
@@ -602,7 +659,7 @@
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW
+                // A. DESKTOP ROW 
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -638,7 +695,7 @@
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE
+                // C. DESKTOP ENVELOPE (With Lazy Loading Attributes)
                 const env = document.createElement('tr');
                 env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
@@ -672,6 +729,7 @@
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
                 
+                // LAZY LOAD TRIGGER: Only fetch media when envelope opens
                 const mediaCont = document.getElementById(`media-container-${index}`);
                 if (mediaCont && mediaCont.dataset.loaded === "false") {
                     const pUrl = mediaCont.dataset.photo;
