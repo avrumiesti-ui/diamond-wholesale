@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>M.J. Gross Inc. | Inventory App</title>
+    <title>M.J. Gross Inc. | Live Inventory</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
@@ -20,22 +20,18 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 13px; overflow-x: hidden; }
 
-        /* HEADER & DROP ZONE */
+        /* HEADER */
         header { background: var(--white); padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo-section { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 35px; }
-        .header-controls { display: flex; gap: 15px; align-items: center; }
+        .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 15px; align-items: center;}
+        .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; }
+        .logout-btn:hover { background: #fef2f2; }
 
-        .drop-zone { border: 2px dashed #cbd5e1; border-radius: 6px; padding: 6px 15px; display: flex; align-items: center; gap: 10px; background: #f8fafc; cursor: pointer; transition: 0.2s; }
-        .drop-zone:hover, .drop-zone.dragover { background: #ecfdf5; border-color: #10b981; }
-        .drop-text { font-size: 0.8rem; font-weight: 600; color: #475569; display: flex; flex-direction: column; line-height: 1.2; }
-        #csv-input { display: none; }
-
-        /* EMPTY STATE */
-        .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
-        .giant-drop { border: 3px dashed #cbd5e1; border-radius: 12px; padding: 60px; background: var(--white); max-width: 600px; width: 100%; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .giant-drop:hover, .giant-drop.dragover { border-color: var(--accent); background: #fffcf5; transform: translateY(-5px); }
-        .giant-icon { font-size: 4rem; margin-bottom: 15px; }
+        /* LOADING STATE */
+        .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* LAYOUT */
         .inventory-container { display: none; min-height: calc(100vh - 60px); }
@@ -78,17 +74,17 @@
         th:first-child, td:first-child { padding-left: 10px; }
         th:last-child, td:last-child { padding-right: 15px; }
 
-        .data-row { transition: background 0.15s; cursor: pointer; } /* Added cursor pointer */
+        .data-row { transition: background 0.15s; cursor: pointer; }
         .data-row:hover { background-color: var(--hover-row); }
         .col-expand { width: 30px; text-align: center; }
-        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0; cursor: pointer; pointer-events: none;} /* Pointer events none so row click handles it */
+        .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0; pointer-events: none;}
         .data-row:hover .btn-expand { border-color: var(--primary); color: var(--primary); }
         .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
         .lab-link:hover { color: #1d4ed8; }
 
-        /* ENVELOPE ROW (Desktop Open Media) */
+        /* ENVELOPE ROW */
         .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
@@ -120,7 +116,7 @@
             .data-row td { padding: 0; border: none; display: none; } 
             td.mobile-only { display: block; } 
             
-            .envelope-row { display: none !important; } /* Hard hide envelopes on mobile */
+            .envelope-row { display: none !important; }
 
             .mobile-card { display: flex; flex-direction: column; gap: 8px; }
             .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 80px; }
@@ -136,15 +132,6 @@
             .drawer-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; }
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-            
-            .drop-text { display: none; }
-            .drop-zone { padding: 8px; }
-            .desktop-text { display: none; }
-            .mobile-text { display: block; }
-        }
-        @media (min-width: 1101px) {
-            .mobile-text { display: none; }
-            .desktop-text { display: block; }
         }
     </style>
 </head>
@@ -154,31 +141,19 @@
         <div class="logo-section">
             <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
             <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
-            <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">INVENTORY</span>
+            <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
         </div>
         
         <div class="header-controls">
-            <label for="csv-input" class="drop-zone" id="header-drop">
-                <span style="font-size:1.2rem;">📂</span>
-                <span class="drop-text">Upload File<span style="font-size:0.7rem; font-weight:400;">Drag or tap CSV</span></span>
-                <input type="file" id="csv-input" accept=".csv" onchange="handleFileUpload(this)">
-            </label>
+            <span id="update-status">Updating...</span>
+            <a href="index.html" class="logout-btn">Exit</a>
         </div>
     </header>
 
-    <div class="empty-state" id="empty-state">
-        <label for="csv-input-giant" class="giant-drop" id="main-drop">
-            <div class="giant-icon">📥</div>
-            <div class="desktop-text">
-                <h2 style="margin:0 0 10px 0;">Load Inventory Data</h2>
-                <p style="color:#64748b; margin:0;">Drag and drop your CSV file here to begin.</p>
-            </div>
-            <div class="mobile-text">
-                <h2 style="margin:0 0 10px 0;">Tap to Browse Files</h2>
-                <p style="color:#64748b; margin:0;">Open your file manager to select your inventory CSV.</p>
-            </div>
-            <input type="file" id="csv-input-giant" accept=".csv" onchange="handleFileUpload(this)" style="display:none;">
-        </label>
+    <div class="loading-state" id="loading-state">
+        <div class="loader"></div>
+        <h2 style="margin:0 0 10px 0; color:var(--primary);">Loading Live Inventory</h2>
+        <p style="color:#64748b; margin:0;" id="loading-text">Fetching data from server...</p>
     </div>
 
     <div class="mobile-only mobile-tools" id="mobile-tools" style="display:none;">
@@ -348,25 +323,28 @@
             fluos: ['NON','FNT','MED','STG','VST']
         };
 
-        // --- 2. DRAG & DROP / FILE MANAGER ---
-        ['header-drop', 'main-drop', 'empty-state'].forEach(id => {
-            const el = document.getElementById(id);
-            if(!el) return;
-            el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dragover'); });
-            el.addEventListener('dragleave', e => { el.classList.remove('dragover'); });
-            el.addEventListener('drop', e => {
-                e.preventDefault(); el.classList.remove('dragover');
-                if(e.dataTransfer.files.length) handleFiles(e.dataTransfer.files[0]);
-            });
-        });
-
-        function handleFileUpload(input) { if(input.files.length) handleFiles(input.files[0]); }
-
-        function handleFiles(file) {
-            const reader = new FileReader();
-            reader.onload = e => parseCSV(e.target.result);
-            reader.readAsText(file);
-        }
+        // --- 2. AUTO-LOAD CSV FILE ---
+        // This runs immediately when the page opens
+        window.onload = function() {
+            fetch('inventory.csv')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Could not find inventory.csv on the server.');
+                    }
+                    return response.text();
+                })
+                .then(csvText => {
+                    document.getElementById('update-status').innerText = 'Live';
+                    document.getElementById('update-status').style.color = '#059669';
+                    parseCSV(csvText);
+                })
+                .catch(error => {
+                    console.error("Error loading CSV:", error);
+                    document.getElementById('loading-text').innerText = "Error: Please upload 'inventory.csv' to your GitHub repository.";
+                    document.getElementById('loading-text').style.color = '#dc2626';
+                    document.querySelector('.loader').style.display = 'none';
+                });
+        };
 
         // --- 3. ROBUST CSV PARSER ---
         function parseCSV(text) {
@@ -395,7 +373,9 @@
             }
 
             inventoryData = data;
-            document.getElementById('empty-state').style.display = 'none';
+            
+            // Switch from Loading Screen to Main App
+            document.getElementById('loading-state').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
             if(window.innerWidth <= 1100) document.getElementById('mobile-tools').style.display = 'flex';
             
@@ -594,7 +574,6 @@
                 const tr = document.createElement('tr');
                 tr.className = 'data-row';
                 
-                // Make entire row clickable
                 tr.onclick = () => {
                     if (window.innerWidth <= 1100) openDrawer(i);
                     else toggleEnvelope(i);
@@ -614,7 +593,6 @@
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW 
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -649,10 +627,8 @@
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE (Embedded Media)
                 const env = document.createElement('tr');
-                // Removed desktop-only bug to keep it closed properly
-                env.className = 'envelope-row';
+                env.className = 'envelope-row desktop-only'; 
                 env.id = `env-${i}`;
                 
                 const photoEmbed = photo ? `<img src="${formatUrl(photo)}" onerror="this.style.display='none'">` : '';
@@ -663,7 +639,6 @@
                     if (vUrl.toLowerCase().endsWith('.mp4')) {
                         videoEmbed = `<video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain;"></video>`;
                     } else {
-                        // Ideal for V360 / iframe links
                         videoEmbed = `<iframe src="${vUrl}" allowfullscreen style="width:100%; height:100%; border:none;"></iframe>`;
                     }
                 }
@@ -690,11 +665,9 @@
             const btn = document.getElementById(`btn-exp-${index}`);
             const isOpen = env.classList.contains('show');
             
-            // Close all others
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
             
-            // Open clicked
             if (!isOpen) { 
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
