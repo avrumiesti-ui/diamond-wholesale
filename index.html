@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>M.J. Gross Inc. | Live Inventory</title>
+    <title>M.J. Gross Inc. | Inventory App</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
     
     <style>
@@ -66,12 +66,13 @@
         /* TABLE (Desktop) */
         .results-area { flex-grow: 1; padding: 20px; overflow-x: auto; }
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: max-content; min-width: 100%; border-collapse: collapse; }
         
+        /* Auto Width Table engine + 10px padding request (5px each side) */
+        table { width: max-content; min-width: 100%; border-collapse: collapse; }
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; }
         th:hover { background: #e2e8f0; }
         td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
-        th:first-child, td:first-child { padding-left: 10px; }
+        th:first-child, td:first-child { padding-left: 15px; }
         th:last-child, td:last-child { padding-right: 15px; }
 
         .data-row { transition: background 0.15s; cursor: pointer; }
@@ -84,17 +85,17 @@
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
         .lab-link:hover { color: #1d4ed8; }
 
-        /* ENVELOPE ROW */
+        /* ENVELOPE ROW (Desktop Open Media) */
         .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
         .envelope-row.show { display: table-row; }
         .env-showcase { display: flex; padding: 20px; gap: 20px; border-bottom: 2px solid var(--border); }
+        .media-container { display: flex; gap: 20px; }
         .env-media-embed { width: 250px; height: 250px; border: 1px solid #cbd5e1; border-radius: 8px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; position: relative; flex-shrink: 0; }
         .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
-        .desktop-only { display: table-cell; }
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
@@ -143,7 +144,6 @@
             <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
             <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
         </div>
-        
         <div class="header-controls">
             <span id="update-status">Updating...</span>
             <a href="index.html" class="logout-btn">Exit</a>
@@ -324,13 +324,10 @@
         };
 
         // --- 2. AUTO-LOAD CSV FILE ---
-        // This runs immediately when the page opens
         window.onload = function() {
             fetch('inventory.csv')
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Could not find inventory.csv on the server.');
-                    }
+                    if (!response.ok) throw new Error('Could not find inventory.csv');
                     return response.text();
                 })
                 .then(csvText => {
@@ -373,8 +370,6 @@
             }
 
             inventoryData = data;
-            
-            // Switch from Loading Screen to Main App
             document.getElementById('loading-state').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
             if(window.innerWidth <= 1100) document.getElementById('mobile-tools').style.display = 'flex';
@@ -416,7 +411,7 @@
         initTouchBar('sym-bar', config.grades, 'sym');
         initTouchBar('fluo-bar', config.fluos, 'fluo');
 
-        // --- 5. FILTER LOGIC (SMART TOGGLE FIX) ---
+        // --- 5. FILTER LOGIC ---
         function handleRangeClick(index, items, key, domId) {
             let active = activeFilters[key];
             const clickedItem = items[index];
@@ -434,7 +429,6 @@
                 activeFilters[key] = [];
                 for(let i=min; i<=max; i++) activeFilters[key].push(items[i]);
             }
-            
             updateTouchUI(domId, items, activeFilters[key]);
             runSearch();
         }
@@ -510,7 +504,6 @@
                 const checkArr = (key, csvHeader) => {
                     if(!activeFilters[key].length) return true;
                     const val = getVal(row, csvHeader).toUpperCase();
-                    
                     if (key === 'shape' || key === 'lab' || key === 'cut' || key === 'pol' || key === 'sym' || key === 'color' || key === 'clarity') {
                         return activeFilters[key].some(f => val === f.toUpperCase() || val.includes(f.toUpperCase()));
                     }
@@ -581,7 +574,10 @@
 
                 const formatMoney = v => { const n = parseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(); };
                 const formatNum = v => { const n = parseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
-                const formatUrl = u => u.startsWith('http') ? u : `https://${u}`;
+                const formatUrl = u => {
+                    if (!u) return '';
+                    return u.startsWith('http') ? u : `https://${u}`;
+                };
 
                 const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
@@ -593,6 +589,7 @@
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
+                // A. DESKTOP ROW 
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only">${getVal(row,'ID')}</td>
@@ -627,27 +624,17 @@
                 `;
                 tbody.appendChild(tr);
 
+                // C. DESKTOP ENVELOPE (With Lazy Loading Attributes)
                 const env = document.createElement('tr');
-                env.className = 'envelope-row desktop-only'; 
+                env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
                 
-                const photoEmbed = photo ? `<img src="${formatUrl(photo)}" onerror="this.style.display='none'">` : '';
-                
-                let videoEmbed = '';
-                if (video) {
-                    const vUrl = formatUrl(video);
-                    if (vUrl.toLowerCase().endsWith('.mp4')) {
-                        videoEmbed = `<video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain;"></video>`;
-                    } else {
-                        videoEmbed = `<iframe src="${vUrl}" allowfullscreen style="width:100%; height:100%; border:none;"></iframe>`;
-                    }
-                }
-
+                // We do NOT write the iframes yet. We store the URLs to be triggered later.
                 env.innerHTML = `
                     <td colspan="20" style="padding:0;">
                         <div class="env-showcase">
-                            ${photoEmbed ? `<div class="env-media-embed">${photoEmbed}</div>` : ''}
-                            ${videoEmbed ? `<div class="env-media-embed">${videoEmbed}</div>` : ''}
+                            <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-loaded="false">
+                                </div>
                             <div class="env-comments-box">
                                 <h4 style="margin:0 0 10px 0; color:#475569; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Comments & Notes</h4>
                                 <p style="margin:0; font-size:0.9rem; line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided.'}</p>
@@ -659,21 +646,45 @@
             });
         }
 
-        // --- 8. INTERACTIONS ---
+        // --- 8. LAZY LOAD INTERACTIONS ---
         function toggleEnvelope(index) {
             const env = document.getElementById(`env-${index}`);
             const btn = document.getElementById(`btn-exp-${index}`);
             const isOpen = env.classList.contains('show');
             
+            // Close all others
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
             
+            // Open clicked
             if (!isOpen) { 
                 env.classList.add('show'); 
                 if(btn) btn.classList.add('open'); 
+                
+                // LAZY LOAD TRIGGER: Only fetch media when envelope opens
+                const mediaCont = document.getElementById(`media-container-${index}`);
+                if (mediaCont && mediaCont.dataset.loaded === "false") {
+                    const pUrl = mediaCont.dataset.photo;
+                    const vUrl = mediaCont.dataset.video;
+                    let html = '';
+                    
+                    if (pUrl && pUrl !== '') {
+                        html += `<div class="env-media-embed"><img src="${pUrl}" onerror="this.style.display='none'"></div>`;
+                    }
+                    if (vUrl && vUrl !== '') {
+                        if (vUrl.toLowerCase().endsWith('.mp4')) {
+                            html += `<div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted style="width:100%; height:100%; object-fit:contain;"></video></div>`;
+                        } else {
+                            html += `<div class="env-media-embed"><iframe src="${vUrl}" allowfullscreen style="width:100%; height:100%; border:none;"></iframe></div>`;
+                        }
+                    }
+                    mediaCont.innerHTML = html;
+                    mediaCont.dataset.loaded = "true"; // Prevent re-loading on future clicks
+                }
             }
         }
 
+        // Mobile drawer remains unchanged
         function openDrawer(index) {
             const row = filteredData[index];
             document.getElementById('mobile-drawer').classList.add('open');
