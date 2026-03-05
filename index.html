@@ -38,7 +38,7 @@
         .logo-img { height: 35px; }
         .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 12px; align-items: center;}
         
-        .action-btn { background: none; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 1.1rem; cursor: pointer; transition: 0.2s; background: #f8fafc; }
+        .action-btn { background: none; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; cursor: pointer; transition: 0.2s; background: #f8fafc; display: flex; align-items: center; justify-content: center; gap: 6px;}
         .action-btn:hover { background: #e2e8f0; border-color: #cbd5e1; }
         
         .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; margin-left: 5px; cursor: pointer; background: transparent; font-size: 0.85rem; font-weight: bold;}
@@ -128,14 +128,27 @@
         .env-media-embed iframe, .env-media-embed img, .env-media-embed video { width: 100%; height: 100%; object-fit: contain; object-position: top; border: none; }
         .env-comments-box { flex-grow: 1; max-width: 500px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
-        /* MEDIA POPUP MODAL */
-        .media-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
-        .media-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
-        .media-modal-content { background: var(--white); width: 100%; max-width: 1200px; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
-        .media-modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
-        .media-modal-title { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
-        .media-modal-body { flex-grow: 1; background: #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
-        .media-modal-body img, .media-modal-body iframe, .media-modal-body video { width: 100%; height: 100%; object-fit: contain; border: none; }
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
+        .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
+        .modal-content { background: var(--white); width: 100%; max-width: 1200px; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        
+        .sort-modal-content { max-width: 600px; height: auto; max-height: 90vh; }
+        .modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
+        .modal-title { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+        .modal-body { flex-grow: 1; background: #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .sort-modal-body { flex-grow: 1; background: #fff; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
+        .modal-body img, .modal-body iframe, .modal-body video { width: 100%; height: 100%; object-fit: contain; border: none; }
+
+        /* ADVANCED SORT UI */
+        .sort-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .sort-row select { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+        .btn-add-sort { background: #f8fafc; border: 1px dashed #cbd5e1; padding: 10px; width: 100%; border-radius: 6px; cursor: pointer; color: var(--text-muted); font-weight: bold; margin-bottom: 20px; transition: 0.2s; }
+        .btn-add-sort:hover { background: #e2e8f0; color: var(--primary); }
+        .btn-apply-sort { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; }
+        
+        /* TEXT DESKTOP ONLY UTILITY */
+        .text-desktop-only { display: inline-block; }
 
         /* MOBILE SPECIFIC CSS */
         .mobile-only { display: none; }
@@ -143,6 +156,7 @@
 
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
+            .text-desktop-only { display: none !important; }
             .mobile-only { display: block; }
             
             .inventory-container { flex-direction: column; padding: 0; }
@@ -154,7 +168,7 @@
             .results-area { padding: 0 10px 10px 10px; }
             
             .mobile-tools { display: flex; gap: 10px; background: var(--bg-gray); padding: 10px 0; position: sticky; top: 56px; z-index: 90; }
-            .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+            .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 8px;}
             
             .dashboard-wrapper { top: 110px; padding: 0 0 10px 0; z-index: 85; }
 
@@ -225,9 +239,20 @@
                 <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
             </div>
             <div class="header-controls">
-                <button class="action-btn" onclick="exportExcel()" title="Export Selected to Excel">📊</button>
-                <button class="action-btn" onclick="shareSelected()" title="Share Selected">📤</button>
-                <span id="update-status" style="margin-left:10px;">Live</span>
+                <button class="action-btn" onclick="exportExcel()" title="Export Selected">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    <span class="text-desktop-only">Export</span>
+                </button>
+                <button class="action-btn" onclick="shareSelected()" title="Share Selected">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                    <span class="text-desktop-only">Share</span>
+                </button>
+                <button class="action-btn" onclick="openSortModal()" title="Advanced Sort">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    <span class="text-desktop-only" id="sort-badge">Sort</span>
+                </button>
+                
+                <span class="desktop-only" style="margin-left:10px; color:#059669;">Live</span>
                 <button onclick="location.reload()" class="logout-btn">Exit</button>
             </div>
         </div>
@@ -357,17 +382,10 @@
             
             <div class="mobile-only mobile-tools" id="mobile-tools">
                 <button class="btn-mobile-tool" onclick="toggleSidebar()"><span>Filters</span> <span>⚙️</span></button>
-                <select class="btn-mobile-tool" onchange="mobileSort(this.value)" style="appearance:none; padding-right:30px;">
-                    <option value="">Sort By...</option>
-                    <option value="Size-asc">Size (Low to High)</option>
-                    <option value="Size-desc">Size (High to Low)</option>
-                    <option value="Price-asc">Price/Ct (Low to High)</option>
-                    <option value="Price-desc">Price/Ct (High to Low)</option>
-                    <option value="Total Price-asc">Total $ (Low to High)</option>
-                    <option value="Total Price-desc">Total $ (High to Low)</option>
-                    <option value="Rap Disc-asc">Rap Disc (Low to High)</option>
-                    <option value="Rap Disc-desc">Rap Disc (High to Low)</option>
-                </select>
+                <button class="btn-mobile-tool" onclick="openSortModal()">
+                    <span>Sort</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                </button>
             </div>
 
             <div class="dashboard-wrapper">
@@ -442,14 +460,29 @@
         </main>
     </div>
 
-    <div class="media-modal-overlay" id="media-modal">
-        <div class="media-modal-content">
-            <div class="media-modal-header">
-                <div class="media-modal-title" id="media-modal-title"></div>
+    <div class="modal-overlay" id="media-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="media-modal-title"></div>
                 <button onclick="closeMediaModal()" style="background:none; border:none; font-size:2rem; cursor:pointer; line-height:1; color:#475569;">✕</button>
             </div>
-            <div class="media-modal-body" id="media-modal-body">
+            <div class="modal-body" id="media-modal-body">
                 </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="sort-modal">
+        <div class="modal-content sort-modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Advanced Sort</div>
+                <button onclick="closeSortModal()" style="background:none; border:none; font-size:2rem; cursor:pointer; line-height:1; color:#475569;">✕</button>
+            </div>
+            <div class="sort-modal-body">
+                <p style="margin-top:0; color:var(--text-muted); font-size:0.9rem;">Add multiple fields to sort your inventory exactly how you want.</p>
+                <div id="sort-rows-container"></div>
+                <button class="btn-add-sort" onclick="addSortLevel()">+ Add Sort Level</button>
+                <button class="btn-apply-sort" onclick="applyMultiSort()">Apply Sort</button>
+            </div>
         </div>
     </div>
 
@@ -468,8 +501,14 @@
         // --- 1. CONFIG & STATE ---
         let inventoryData = [];
         let filteredData = [];
+        
+        // Single sort (for quick table header clicks)
         let sortCol = '';
         let sortDir = 1; 
+        
+        // Advanced Multi-sort
+        const sortableColumns = ['ID', 'Shape', 'Size', 'Color', 'Clarity', 'Lab', 'Cut', 'Pol', 'Sym', 'Fluo', 'Depth', 'Table', 'Rap', 'Rap Disc', 'Price', 'Total Price'];
+        let multiSorts = []; 
         
         let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [], likedOnly: false };
         
@@ -737,20 +776,88 @@
             }
         }
 
-        // --- 6. SEARCH & SORT ---
+        // --- 6. ADVANCED SORT LOGIC ---
+        function openSortModal() {
+            document.getElementById('sort-modal').classList.add('open');
+            renderSortRows();
+        }
+
+        function closeSortModal() {
+            document.getElementById('sort-modal').classList.remove('open');
+        }
+
+        function renderSortRows() {
+            const container = document.getElementById('sort-rows-container');
+            container.innerHTML = '';
+            if (multiSorts.length === 0) {
+                addSortLevel(); // Start with at least one row
+            } else {
+                multiSorts.forEach((s, i) => {
+                    container.appendChild(createSortRowNode(s.col, s.dir, i));
+                });
+            }
+        }
+
+        function createSortRowNode(col, dir, index) {
+            const div = document.createElement('div');
+            div.className = 'sort-row';
+            let colsHtml = sortableColumns.map(c => `<option value="${c}" ${c === col ? 'selected' : ''}>${c}</option>`).join('');
+            div.innerHTML = `
+                <select onchange="updateSortState(${index}, 'col', this.value)">
+                    <option value="">Select Field...</option>
+                    ${colsHtml}
+                </select>
+                <select onchange="updateSortState(${index}, 'dir', this.value)">
+                    <option value="1" ${dir == 1 ? 'selected' : ''}>Ascending (Low-High / A-Z)</option>
+                    <option value="-1" ${dir == -1 ? 'selected' : ''}>Descending (High-Low / Z-A)</option>
+                </select>
+                <button class="action-btn" style="padding:10px 12px; color:#dc2626;" onclick="removeSortLevel(${index})">✕</button>
+            `;
+            return div;
+        }
+
+        function addSortLevel() {
+            multiSorts.push({col: '', dir: 1});
+            renderSortRows();
+        }
+
+        function updateSortState(index, key, val) {
+            if(key === 'dir') val = parseInt(val);
+            multiSorts[index][key] = val;
+        }
+
+        function removeSortLevel(index) {
+            multiSorts.splice(index, 1);
+            renderSortRows();
+        }
+
+        function applyMultiSort() {
+            // Clean out incomplete rows
+            multiSorts = multiSorts.filter(s => s.col !== '');
+            // Clear standard single click column sort if they use advanced
+            sortCol = '';
+            document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
+            
+            const badge = document.getElementById('sort-badge');
+            if(badge) {
+                badge.innerText = multiSorts.length > 0 ? `Sort (${multiSorts.length})` : 'Sort';
+            }
+            
+            closeSortModal();
+            runSearch();
+        }
+
         function sortBy(col) {
+            // Clicking a column header clears advanced multi-sort and relies on single
+            multiSorts = [];
+            const badge = document.getElementById('sort-badge');
+            if(badge) badge.innerText = 'Sort';
+
             if (sortCol === col) sortDir *= -1;
             else { sortCol = col; sortDir = 1; }
             document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
             const sp = document.getElementById('sort-' + col);
             if(sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
-            runSearch();
-        }
-
-        function mobileSort(val) {
-            if(!val) return;
-            const parts = val.split('-');
-            sortCol = parts[0]; sortDir = parts[1] === 'asc' ? 1 : -1;
             runSearch();
         }
 
@@ -825,7 +932,27 @@
                 return true;
             });
 
-            if (sortCol) {
+            // Sorting logic branching (Advanced Multi vs Single)
+            if (multiSorts.length > 0) {
+                filteredData.sort((a, b) => {
+                    for (let sort of multiSorts) {
+                        let valA = getVal(a, sort.col);
+                        let valB = getVal(b, sort.col);
+                        const numA = parseFloat(valA.replace(/[^0-9.-]+/g,""));
+                        const numB = parseFloat(valB.replace(/[^0-9.-]+/g,""));
+                        
+                        let cmp = 0;
+                        if (!isNaN(numA) && !isNaN(numB)) {
+                            cmp = numA - numB;
+                        } else {
+                            cmp = valA.toString().localeCompare(valB.toString());
+                        }
+                        
+                        if (cmp !== 0) return cmp * sort.dir;
+                    }
+                    return 0; // if completely equal across all criteria
+                });
+            } else if (sortCol) {
                 filteredData.sort((a, b) => {
                     let valA = getVal(a, sortCol);
                     let valB = getVal(b, sortCol);
