@@ -22,17 +22,8 @@
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 13px; overflow-x: hidden; }
 
-        /* LOGIN SCREEN */
-        .login-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-gray); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
-        .login-box { background: var(--white); padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--border); }
-        .login-logo { height: 60px; margin-bottom: 30px; }
-        .login-input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 1rem; background: #f8fafc; transition: 0.2s; }
-        .login-input:focus { outline: none; border-color: var(--accent); background: #fff; }
-        .login-btn { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 10px; }
-        .login-btn:hover { background: #333; transform: translateY(-1px); }
-
         /* HEADER */
-        header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2500; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: none; }
+        header { background: var(--white); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 2500; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
         .header-inner { max-width: var(--max-w); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; }
         .logo-section { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 35px; }
@@ -41,11 +32,11 @@
         .action-btn { background: none; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 1.1rem; cursor: pointer; transition: 0.2s; background: #f8fafc; }
         .action-btn:hover { background: #e2e8f0; border-color: #cbd5e1; }
         
-        .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; margin-left: 5px; cursor: pointer; background: transparent; font-size: 0.85rem; font-weight: bold;}
+        .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; margin-left: 5px;}
         .logout-btn:hover { background: #fef2f2; }
 
         /* LOADING STATE */
-        .loading-state { display: none; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
+        .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
@@ -91,7 +82,7 @@
         .sum-card:last-child { border-right: none; padding-right: 0; }
         .sum-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
         .sum-val { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
-        .sum-sub { font-size: 0.7rem; color: #3b82f6; font-weight: 700; margin-top: 2px; min-height: 14px; } 
+        .sum-sub { font-size: 0.7rem; color: #3b82f6; font-weight: 700; margin-top: 2px; min-height: 14px; } /* Selected Subtotals */
 
         /* TABLE (Desktop) */
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; flex-grow: 1; border: 1px solid var(--border); }
@@ -147,17 +138,20 @@
             
             .inventory-container { flex-direction: column; padding: 0; }
             
+            /* Sidebar stretches to full height */
             .sidebar { width: 100%; display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 3000; padding: 20px; padding-bottom: 0; background: var(--white); height: 100dvh; box-sizing: border-box; overflow-y: auto; }
             .sidebar.show { display: block; }
             .apply-btn-wrapper { position: sticky; bottom: 0; background: var(--white); padding: 15px 0 20px 0; margin-top: 20px; border-top: 1px solid var(--border); }
 
             .results-area { padding: 0 10px 10px 10px; }
             
+            /* Mobile Tools & Dashboard Sticky Wrapper */
             .mobile-tools { display: flex; gap: 10px; background: var(--bg-gray); padding: 10px 0; position: sticky; top: 56px; z-index: 90; }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
             
             .dashboard-wrapper { top: 110px; padding: 0 0 10px 0; z-index: 85; }
 
+            /* Mobile Dashboard sizing: 3 Cols (20% - 33.3% - remaining) */
             .summary-dashboard { display: grid; grid-template-columns: 20% 33.33% 1fr; gap: 6px; padding: 10px; margin-bottom: 5px;}
             .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 6px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; min-width: 0;}
             .sum-label { font-size: 0.55rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;} 
@@ -169,7 +163,6 @@
             .table-container { background: transparent; box-shadow: none; border: none; }
             
             .data-row { background: var(--white); border-radius: 8px; margin-bottom: 10px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
-            .data-row.selected { background-color: var(--select-row); border-color: #93c5fd; }
             .data-row td { padding: 0; border: none; display: none; } 
             td.mobile-only { display: block; } 
             
@@ -181,9 +174,9 @@
             .mc-line2, .mc-line3 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line4 { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
             
+            /* Identical Price Fonts in Card (Reduced by 20%) */
             .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; display: flex; flex-direction: column; gap: 2px; }
             .mc-price { font-weight: 800; font-size: 0.88rem; color: #059669; line-height: 1; }
-            
             .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
             
             /* Drawer Details */
@@ -193,9 +186,6 @@
             .drawer-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; }
             
-            .drawer-photo-box { width: 100%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
-            .drawer-photo-box img { width: 100%; height: auto; border-radius: 8px; }
-
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         }
@@ -203,21 +193,7 @@
 </head>
 <body>
 
-    <div id="login-screen" class="login-container">
-        <div class="login-box">
-            <img src="images/logo.jpg" alt="M.J. Gross" class="login-logo" onerror="this.src='https://via.placeholder.com/150x50?text=MJ+Gross'">
-            <h2 style="margin-top:0; color:var(--primary); font-size:1.4rem;">Inventory Access</h2>
-            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:25px;">Please log in to view live diamond inventory.</p>
-            
-            <form onsubmit="processLogin(event)">
-                <input type="email" class="login-input" placeholder="Email Address" required>
-                <input type="password" class="login-input" placeholder="Password" required>
-                <button type="submit" class="login-btn">Log In</button>
-            </form>
-        </div>
-    </div>
-
-    <header id="main-header">
+    <header>
         <div class="header-inner">
             <div class="logo-section">
                 <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
@@ -227,8 +203,8 @@
             <div class="header-controls">
                 <button class="action-btn" onclick="exportExcel()" title="Export Selected to Excel">📊</button>
                 <button class="action-btn" onclick="shareSelected()" title="Share Selected">📤</button>
-                <span id="update-status" style="margin-left:10px;">Live</span>
-                <button onclick="location.reload()" class="logout-btn">Exit</button>
+                <span id="update-status" style="margin-left:10px;">Updating...</span>
+                <a href="index.html" class="logout-btn">Exit</a>
             </div>
         </div>
     </header>
@@ -355,7 +331,7 @@
 
         <main class="results-area">
             
-            <div class="mobile-only mobile-tools" id="mobile-tools">
+            <div class="mobile-only mobile-tools" id="mobile-tools" style="display:none;">
                 <button class="btn-mobile-tool" onclick="toggleSidebar()"><span>Filters</span> <span>⚙️</span></button>
                 <select class="btn-mobile-tool" onchange="mobileSort(this.value)" style="appearance:none; padding-right:30px;">
                     <option value="">Sort By...</option>
@@ -410,7 +386,7 @@
                     <thead>
                         <tr>
                             <th style="width:30px;"></th>
-                            <th style="width:60px; text-align:center;">✓</th>
+                            <th style="width:60px;">✓</th>
                             <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
                             <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
                             <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
@@ -484,19 +460,15 @@
             fluos: ['NON','FNT','MED','STG','VST']
         };
 
-        // --- 2. LOGIN & CSV FETCH ---
-        function processLogin(e) {
-            e.preventDefault();
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('loading-state').style.display = 'flex';
-            document.getElementById('main-header').style.display = 'block';
-
+        // --- 2. AUTO-LOAD CSV FILE ---
+        window.onload = function() {
             fetch('inventory.csv')
                 .then(response => {
                     if (!response.ok) throw new Error('Could not find inventory.csv');
                     return response.text();
                 })
                 .then(csvText => {
+                    document.getElementById('update-status').innerText = 'Live';
                     document.getElementById('update-status').style.color = '#059669';
                     parseCSV(csvText);
                 })
@@ -506,7 +478,7 @@
                     document.getElementById('loading-text').style.color = '#dc2626';
                     document.querySelector('.loader').style.display = 'none';
                 });
-        }
+        };
 
         // --- 3. ROBUST CSV PARSER ---
         function parseCSV(text) {
@@ -657,6 +629,7 @@
             if(selectedIds.has(id)) selectedIds.delete(id);
             else selectedIds.add(id);
             
+            // Toggle visual class on row
             const rCheckbox = document.querySelector(`.row-checkbox[data-id="${id}"]`);
             if (rCheckbox) {
                 const rowTr = rCheckbox.closest('.data-row');
@@ -670,6 +643,7 @@
             if(likedIds.has(id)) likedIds.delete(id);
             else likedIds.add(id);
             
+            // Visually update all hearts for this ID
             document.querySelectorAll(`.heart-btn[data-id="${id}"]`).forEach(btn => {
                 btn.innerHTML = likedIds.has(id) ? '❤️' : '🤍';
             });
@@ -839,9 +813,11 @@
             renderTable();
         }
 
+        // Subtotal Updater Logic (Called directly without rendering table)
         function updateSubtotals() {
             let sCarats = 0, sPrice = 0, sRap = 0, selCount = 0;
             
+            // Re-sync all visual checkboxes in case of programmatic change
             document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = selectedIds.has(cb.dataset.id); });
 
             filteredData.forEach(row => {
@@ -915,14 +891,13 @@
                 const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
                 const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${id}`;
                 
-                // Desktop LAB Link (Opens in new tab natively to avoid iframe issues)
                 const labStr = getVal(row,'Lab') || 'CERT';
                 let labHtml = labStr;
                 if(report) {
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW 
+                // A. DESKTOP ROW (With Action Checkboxes)
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only" style="text-align:center;">
@@ -974,7 +949,7 @@
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE (Span 24 due to Action column)
+                // C. DESKTOP ENVELOPE (Span 24 due to added Action column)
                 const env = document.createElement('tr');
                 env.className = 'envelope-row'; 
                 env.id = `env-${i}`;
@@ -993,7 +968,7 @@
                 `;
                 tbody.appendChild(env);
             });
-            updateSubtotals();
+            updateSubtotals(); // Sync fresh DOM elements
         }
 
         // --- 8. LAZY LOAD & MODAL INTERACTIONS ---
@@ -1086,6 +1061,7 @@
 
             const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
+            // Buttons always present. Gray if disabled.
             const modalBtn = (link, label, icon, type) => {
                 const isDis = (!link || link.trim() === '');
                 const bg = isDis ? '#f1f5f9' : '#f8fafc';
@@ -1107,17 +1083,16 @@
             const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
             const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
 
-            // Full width photo block for drawer
+            // Full width photo block
             let photoEmbedHtml = '';
             if(photo) {
                 photoEmbedHtml = `
-                <div style="width:100%; display:flex; align-items:center; justify-content:center; margin-bottom:15px;">
-                    <img src="${formatUrl(photo)}" style="width:100%; height:auto; border-radius:8px;" onerror="this.style.display='none'">
+                <div style="width:100%; background:#fff; border-radius:8px; overflow:hidden; margin-bottom:15px; display:flex; align-items:center; justify-content:center; border:1px solid #e2e8f0;">
+                    <img src="${formatUrl(photo)}" style="width:100%; height:auto; object-fit:contain;" onerror="this.style.display='none'">
                 </div>`;
             }
 
             document.getElementById('drawer-body').innerHTML = `
-                
                 ${photoEmbedHtml}
 
                 <div style="display:flex; gap:10px; margin-bottom:20px; justify-content:center;">
