@@ -28,10 +28,8 @@
     .logo-section { display: flex; align-items: center; gap: 15px; }
     .logo-img { height: 35px; }
     .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-
     .action-btn { background: none; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 1.05rem; cursor: pointer; transition: 0.2s; background: #f8fafc; }
     .action-btn:hover { background: #e2e8f0; border-color: #cbd5e1; }
-
     .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; margin-left: 5px; }
     .logout-btn:hover { background: #fef2f2; }
 
@@ -46,7 +44,6 @@
     .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
     .btn-reset:hover { text-decoration: underline; }
-
     .filter-group { margin-bottom: 20px; }
     .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
 
@@ -60,7 +57,6 @@
     .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
     .row-3 { grid-template-columns: repeat(3, 1fr); }
     .row-4 { grid-template-columns: repeat(4, 1fr); }
-
     .touch-bar { display: flex; width: 100%; margin-bottom: 10px; flex-wrap: wrap; }
     .touch-btn { flex: 1 1 auto; padding: 8px 0; background: #fff; border: 1px solid #cbd5e1; margin-left: -1px; cursor: pointer; font-size: 0.7rem; font-weight: 600; color: #475569; text-align: center; min-width: 30px; }
     .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
@@ -79,13 +75,14 @@
     .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 10px; min-width: 80px; }
     .sum-card:last-child { border-right: none; padding-right: 0; }
     .sum-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
-    .sum-val { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
-    .sum-sub { font-size: 0.7rem; color: #3b82f6; font-weight: 700; margin-top: 2px; min-height: 14px; }
+    .sum-val { font-size: 0.95rem; font-weight: 800; color: var(--primary); }
+    /* Selected totals now more prominent */
+    .sum-sub { font-size: 0.78rem; color: #1d4ed8; font-weight: 900; margin-top: 4px; min-height: 16px; }
 
     /* TABLE */
     .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; flex-grow: 1; border: 1px solid var(--border); }
     table { width: max-content; min-width: 100%; border-collapse: collapse; }
-    th { background: #f8fafc; color: #475569; padding: 10px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); user-select: none; white-space: nowrap; position: sticky; top: 0; z-index: 10; }
+    th { background: #f8fafc; color: #475569; padding: 10px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 800; border-bottom: 2px solid var(--border); user-select: none; white-space: nowrap; position: sticky; top: 0; z-index: 10; cursor: pointer; }
     th:hover { background: #e2e8f0; }
     td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
     th:first-child, td:first-child { padding-left: 15px; }
@@ -100,26 +97,26 @@
     .data-row:hover .btn-expand { border-color: var(--primary); color: var(--primary); }
     .btn-expand.open { background: var(--accent); color: white; border-color: var(--accent); transform: rotate(45deg); }
 
-    .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
+    .lab-link { color: #2563eb; font-weight: 800; text-decoration: underline; cursor: pointer; }
     .lab-link:hover { color: #1d4ed8; }
 
     .row-checkbox { transform: scale(1.3); cursor: pointer; margin-right: 5px; }
 
-    /* HEARTS as SVG */
+    /* HEARTS (regular heart look, not emoji boxes) */
     .heart-btn {
-      width: 28px; height: 28px;
+      width: 30px; height: 30px;
       display: inline-flex; align-items: center; justify-content: center;
       border: 1px solid #e2e8f0;
       background: #fff;
-      border-radius: 6px;
+      border-radius: 7px;
       cursor: pointer;
       user-select: none;
       padding: 0;
     }
     .heart-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
-    .heart-btn svg { width: 16px; height: 16px; display: block; }
+    .heart-btn svg { width: 18px; height: 18px; display: block; }
     .heart-on svg path { fill: #ef4444; stroke: #ef4444; }
-    .heart-off svg path { fill: none; stroke: #94a3b8; }
+    .heart-off svg path { fill: none; stroke: #ef4444; opacity: 0.75; }
 
     /* ENVELOPE */
     .envelope-row { display: none; background: #f8fafc; box-shadow: inset 0 3px 6px rgba(0,0,0,0.03); }
@@ -136,11 +133,11 @@
     .media-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease-out; }
     .media-modal-content { background: var(--white); width: 100%; max-width: 1200px; height: 90vh; border-radius: 8px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
     .media-modal-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
-    .media-modal-title { font-size: 1.2rem; font-weight: 800; color: var(--primary); }
+    .media-modal-title { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
     .media-modal-body { flex-grow: 1; background: #e2e8f0; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
     .media-modal-body img, .media-modal-body iframe, .media-modal-body video { width: 100%; height: 100%; object-fit: contain; border: none; }
 
-    /* SORT MODAL (Excel-ish) */
+    /* SORT MODAL */
     .sort-modal-overlay {
       display: none;
       position: fixed; inset: 0;
@@ -151,10 +148,9 @@
       justify-content: center;
     }
     .sort-modal-overlay.open { display: flex; }
-
     .sort-modal {
       width: 100%;
-      max-width: 620px;
+      max-width: 680px;
       background: #fff;
       border-radius: 12px;
       border: 1px solid #e2e8f0;
@@ -185,22 +181,17 @@
       color: #475569;
       line-height: 1;
     }
-
     .sort-modal-body { padding: 16px; }
     .sort-help { font-size: 0.85rem; color: #64748b; margin: 0 0 12px 0; }
+    .sort-levels { display:flex; flex-direction: column; gap: 10px; }
 
-    .sort-levels {
-      display:flex;
-      flex-direction: column;
-      gap: 10px;
-    }
     .sort-level {
       border: 1px solid #e2e8f0;
       border-radius: 10px;
       padding: 10px;
       background: #fff;
       display:grid;
-      grid-template-columns: 90px 1fr 120px 40px;
+      grid-template-columns: 92px 1fr 170px 70px 40px;
       gap: 10px;
       align-items:center;
     }
@@ -219,10 +210,24 @@
       padding: 10px 10px;
       border: 1px solid #cbd5e1;
       border-radius: 10px;
-      font-weight: 800;
+      font-weight: 900;
       background: #fff;
       color: #0f172a;
     }
+
+    .move-wrap { display:flex; gap:6px; justify-content: center; }
+    .move-btn {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .move-btn:hover { background:#f8fafc; border-color:#cbd5e1; }
+    .move-btn:disabled { opacity: 0.35; cursor: default; }
+
     .trash-btn {
       width: 34px; height: 34px;
       border-radius: 10px;
@@ -232,6 +237,7 @@
       font-size: 1rem;
     }
     .trash-btn:hover { background: #f8fafc; border-color:#cbd5e1; }
+    .trash-btn:disabled { opacity:0.4; cursor: default; }
 
     .sort-modal-footer {
       padding: 14px 16px;
@@ -251,7 +257,6 @@
       cursor: pointer;
     }
     .btn-ghost:hover { background:#f8fafc; }
-
     .btn-primary {
       padding: 10px 14px;
       border-radius: 10px;
@@ -279,14 +284,13 @@
       .results-area { padding: 0 10px 10px 10px; }
       .mobile-tools { display: flex; gap: 10px; background: var(--bg-gray); padding: 10px 0; position: sticky; top: 56px; z-index: 90; }
       .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
-
       .dashboard-wrapper { top: 110px; padding: 0 0 10px 0; z-index: 85; }
 
       .summary-dashboard { display: grid; grid-template-columns: 20% 33.33% 1fr; gap: 6px; padding: 10px; margin-bottom: 5px; }
       .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 6px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; min-width: 0; }
       .sum-label { font-size: 0.55rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .sum-val { font-size: 0.78rem; }
-      .sum-sub { font-size: 0.6rem; min-height: 12px; }
+      .sum-val { font-size: 0.80rem; }
+      .sum-sub { font-size: 0.70rem; min-height: 14px; }
 
       table, tbody, tr { display: block; width: 100%; min-width: 100%; }
       thead { display: none; }
@@ -294,17 +298,16 @@
       .data-row { background: var(--white); border-radius: 8px; margin-bottom: 10px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
       .data-row td { padding: 0; border: none; display: none; }
       td.mobile-only { display: block; }
-
       .envelope-row { display: none !important; }
 
       .mobile-card { display: flex; flex-direction: column; gap: 6px; }
       .mc-action-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
-      .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 100px; }
+      .mc-line1 { font-size: 1.1rem; font-weight: 900; color: var(--primary); letter-spacing: -0.5px; margin-right: 100px; }
       .mc-line2, .mc-line3 { font-size: 0.85rem; color: #475569; font-weight: 500; }
       .mc-line4 { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
       .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; display: flex; flex-direction: column; gap: 2px; }
-      .mc-price { font-weight: 800; font-size: 0.88rem; color: #059669; line-height: 1; }
-      .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
+      .mc-price { font-weight: 900; font-size: 0.88rem; color: #059669; line-height: 1; }
+      .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 800; color: #475569; }
 
       /* Drawer */
       .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; align-items: flex-end; }
@@ -316,7 +319,7 @@
       @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
       @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-      .sort-level { grid-template-columns: 70px 1fr 1fr 40px; }
+      .sort-level { grid-template-columns: 70px 1fr 1fr 70px 40px; }
     }
   </style>
 </head>
@@ -515,29 +518,30 @@
         <thead>
           <tr>
             <th style="width:30px;"></th>
-            <th style="width:90px;">Actions</th>
-            <th>ID</th>
-            <th>Shape</th>
-            <th>Size</th>
-            <th>Col</th>
-            <th>Clar</th>
-            <th>L</th>
-            <th>W</th>
-            <th>D</th>
-            <th>Ratio</th>
-            <th>Lab</th>
-            <th>Cut</th>
-            <th>Pol</th>
-            <th>Sym</th>
-            <th>Flor</th>
-            <th>Dep%</th>
-            <th>Tab%</th>
-            <th>Cul</th>
-            <th>Grd</th>
-            <th>Rap $</th>
-            <th>Rap%</th>
-            <th>Price/Ct</th>
-            <th>Total $</th>
+            <th style="width:92px;">Actions</th>
+
+            <th onclick="headerSort('ID')">ID <span id="sort-ID"></span></th>
+            <th onclick="headerSort('Shape')">Shape <span id="sort-Shape"></span></th>
+            <th onclick="headerSort('Size')">Size <span id="sort-Size"></span></th>
+            <th onclick="headerSort('Color')">Col <span id="sort-Color"></span></th>
+            <th onclick="headerSort('Clarity')">Clar <span id="sort-Clarity"></span></th>
+            <th onclick="headerSort('measl')">L <span id="sort-measl"></span></th>
+            <th onclick="headerSort('measw')">W <span id="sort-measw"></span></th>
+            <th onclick="headerSort('measd')">D <span id="sort-measd"></span></th>
+            <th onclick="headerSort('Ratio')">Ratio <span id="sort-Ratio"></span></th>
+            <th onclick="headerSort('Lab')">Lab <span id="sort-Lab"></span></th>
+            <th onclick="headerSort('Cut')">Cut <span id="sort-Cut"></span></th>
+            <th onclick="headerSort('Pol')">Pol <span id="sort-Pol"></span></th>
+            <th onclick="headerSort('Sym')">Sym <span id="sort-Sym"></span></th>
+            <th onclick="headerSort('Fluo')">Flor <span id="sort-Fluo"></span></th>
+            <th onclick="headerSort('Depth')">Dep% <span id="sort-Depth"></span></th>
+            <th onclick="headerSort('Table')">Tab% <span id="sort-Table"></span></th>
+            <th onclick="headerSort('Culet')">Cul <span id="sort-Culet"></span></th>
+            <th onclick="headerSort('Girdle')">Grd <span id="sort-Girdle"></span></th>
+            <th onclick="headerSort('Rap')">Rap $ <span id="sort-Rap"></span></th>
+            <th onclick="headerSort('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
+            <th onclick="headerSort('Price')">Price/Ct <span id="sort-Price"></span></th>
+            <th onclick="headerSort('Total Price')">Total $ <span id="sort-Total Price"></span></th>
           </tr>
         </thead>
         <tbody id="table-body"></tbody>
@@ -556,9 +560,8 @@
 
     <div class="sort-modal-body">
       <p class="sort-help">
-        The first level is your <b>primary</b> sort. Add levels for secondary/tertiary sorts (like Excel).
+        Reorder levels with ▲/▼. Primary is the first level (Excel behavior).
       </p>
-
       <div class="sort-levels" id="sort-levels"></div>
     </div>
 
@@ -590,7 +593,7 @@
 <div class="drawer-overlay" id="mobile-drawer">
   <div class="drawer-content">
     <div class="drawer-header">
-      <div id="drawer-title" style="font-size:1.1rem; font-weight:800; color:var(--primary);"></div>
+      <div id="drawer-title" style="font-size:1.1rem; font-weight:900; color:var(--primary);"></div>
       <button onclick="closeDrawer()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; line-height:1;">✕</button>
     </div>
     <div class="drawer-body" id="drawer-body"></div>
@@ -604,6 +607,9 @@
 
   // Multi-sort specs: [{col:'Size', dir: 1}, ...] (1 = asc, -1 = desc)
   let sortSpecs = [];
+  // Single header sort state
+  let headerSortCol = '';
+  let headerSortDir = 1;
 
   let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [], likedOnly: false };
 
@@ -618,7 +624,6 @@
     fluos: ['NON','FNT','MED','STG','VST']
   };
 
-  // Sort columns shown in the modal (match your table)
   const SORT_COLUMNS = [
     { label: 'ID', col: 'ID' },
     { label: 'Shape', col: 'Shape' },
@@ -710,9 +715,6 @@
     initTouchBar('sym-bar', config.grades, 'sym');
     initTouchBar('fluo-bar', config.fluos, 'fluo');
 
-    // default: ensure at least one sort level exists in modal
-    if (sortSpecs.length === 0) sortSpecs = [{ col: 'Size', dir: 1 }];
-
     runSearch();
   }
 
@@ -730,6 +732,11 @@
       if (found && row[found] && row[found].trim() !== '') return row[found].trim();
     }
     return '';
+  }
+
+  function formatUrl(u) {
+    if (!u) return '';
+    return u.startsWith('http') ? u : `https://${u}`;
   }
 
   // --- TOUCH BAR ---
@@ -801,7 +808,7 @@
     runSearch();
   }
 
-  // --- HEARTS + SELECTION ---
+  // --- HEART SVG (regular heart) ---
   function heartSvg() {
     return `
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -815,6 +822,7 @@
     el.classList.toggle('heart-off', !isLiked);
     el.setAttribute('aria-pressed', isLiked ? 'true' : 'false');
   }
+
   function toggleSelect(id, event) {
     if (event) event.stopPropagation();
     selectedIds.has(id) ? selectedIds.delete(id) : selectedIds.add(id);
@@ -826,6 +834,7 @@
     }
     updateSubtotals();
   }
+
   function toggleLike(id, event) {
     if (event) event.stopPropagation();
     likedIds.has(id) ? likedIds.delete(id) : likedIds.add(id);
@@ -837,61 +846,24 @@
     if (activeFilters.likedOnly) runSearch();
   }
 
-  // --- EXPORT / SHARE ---
-  function exportExcel() {
-    let exportData = filteredData;
-    if (selectedIds.size > 0) exportData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
-    if (exportData.length === 0) { alert("No stones available to export."); return; }
+  // --- HEADER SINGLE SORT (back on headers) ---
+  function headerSort(col) {
+    // When clicking header, we switch to single-column sort and clear multi levels
+    if (headerSortCol === col) headerSortDir *= -1;
+    else { headerSortCol = col; headerSortDir = 1; }
 
-    let csvContent = "M.J. Gross Inc.\n";
-    csvContent += "Address: 580 5th Ave, New York, NY 10036\n";
-    csvContent += "Phone: (212) 555-0198\n\n";
+    sortSpecs = [{ col: headerSortCol, dir: headerSortDir }];
 
-    let headers = ["ID","Shape","Size","Color","Clarity","Measurements","Ratio","Lab","Cut","Pol","Sym","Fluo","Depth","Table","Rap Disc","Price/Ct","Total Price","Report Link","Video Link"];
-    csvContent += headers.join(",") + "\n";
+    // Visual arrows in headers
+    document.querySelectorAll('th span[id^="sort-"]').forEach(sp => sp.textContent = '');
+    const sp = document.getElementById('sort-' + col);
+    if (sp) sp.textContent = (headerSortDir === 1 ? ' ↑' : ' ↓');
 
-    exportData.forEach(row => {
-      let rowData = [
-        getVal(row,'ID'), getVal(row,'Shape'), getVal(row,'Size'),
-        getVal(row,'Color'), getVal(row,'Clarity'), getVal(row,'Measurements'),
-        getVal(row,'Ratio'), getVal(row,'Lab'), getVal(row,'Cut'),
-        getVal(row,'Pol'), getVal(row,'Sym'), getVal(row,'Fluo'),
-        getVal(row,'Depth'), getVal(row,'Table'), getVal(row,'Rap Disc'),
-        safeParseFloat(getVal(row,'Price')), safeParseFloat(getVal(row,'Total Price')),
-        getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']),
-        getRobustVal(row, ['Video','Video(link)','Video (link)'])
-      ];
-      csvContent += rowData.map(v => `"${(v||'').toString().replace(/"/g, '""')}"`).join(",") + "\n";
-    });
-
-    let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    let url = URL.createObjectURL(blob);
-    let link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "MJ_Gross_Inventory.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  function shareSelected() {
-    let shareData = filteredData;
-    if (selectedIds.size > 0) shareData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
-    if (shareData.length === 0) { alert("No stones available to share."); return; }
-
-    let text = "M.J. Gross Inc. - Diamond Selection\n\n";
-    shareData.slice(0, 30).forEach(r => {
-      text += `- ${safeParseFloat(getVal(r, 'Size')).toFixed(2)}ct ${getVal(r, 'Shape')} ${getVal(r, 'Color')} ${getVal(r, 'Clarity')} | Total: $${safeParseFloat(getVal(r, 'Total Price')).toLocaleString()}\n`;
-    });
-    if (shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
-
-    if (navigator.share) navigator.share({ title: 'M.J. Gross Inventory', text: text }).catch(console.error);
-    else { navigator.clipboard.writeText(text); alert("Selection copied to clipboard!"); }
+    runSearch();
   }
 
   // --- SORT MODAL UI ---
   function openSortModal() {
-    // If empty, create one primary level
     if (!sortSpecs.length) sortSpecs = [{ col: 'Size', dir: 1 }];
     renderSortModalLevels();
     document.getElementById('sort-modal-overlay').classList.add('open');
@@ -899,7 +871,6 @@
   }
 
   function closeSortModal(e) {
-    // If user clicked backdrop, allow closing
     if (e && e.target && e.target.id !== 'sort-modal-overlay') return;
     document.getElementById('sort-modal-overlay').classList.remove('open');
     document.body.style.overflow = '';
@@ -931,18 +902,50 @@
       const dirSel = document.createElement('select');
       dirSel.className = 'sort-dir';
       dirSel.innerHTML = `
-        <option value="1">A → Z (Ascending)</option>
-        <option value="-1">Z → A (Descending)</option>
+        <option value="1">Sort A → Z (Ascending)</option>
+        <option value="-1">Sort Z → A (Descending)</option>
       `;
       dirSel.value = String(spec.dir);
       dirSel.onchange = () => { sortSpecs[idx].dir = parseInt(dirSel.value, 10); };
+
+      const moveWrap = document.createElement('div');
+      moveWrap.className = 'move-wrap';
+
+      const upBtn = document.createElement('button');
+      upBtn.className = 'move-btn';
+      upBtn.innerHTML = '▲';
+      upBtn.title = 'Move Up';
+      upBtn.disabled = (idx === 0);
+      upBtn.onclick = () => {
+        if (idx === 0) return;
+        const tmp = sortSpecs[idx-1];
+        sortSpecs[idx-1] = sortSpecs[idx];
+        sortSpecs[idx] = tmp;
+        renderSortModalLevels();
+      };
+
+      const downBtn = document.createElement('button');
+      downBtn.className = 'move-btn';
+      downBtn.innerHTML = '▼';
+      downBtn.title = 'Move Down';
+      downBtn.disabled = (idx === sortSpecs.length - 1);
+      downBtn.onclick = () => {
+        if (idx === sortSpecs.length - 1) return;
+        const tmp = sortSpecs[idx+1];
+        sortSpecs[idx+1] = sortSpecs[idx];
+        sortSpecs[idx] = tmp;
+        renderSortModalLevels();
+      };
+
+      moveWrap.appendChild(upBtn);
+      moveWrap.appendChild(downBtn);
 
       const trash = document.createElement('button');
       trash.className = 'trash-btn';
       trash.title = 'Remove level';
       trash.innerHTML = '🗑️';
+      trash.disabled = (idx === 0 && sortSpecs.length === 1);
       trash.onclick = () => {
-        // do not allow removing primary if it is the only one
         if (idx === 0 && sortSpecs.length === 1) return;
         sortSpecs.splice(idx, 1);
         renderSortModalLevels();
@@ -951,6 +954,7 @@
       lvl.appendChild(badge);
       lvl.appendChild(colSel);
       lvl.appendChild(dirSel);
+      lvl.appendChild(moveWrap);
       lvl.appendChild(trash);
 
       wrap.appendChild(lvl);
@@ -964,15 +968,17 @@
 
   function clearAllSorts() {
     sortSpecs = [];
+    headerSortCol = '';
+    headerSortDir = 1;
+    document.querySelectorAll('th span[id^="sort-"]').forEach(sp => sp.textContent = '');
     renderSortModalLevels();
     runSearch();
   }
 
   function applySortModal() {
-    // Ensure primary exists
     if (!sortSpecs.length) sortSpecs = [{ col: 'Size', dir: 1 }];
 
-    // Remove duplicates keeping first occurrence (Excel-ish: first priority wins)
+    // De-dupe columns keeping first occurrence (Excel-ish priority)
     const seen = new Set();
     sortSpecs = sortSpecs.filter(s => {
       if (seen.has(s.col)) return false;
@@ -980,16 +986,27 @@
       return true;
     });
 
+    // Update header arrow to reflect primary sort (optional nice touch)
+    headerSortCol = sortSpecs[0].col;
+    headerSortDir = sortSpecs[0].dir;
+    document.querySelectorAll('th span[id^="sort-"]').forEach(sp => sp.textContent = '');
+    const sp = document.getElementById('sort-' + headerSortCol);
+    if (sp) sp.textContent = (headerSortDir === 1 ? ' ↑' : ' ↓');
+
     closeSortModal();
     runSearch();
   }
 
-  // Mobile dropdown remains: sets primary sort
   function mobileSortLegacy(val) {
     if (!val) return;
     const [col, dirStr] = val.split('-');
     const dir = dirStr === 'asc' ? 1 : -1;
     sortSpecs = [{ col, dir }];
+    headerSortCol = col;
+    headerSortDir = dir;
+    document.querySelectorAll('th span[id^="sort-"]').forEach(sp => sp.textContent = '');
+    const sp = document.getElementById('sort-' + col);
+    if (sp) sp.textContent = (dir === 1 ? ' ↑' : ' ↓');
     runSearch();
   }
 
@@ -1013,7 +1030,6 @@
 
     filteredData = inventoryData.filter(row => {
       const id = getVal(row,'ID');
-
       if (activeFilters.likedOnly && !likedIds.has(id)) return false;
 
       if (query) {
@@ -1064,7 +1080,6 @@
     });
 
     if (sortSpecs.length) filteredData.sort((a, b) => multiCompare(a, b, sortSpecs));
-
     renderTable();
   }
 
@@ -1090,7 +1105,7 @@
     return sa.localeCompare(sb, undefined, { numeric: true, sensitivity: 'base' }) * dir;
   }
 
-  // --- SUBTOTALS ---
+  // --- SUBTOTALS (selected totals more prominent, no parentheses) ---
   function updateSubtotals() {
     let sCarats = 0, sPrice = 0, sRap = 0, selCount = 0;
     document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = selectedIds.has(cb.dataset.id); });
@@ -1106,20 +1121,116 @@
       }
     });
 
-    const fMoney = v => v === 0 ? '$0.00' : '$' + v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    const fPct = v => v === 0 ? '0.00%' : v.toFixed(2) + '%';
+    const fMoney = v => '$' + v.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const fPct = v => v.toFixed(2) + '%';
     let sAvgPriceCt = sCarats > 0 ? (sPrice / sCarats) : 0;
     let sAvgRapDisc = sRap > 0 ? ((sPrice / sRap) - 1) * 100 : 0;
 
-    document.getElementById('sel-count').innerText = selCount > 0 ? `(${selCount} sel)` : '';
-    document.getElementById('sel-carats').innerText = selCount > 0 ? `(${sCarats.toFixed(2)})` : '';
-    document.getElementById('sel-rap').innerText = selCount > 0 ? `(${fMoney(sRap)})` : '';
-    document.getElementById('sel-price').innerText = selCount > 0 ? `(${fMoney(sPrice)})` : '';
-    document.getElementById('sel-avg-price').innerText = selCount > 0 ? `(${fMoney(sAvgPriceCt)})` : '';
-    document.getElementById('sel-avg-disc').innerText = selCount > 0 ? `(${fPct(sAvgRapDisc)})` : '';
+    document.getElementById('sel-count').innerText = selCount > 0 ? `Selected: ${selCount}` : '';
+    document.getElementById('sel-carats').innerText = selCount > 0 ? `Sel: ${sCarats.toFixed(2)}` : '';
+    document.getElementById('sel-rap').innerText = selCount > 0 ? `Sel: ${fMoney(sRap)}` : '';
+    document.getElementById('sel-price').innerText = selCount > 0 ? `Sel: ${fMoney(sPrice)}` : '';
+    document.getElementById('sel-avg-price').innerText = selCount > 0 ? `Sel: ${fMoney(sAvgPriceCt)}` : '';
+    document.getElementById('sel-avg-disc').innerText = selCount > 0 ? `Sel: ${fPct(sAvgRapDisc)}` : '';
   }
 
-  // --- RENDER ---
+  // --- EXPORT to Excel (HTML .XLS) with clickable "Photo Link" / "Video Link" ---
+  function exportExcel() {
+    let exportData = filteredData;
+    if (selectedIds.size > 0) exportData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
+    if (exportData.length === 0) { alert("No stones available to export."); return; }
+
+    const headers = [
+      "ID","Shape","Size","Color","Clarity","Measurements","Ratio","Lab","Cut","Pol","Sym","Fluo",
+      "Depth","Table","Rap Disc","Price/Ct","Total Price","Report Link","Photo Link","Video Link"
+    ];
+
+    const linkStyle = "color:#0563C1;text-decoration:underline;";
+
+    const rowsHtml = exportData.map(row => {
+      const report = formatUrl(getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']));
+      const photo  = formatUrl(getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']));
+      const video  = formatUrl(getRobustVal(row, ['Video','Video(link)','Video (link)']));
+
+      const aOrBlank = (url, label) => url ? `<a href="${escapeHtml(url)}" style="${linkStyle}">${label}</a>` : "";
+
+      const cells = [
+        getVal(row,'ID'),
+        getVal(row,'Shape'),
+        getVal(row,'Size'),
+        getVal(row,'Color'),
+        getVal(row,'Clarity'),
+        getVal(row,'Measurements'),
+        getVal(row,'Ratio'),
+        getVal(row,'Lab'),
+        getVal(row,'Cut'),
+        getVal(row,'Pol'),
+        getVal(row,'Sym'),
+        getVal(row,'Fluo'),
+        getVal(row,'Depth'),
+        getVal(row,'Table'),
+        getVal(row,'Rap Disc'),
+        getVal(row,'Price'),
+        getVal(row,'Total Price'),
+        aOrBlank(report, "Report Link"),
+        aOrBlank(photo, "Photo Link"),
+        aOrBlank(video, "Video Link"),
+      ];
+
+      return `<tr>${cells.map(c => `<td>${(c ?? '')}</td>`).join('')}</tr>`;
+    }).join('');
+
+    const html = `
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          table { border-collapse: collapse; }
+          td, th { border: 1px solid #d9d9d9; padding: 6px; font-family: Arial; font-size: 10pt; }
+          th { background: #f2f2f2; font-weight: 700; }
+        </style>
+      </head>
+      <body>
+        <h3 style="font-family:Arial;">M.J. Gross Inc. - Inventory Export</h3>
+        <div style="font-family:Arial; font-size:10pt; margin-bottom:10px;">
+          Address: 580 5th Ave, New York, NY 10036<br>
+          Phone: (212) 555-0198
+        </div>
+        <table>
+          <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "MJ_Gross_Inventory.xls";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // --- SHARE ---
+  function shareSelected() {
+    let shareData = filteredData;
+    if (selectedIds.size > 0) shareData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
+    if (shareData.length === 0) { alert("No stones available to share."); return; }
+
+    let text = "M.J. Gross Inc. - Diamond Selection\n\n";
+    shareData.slice(0, 30).forEach(r => {
+      text += `- ${safeParseFloat(getVal(r, 'Size')).toFixed(2)}ct ${getVal(r, 'Shape')} ${getVal(r, 'Color')} ${getVal(r, 'Clarity')} | Total: $${safeParseFloat(getVal(r, 'Total Price')).toLocaleString()}\n`;
+    });
+    if (shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
+
+    if (navigator.share) navigator.share({ title: 'M.J. Gross Inventory', text: text }).catch(console.error);
+    else { navigator.clipboard.writeText(text); alert("Selection copied to clipboard!"); }
+  }
+
+  // --- RENDER TABLE ---
   function renderTable() {
     const tbody = document.getElementById('table-body');
 
@@ -1156,7 +1267,6 @@
       const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
       const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
       const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
-      const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
       const photo = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
       const video = getRobustVal(row, ['Video','Video(link)','Video (link)']);
@@ -1165,12 +1275,13 @@
 
       const labStr = getVal(row,'Lab') || 'CERT';
       let labHtml = labStr;
-      if (report) labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
+      if (report) labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${escapeHtml(labStr)}</a>`;
 
       const liked = likedIds.has(id);
 
       tr.innerHTML = `
         <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
+
         <td class="desktop-only" style="text-align:center;">
           <div style="display:flex; align-items:center; gap:8px;">
             <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeJs(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
@@ -1197,9 +1308,9 @@
         <td class="desktop-only">${escapeHtml(getVal(row,'Culet'))}</td>
         <td class="desktop-only">${escapeHtml(getVal(row,'Girdle'))}</td>
         <td class="desktop-only">${escapeHtml(formatMoneyFull(getVal(row,'Rap')))}</td>
-        <td class="desktop-only" style="font-weight:600;">${escapeHtml(formatPct(getVal(row,'Rap Disc')))}</td>
+        <td class="desktop-only" style="font-weight:800;">${escapeHtml(formatPct(getVal(row,'Rap Disc')))}</td>
         <td class="desktop-only">${escapeHtml(formatMoneyFull(getVal(row,'Price')))}</td>
-        <td class="desktop-only" style="color:#059669; font-weight:bold;">${escapeHtml(formatMoneyFull(getVal(row,'Total Price')))}</td>
+        <td class="desktop-only" style="color:#059669; font-weight:900;">${escapeHtml(formatMoneyFull(getVal(row,'Total Price')))}</td>
 
         <td class="mobile-only">
           <div class="mobile-card">
@@ -1323,28 +1434,26 @@
     document.getElementById('drawer-title').innerText = titleStr;
     const modalTitle = `${titleStr} - ID: ${getVal(row,'ID')}`;
 
-    const photo = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
-    const video = getRobustVal(row, ['Video','Video(link)','Video (link)']);
-    const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
-
-    const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
+    const photo = formatUrl(getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']));
+    const video = formatUrl(getRobustVal(row, ['Video','Video(link)','Video (link)']));
+    const report = formatUrl(getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']));
 
     const modalBtn = (link, label, icon, type) => {
       const isDis = (!link || link.trim() === '');
       const bg = isDis ? '#f1f5f9' : '#f8fafc';
       const col = isDis ? '#94a3b8' : 'var(--primary)';
-      const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}', '${type}', '${escapeJs(modalTitle)}')"`;
+      const ev = isDis ? '' : `onclick="openMediaModal('${link}', '${type}', '${escapeJs(modalTitle)}')"`;
       const cur = isDis ? 'default' : 'pointer';
-      return `<button ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:${col}; cursor:${cur}; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</button>`;
+      return `<button ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:900; color:${col}; cursor:${cur}; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</button>`;
     };
 
     const certBtn = (link, label, icon) => {
       const isDis = (!link || link.trim() === '');
       const bg = isDis ? '#f1f5f9' : '#f8fafc';
       const col = isDis ? '#94a3b8' : 'var(--primary)';
-      const ev = isDis ? '' : `href="${formatUrl(link)}" target="_blank"`;
+      const ev = isDis ? '' : `href="${link}" target="_blank"`;
       const tag = isDis ? 'div' : 'a';
-      return `<${tag} ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:${col}; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</${tag}>`;
+      return `<${tag} ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:900; color:${col}; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</${tag}>`;
     };
 
     const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
@@ -1354,7 +1463,7 @@
     if (photo) {
       photoEmbedHtml = `
         <div style="width:100%; background:#fff; border-radius:8px; overflow:hidden; margin-bottom:15px; display:flex; align-items:center; justify-content:center; border:1px solid #e2e8f0;">
-          <img src="${formatUrl(photo)}" style="width:100%; height:auto; object-fit:contain;" onerror="this.style.display='none'">
+          <img src="${photo}" style="width:100%; height:auto; object-fit:contain;" onerror="this.style.display='none'">
         </div>`;
     }
 
@@ -1368,38 +1477,30 @@
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:20px;">
-        <div><span style="font-size:0.85rem; color:#64748b; font-weight:bold;">MEASUREMENTS</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Measurements')||'-')}</b></div>
-        <div><span style="font-size:0.85rem; color:#64748b; font-weight:bold;">RATIO</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Ratio')||'-')}</b></div>
-        <div><span style="font-size:0.85rem; color:#64748b; font-weight:bold;">DEPTH / TABLE</span><br><b style="font-size:1.1rem;">${escapeHtml(formatPct(getVal(row,'Depth')))} / ${escapeHtml(formatPct(getVal(row,'Table')))}</b></div>
-        <div><span style="font-size:0.85rem; color:#64748b; font-weight:bold;">CULET / GIRDLE</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Culet')||'-')} / ${escapeHtml(getVal(row,'Girdle')||'-')}</b></div>
+        <div><span style="font-size:0.85rem; color:#64748b; font-weight:900;">MEASUREMENTS</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Measurements')||'-')}</b></div>
+        <div><span style="font-size:0.85rem; color:#64748b; font-weight:900;">RATIO</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Ratio')||'-')}</b></div>
+        <div><span style="font-size:0.85rem; color:#64748b; font-weight:900;">DEPTH / TABLE</span><br><b style="font-size:1.1rem;">${escapeHtml(formatPct(getVal(row,'Depth')))} / ${escapeHtml(formatPct(getVal(row,'Table')))}</b></div>
+        <div><span style="font-size:0.85rem; color:#64748b; font-weight:900;">CULET / GIRDLE</span><br><b style="font-size:1.1rem;">${escapeHtml(getVal(row,'Culet')||'-')} / ${escapeHtml(getVal(row,'Girdle')||'-')}</b></div>
       </div>
 
       <div style="padding-top:15px; border-top:1px solid #e2e8f0; margin-bottom:20px;">
         <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-          <div style="font-size:1rem; color:#475569; font-weight:700;">Price/Ct:</div>
-          <div style="font-size:1.1rem; color:#059669; font-weight:800;">${escapeHtml(formatMoneyFull(getVal(row,'Price')))}</div>
+          <div style="font-size:1rem; color:#475569; font-weight:900;">Price/Ct:</div>
+          <div style="font-size:1.1rem; color:#059669; font-weight:900;">${escapeHtml(formatMoneyFull(getVal(row,'Price')))}</div>
         </div>
         <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-          <div style="font-size:0.95rem; color:#64748b; font-weight:600;">Total Price:</div>
-          <div style="font-size:1.1rem; color:#059669; font-weight:800;">${escapeHtml(formatMoneyFull(getVal(row,'Total Price')))}</div>
+          <div style="font-size:0.95rem; color:#64748b; font-weight:800;">Total Price:</div>
+          <div style="font-size:1.1rem; color:#059669; font-weight:900;">${escapeHtml(formatMoneyFull(getVal(row,'Total Price')))}</div>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-          <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Rap Disc:</div>
-          <div style="font-size:0.9rem; color:#dc2626; font-weight:700;">${escapeHtml(formatPct(getVal(row,'Rap Disc')))}</div>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-          <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Rap Value:</div>
-          <div style="font-size:0.9rem; color:#64748b; font-weight:600;">${escapeHtml(formatMoneyFull(getVal(row,'Rap')))} /ct</div>
-        </div>
-        <div style="display:flex; justify-content:space-between;">
-          <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Stock ID:</div>
-          <div style="font-size:0.9rem; color:#64748b; font-weight:600;">${escapeHtml(getVal(row,'ID'))}</div>
+          <div style="font-size:0.9rem; color:#64748b; font-weight:800;">Rap Disc:</div>
+          <div style="font-size:0.9rem; color:#dc2626; font-weight:900;">${escapeHtml(formatPct(getVal(row,'Rap Disc')))}</div>
         </div>
       </div>
 
       <div style="background:#f1f5f9; padding:15px; border-radius:8px; margin-bottom:10px;">
-        <div style="font-weight:700; margin-bottom:5px; color:#475569; font-size:1rem;">Comments</div>
+        <div style="font-weight:900; margin-bottom:5px; color:#475569; font-size:1rem;">Comments</div>
         <div style="font-size:1rem; line-height:1.5;">${escapeHtml(getVal(row,'Comments') || 'No comments listed.')}</div>
       </div>
     `;
