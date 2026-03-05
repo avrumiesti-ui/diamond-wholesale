@@ -195,16 +195,16 @@
       gap: 10px;
       align-items:center;
     }
-    .lvl-badge {
-      font-weight: 900;
-      background: #e2e8f0;
-      color: #0f172a;
-      border-radius: 999px;
-      padding: 6px 10px;
-      text-align:center;
-      font-size: 0.8rem;
-      width: fit-content;
-    }
+.lvl-badge {
+  font-weight: 1000;
+  background: #0f172a;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  text-align:center;
+  font-size: 0.85rem;
+  width: 34px;
+}
     .sort-select, .sort-dir {
       width: 100%;
       padding: 10px 10px;
@@ -228,14 +228,22 @@
     .move-btn:hover { background:#f8fafc; border-color:#cbd5e1; }
     .move-btn:disabled { opacity: 0.35; cursor: default; }
 
-    .trash-btn {
-      width: 34px; height: 34px;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      background: #fff;
-      cursor: pointer;
-      font-size: 1rem;
-    }
+   .trash-btn {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #ef4444;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height: 1;
+}
+.trash-btn:hover { background: #fef2f2; border-color:#fca5a5; }
+.trash-btn:disabled { opacity:0.35; cursor: default; background:#f8fafc; border-color:#e2e8f0; color:#94a3b8; }
     .trash-btn:hover { background: #f8fafc; border-color:#cbd5e1; }
     .trash-btn:disabled { opacity:0.4; cursor: default; }
 
@@ -329,15 +337,33 @@
   <div class="header-inner">
     <div class="logo-section">
       <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
-      <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
-      <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
-    </div>
+   </div>
+    .sort-icon-btn { padding: 6px 10px; }
+.sort-az-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 1000;
+  color: #0f172a;
+}
+.sort-az-icon .az { font-size: 0.95rem; }
+.sort-az-icon .ar { font-size: 0.95rem; opacity: 0.85; }
+
+/* On small screens, keep it extra compact */
+@media (max-width: 1100px) {
+  .sort-icon-btn { padding: 6px 8px; }
+}
 
     <div class="header-controls">
-      <button class="action-btn" onclick="openSortModal()" title="Sort (Excel style)">⇅ Sort</button>
+      <button class="action-btn sort-icon-btn" onclick="openSortModal()" title="Sort">
+  <span class="sort-az-icon" aria-hidden="true">
+    <span class="az">A</span>
+    <span class="ar">↕</span>
+    <span class="az">Z</span>
+  </span>
+</button>
       <button class="action-btn" onclick="exportExcel()" title="Export Selected to Excel">📊</button>
       <button class="action-btn" onclick="shareSelected()" title="Share Selected">📤</button>
-      <span id="update-status" style="margin-left:10px;">Updating...</span>
       <a href="index.html" class="logout-btn">Exit</a>
     </div>
   </div>
@@ -886,7 +912,7 @@
 
       const badge = document.createElement('div');
       badge.className = 'lvl-badge';
-      badge.textContent = idx === 0 ? 'Primary' : ('Level ' + (idx+1));
+      badge.textContent = String(idx + 1);
 
       const colSel = document.createElement('select');
       colSel.className = 'sort-select';
@@ -943,7 +969,7 @@
       const trash = document.createElement('button');
       trash.className = 'trash-btn';
       trash.title = 'Remove level';
-      trash.innerHTML = '🗑️';
+      trash.innerHTML = 'X';
       trash.disabled = (idx === 0 && sortSpecs.length === 1);
       trash.onclick = () => {
         if (idx === 0 && sortSpecs.length === 1) return;
