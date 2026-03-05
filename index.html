@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M.J. Gross Inc. | Inventory App</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
-    
+
     <style>
         :root {
             --primary: #000000;
@@ -18,7 +18,7 @@
             --select-row: #eff6ff;
             --max-w: 1600px;
         }
-        
+
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; padding: 0; background-color: var(--bg-gray); color: #1e293b; font-size: 13px; overflow-x: hidden; }
 
@@ -27,13 +27,24 @@
         .header-inner { max-width: var(--max-w); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; width: 100%; }
         .logo-section { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 35px; }
-        .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 12px; align-items: center;}
-        
+        .header-controls { font-weight: 600; color: #64748b; font-size: 0.85rem; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;}
+
         .action-btn { background: none; border: 1px solid var(--border); padding: 5px 10px; border-radius: 4px; font-size: 1.1rem; cursor: pointer; transition: 0.2s; background: #f8fafc; }
         .action-btn:hover { background: #e2e8f0; border-color: #cbd5e1; }
-        
+
         .logout-btn { color: #dc2626; text-decoration: none; border: 1px solid #fca5a5; padding: 5px 10px; border-radius: 4px; transition: 0.2s; margin-left: 5px;}
         .logout-btn:hover { background: #fef2f2; }
+
+        .sort-select{
+            height: 30px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            padding: 0 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+        }
 
         /* LOADING STATE */
         .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100vh - 60px); text-align: center; padding: 20px; }
@@ -43,14 +54,14 @@
         /* LAYOUT */
         .inventory-container { display: none; min-height: calc(100vh - 60px); max-width: var(--max-w); margin: 0 auto; width: 100%; }
         .sidebar { width: 320px; background: var(--bg-gray); border-right: 1px solid var(--border); padding: 20px 20px 20px 0; flex-shrink: 0; overflow-y: auto; height: calc(100vh - 60px); position: sticky; top: 60px; z-index: 100;}
-        
+
         .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .btn-reset { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; font-size: 0.8rem; text-transform: uppercase; padding: 0; }
         .btn-reset:hover { text-decoration: underline; }
 
-        .filter-group { margin-bottom: 20px; } 
+        .filter-group { margin-bottom: 20px; }
         .filter-label { font-weight: 800; display: block; margin-bottom: 12px; font-size: 0.7rem; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
-        
+
         /* FILTERS UI */
         .shape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
         .btn-toggle { background: #fff; border: 1px solid #cbd5e1; padding: 8px 4px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.1s; font-weight: 600; color: #475569; text-align: center; }
@@ -61,28 +72,28 @@
         .carat-row { display: grid; gap: 6px; margin-bottom: 6px; }
         .row-3 { grid-template-columns: repeat(3, 1fr); }
         .row-4 { grid-template-columns: repeat(4, 1fr); }
-        
+
         .touch-bar { display: flex; width: 100%; margin-bottom: 10px; flex-wrap: wrap; }
         .touch-btn { flex: 1 1 auto; padding: 8px 0; background: #fff; border: 1px solid #cbd5e1; margin-left: -1px; cursor: pointer; font-size: 0.7rem; font-weight: 600; color: #475569; text-align: center; min-width: 30px; }
         .touch-btn:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; margin-left: 0; }
         .touch-btn:last-child { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
         .touch-btn.active { background-color: var(--primary); color: #fff; border-color: var(--primary); z-index: 1; position: relative; }
-        
+
         .range-row { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
         .range-input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.8rem; }
         .mm-label { font-size: 0.75rem; font-weight: 800; color: var(--text-muted); width: 15px; }
 
         /* RESULTS AREA & STICKY DASHBOARD */
         .results-area { flex-grow: 1; padding: 0 0 20px 20px; display: flex; flex-direction: column; min-width: 0; }
-        
+
         .dashboard-wrapper { position: sticky; top: 56px; z-index: 90; background: var(--bg-gray); padding: 20px 0 15px 0; }
-        
+
         .summary-dashboard { display: flex; gap: 10px; background: var(--white); padding: 12px 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid var(--border); flex-wrap: wrap; }
         .sum-card { flex: 1; display: flex; flex-direction: column; border-right: 1px solid var(--border); padding-right: 10px; min-width: 80px; }
         .sum-card:last-child { border-right: none; padding-right: 0; }
         .sum-label { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px; }
         .sum-val { font-size: 0.95rem; font-weight: 700; color: var(--primary); }
-        .sum-sub { font-size: 0.7rem; color: #3b82f6; font-weight: 700; margin-top: 2px; min-height: 14px; } /* Selected Subtotals */
+        .sum-sub { font-size: 0.7rem; color: #3b82f6; font-weight: 700; margin-top: 2px; min-height: 14px; }
 
         /* TABLE (Desktop) */
         .table-container { background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); overflow-x: auto; flex-grow: 1; border: 1px solid var(--border); }
@@ -90,14 +101,14 @@
         th { background: #f8fafc; color: #475569; padding: 12px 5px; text-align: left; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; z-index: 10; }
         th:hover { background: #e2e8f0; }
         td { padding: 10px 5px; border-bottom: 1px solid var(--border); font-size: 0.8rem; white-space: nowrap; vertical-align: middle; }
-        
+
         th:first-child, td:first-child { padding-left: 15px; }
         th:last-child, td:last-child { padding-right: 15px; }
 
         .data-row { transition: background 0.15s; cursor: pointer; }
         .data-row:hover { background-color: var(--hover-row); }
         .data-row.selected { background-color: var(--select-row); }
-        
+
         .col-expand { width: 30px; text-align: center; }
         .btn-expand { background: var(--white); border: 1px solid #cbd5e1; border-radius: 50%; width: 22px; height: 22px; font-weight: bold; display: flex; align-items: center; justify-content: center; color: var(--primary); transition: 0.2s; font-size: 1rem; padding: 0; pointer-events: none;}
         .data-row:hover .btn-expand { border-color: var(--primary); color: var(--primary); }
@@ -105,7 +116,7 @@
 
         .lab-link { color: #2563eb; font-weight: 700; text-decoration: underline; cursor: pointer; }
         .lab-link:hover { color: #1d4ed8; }
-        
+
         .row-checkbox { transform: scale(1.3); cursor: pointer; margin-right: 5px; }
         .heart-btn { cursor: pointer; font-size: 1.1rem; user-select: none; }
 
@@ -135,37 +146,34 @@
         @media (max-width: 1100px) {
             .desktop-only { display: none !important; }
             .mobile-only { display: block; }
-            
+
             .inventory-container { flex-direction: column; padding: 0; }
-            
-            /* Sidebar stretches to full height */
+
             .sidebar { width: 100%; display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 3000; padding: 20px; padding-bottom: 0; background: var(--white); height: 100dvh; box-sizing: border-box; overflow-y: auto; }
             .sidebar.show { display: block; }
             .apply-btn-wrapper { position: sticky; bottom: 0; background: var(--white); padding: 15px 0 20px 0; margin-top: 20px; border-top: 1px solid var(--border); }
 
             .results-area { padding: 0 10px 10px 10px; }
-            
-            /* Mobile Tools & Dashboard Sticky Wrapper */
+
             .mobile-tools { display: flex; gap: 10px; background: var(--bg-gray); padding: 10px 0; position: sticky; top: 56px; z-index: 90; }
             .btn-mobile-tool { flex: 1; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; background: var(--white); font-weight: 600; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
-            
+
             .dashboard-wrapper { top: 110px; padding: 0 0 10px 0; z-index: 85; }
 
-            /* Mobile Dashboard sizing: 3 Cols (20% - 33.3% - remaining) */
             .summary-dashboard { display: grid; grid-template-columns: 20% 33.33% 1fr; gap: 6px; padding: 10px; margin-bottom: 5px;}
             .sum-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 6px; border-radius: 4px; border-right: 1px solid #e2e8f0 !important; min-width: 0;}
-            .sum-label { font-size: 0.55rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;} 
-            .sum-val { font-size: 0.78rem; } 
+            .sum-label { font-size: 0.55rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+            .sum-val { font-size: 0.78rem; }
             .sum-sub { font-size: 0.6rem; min-height: 12px; }
 
             table, tbody, tr { display: block; width: 100%; min-width: 100%; }
             thead { display: none; }
             .table-container { background: transparent; box-shadow: none; border: none; }
-            
+
             .data-row { background: var(--white); border-radius: 8px; margin-bottom: 10px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; position: relative; cursor: pointer; }
-            .data-row td { padding: 0; border: none; display: none; } 
-            td.mobile-only { display: block; } 
-            
+            .data-row td { padding: 0; border: none; display: none; }
+            td.mobile-only { display: block; }
+
             .envelope-row { display: none !important; }
 
             .mobile-card { display: flex; flex-direction: column; gap: 6px; }
@@ -173,19 +181,17 @@
             .mc-line1 { font-size: 1.1rem; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; margin-right: 100px; }
             .mc-line2, .mc-line3 { font-size: 0.85rem; color: #475569; font-weight: 500; }
             .mc-line4 { font-size: 0.75rem; color: #94a3b8; margin-top: 2px; }
-            
-            /* Identical Price Fonts in Card (Reduced by 20%) */
+
             .mc-price-wrap { position: absolute; top: 15px; right: 15px; text-align: right; display: flex; flex-direction: column; gap: 2px; }
             .mc-price { font-weight: 800; font-size: 0.88rem; color: #059669; line-height: 1; }
             .mc-rap { position: absolute; bottom: 15px; right: 15px; font-size: 0.8rem; font-weight: 700; color: #475569; }
-            
-            /* Drawer Details */
+
             .drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; align-items: flex-end; }
             .drawer-overlay.open { display: flex; }
             .drawer-content { background: var(--white); width: 100%; height: 90vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; overflow: hidden; }
             .drawer-header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
             .drawer-body { overflow-y: auto; padding: 20px; flex-grow: 1; display: flex; flex-direction: column; -webkit-overflow-scrolling: touch; }
-            
+
             @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
             @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         }
@@ -200,9 +206,41 @@
                 <span class="desktop-only" style="font-weight:700; color:#ccc;">|</span>
                 <span class="desktop-only" style="font-size:0.9rem; font-weight:600; color:#333;">LIVE INVENTORY</span>
             </div>
+
             <div class="header-controls">
                 <button class="action-btn" onclick="exportExcel()" title="Export Selected to Excel">📊</button>
                 <button class="action-btn" onclick="shareSelected()" title="Share Selected">📤</button>
+
+                <!-- EXCEL-STYLE SORT -->
+                <select id="sort-col-select" class="sort-select" onchange="applySortFromUI()">
+                    <option value="">Sort: None</option>
+                    <option value="ID">ID</option>
+                    <option value="Shape">Shape</option>
+                    <option value="Size">Size</option>
+                    <option value="Color">Color</option>
+                    <option value="Clarity">Clarity</option>
+                    <option value="measl">L</option>
+                    <option value="measw">W</option>
+                    <option value="measd">D</option>
+                    <option value="Ratio">Ratio</option>
+                    <option value="Lab">Lab</option>
+                    <option value="Cut">Cut</option>
+                    <option value="Pol">Polish</option>
+                    <option value="Sym">Symmetry</option>
+                    <option value="Fluo">Fluor</option>
+                    <option value="Depth">Depth%</option>
+                    <option value="Table">Table%</option>
+                    <option value="Culet">Culet</option>
+                    <option value="Girdle">Girdle</option>
+                    <option value="Rap">Rap $/ct</option>
+                    <option value="Rap Disc">Rap%</option>
+                    <option value="Price">Price/Ct</option>
+                    <option value="Total Price">Total $</option>
+                </select>
+                <button class="action-btn" onclick="setSortDir(1)" title="Sort Ascending (A→Z)">⬆️</button>
+                <button class="action-btn" onclick="setSortDir(-1)" title="Sort Descending (Z→A)">⬇️</button>
+                <button class="action-btn" onclick="clearSort()" title="Clear Sort">✖️</button>
+
                 <span id="update-status" style="margin-left:10px;">Updating...</span>
                 <a href="index.html" class="logout-btn">Exit</a>
             </div>
@@ -216,10 +254,10 @@
     </div>
 
     <div class="inventory-container" id="app-container">
-        
+
         <aside class="sidebar" id="sidebar">
             <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
-            
+
             <div class="sidebar-header">
                 <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
                 <button class="btn-reset" onclick="resetFilters()">Reset All</button>
@@ -321,7 +359,7 @@
                 <span class="filter-label">LAB</span>
                 <div class="touch-bar" id="lab-bar"></div>
             </div>
-            
+
             <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:4px;" onkeyup="runSearch()">
 
             <div class="apply-btn-wrapper mobile-only">
@@ -330,7 +368,7 @@
         </aside>
 
         <main class="results-area">
-            
+
             <div class="mobile-only mobile-tools" id="mobile-tools" style="display:none;">
                 <button class="btn-mobile-tool" onclick="toggleSidebar()"><span>Filters</span> <span>⚙️</span></button>
                 <select class="btn-mobile-tool" onchange="mobileSort(this.value)" style="appearance:none; padding-right:30px;">
@@ -406,13 +444,12 @@
                             <th onclick="sortBy('Culet')">Cul <span id="sort-Culet"></span></th>
                             <th onclick="sortBy('Girdle')">Grd <span id="sort-Girdle"></span></th>
                             <th onclick="sortBy('Rap')">Rap $ <span id="sort-Rap"></span></th>
-                            <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
+                            <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap_Disc"></span></th>
                             <th onclick="sortBy('Price')">Price/Ct <span id="sort-Price"></span></th>
-                            <th onclick="sortBy('Total Price')">Total $ <span id="sort-Total Price"></span></th>
+                            <th onclick="sortBy('Total Price')">Total $ <span id="sort-Total_Price"></span></th>
                         </tr>
                     </thead>
-                    <tbody id="table-body">
-                        </tbody>
+                    <tbody id="table-body"></tbody>
                 </table>
             </div>
         </main>
@@ -424,8 +461,7 @@
                 <div class="media-modal-title" id="media-modal-title"></div>
                 <button onclick="closeMediaModal()" style="background:none; border:none; font-size:2rem; cursor:pointer; line-height:1; color:#475569;">✕</button>
             </div>
-            <div class="media-modal-body" id="media-modal-body">
-                </div>
+            <div class="media-modal-body" id="media-modal-body"></div>
         </div>
     </div>
 
@@ -435,8 +471,7 @@
                 <div id="drawer-title" style="font-size:1.1rem; font-weight:800; color:var(--primary);"></div>
                 <button onclick="closeDrawer()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; line-height:1;">✕</button>
             </div>
-            <div class="drawer-body" id="drawer-body">
-                </div>
+            <div class="drawer-body" id="drawer-body"></div>
         </div>
     </div>
 
@@ -445,10 +480,10 @@
         let inventoryData = [];
         let filteredData = [];
         let sortCol = '';
-        let sortDir = 1; 
-        
+        let sortDir = 1;
+
         let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [], likedOnly: false };
-        
+
         let selectedIds = new Set();
         let likedIds = new Set();
 
@@ -494,22 +529,22 @@
                 } else row[i] += l;
                 p = l;
             }
-            
+
             const rawHeaders = ret[0].map(h => h.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"").trim());
             const data = [];
             for (let j = 1; j < ret.length; j++) {
-                if (ret[j].length < 2 || ret[j].join('').trim() === '') continue; 
+                if (ret[j].length < 2 || ret[j].join('').trim() === '') continue;
                 let obj = {};
                 rawHeaders.forEach((h, index) => {
                     obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
                 });
-                
+
                 let measRaw = obj['measurements'] || '';
                 let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
                 obj['measl'] = parts[0] || '';
                 obj['measw'] = parts[1] || '';
                 obj['measd'] = parts[2] || '';
-                
+
                 data.push(obj);
             }
 
@@ -517,7 +552,7 @@
             document.getElementById('loading-state').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
             if(window.innerWidth <= 1100) document.getElementById('mobile-tools').style.display = 'flex';
-            
+
             runSearch();
         }
 
@@ -563,10 +598,10 @@
         function handleRangeClick(index, items, key, domId) {
             let active = activeFilters[key];
             const clickedItem = items[index];
-            
-            if (active.length === 1 && active[0] === clickedItem) activeFilters[key] = []; 
-            else if (active.includes(clickedItem)) activeFilters[key] = [clickedItem]; 
-            else if (active.length === 0) activeFilters[key] = [clickedItem]; 
+
+            if (active.length === 1 && active[0] === clickedItem) activeFilters[key] = [];
+            else if (active.includes(clickedItem)) activeFilters[key] = [clickedItem];
+            else if (active.length === 0) activeFilters[key] = [clickedItem];
             else {
                 const activeIndices = active.map(val => items.indexOf(val));
                 const min = Math.min(...activeIndices, index);
@@ -628,8 +663,7 @@
             if(event) event.stopPropagation();
             if(selectedIds.has(id)) selectedIds.delete(id);
             else selectedIds.add(id);
-            
-            // Toggle visual class on row
+
             const rCheckbox = document.querySelector(`.row-checkbox[data-id="${id}"]`);
             if (rCheckbox) {
                 const rowTr = rCheckbox.closest('.data-row');
@@ -642,12 +676,11 @@
             if(event) event.stopPropagation();
             if(likedIds.has(id)) likedIds.delete(id);
             else likedIds.add(id);
-            
-            // Visually update all hearts for this ID
+
             document.querySelectorAll(`.heart-btn[data-id="${id}"]`).forEach(btn => {
                 btn.innerHTML = likedIds.has(id) ? '❤️' : '🤍';
             });
-            
+
             if (activeFilters.likedOnly) runSearch();
         }
 
@@ -658,14 +691,14 @@
                 exportData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
             }
             if (exportData.length === 0) { alert("No stones available to export."); return; }
-            
+
             let csvContent = "M.J. Gross Inc.\n";
-            csvContent += "Address: 580 5th Ave, New York, NY 10036\n"; 
+            csvContent += "Address: 580 5th Ave, New York, NY 10036\n";
             csvContent += "Phone: (212) 555-0198\n\n";
-            
+
             let headers = ["ID", "Shape", "Size", "Color", "Clarity", "Measurements", "Ratio", "Lab", "Cut", "Pol", "Sym", "Fluo", "Depth", "Table", "Rap Disc", "Price/Ct", "Total Price", "Report Link", "Video Link"];
             csvContent += headers.join(",") + "\n";
-            
+
             exportData.forEach(row => {
                 let rowData = [
                     getVal(row, 'ID'), getVal(row, 'Shape'), getVal(row, 'Size'),
@@ -679,7 +712,7 @@
                 ];
                 csvContent += rowData.map(v => `"${(v||'').toString().replace(/"/g, '""')}"`).join(",") + "\n";
             });
-            
+
             let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             let url = URL.createObjectURL(blob);
             let link = document.createElement("a");
@@ -696,13 +729,13 @@
                 shareData = filteredData.filter(r => selectedIds.has(getVal(r, 'ID')));
             }
             if (shareData.length === 0) { alert("No stones available to share."); return; }
-            
+
             let text = "M.J. Gross Inc. - Diamond Selection\n\n";
             shareData.slice(0, 30).forEach(r => {
                 text += `- ${safeParseFloat(getVal(r, 'Size')).toFixed(2)}ct ${getVal(r, 'Shape')} ${getVal(r, 'Color')} ${getVal(r, 'Clarity')} | Total: $${safeParseFloat(getVal(r, 'Total Price')).toLocaleString()}\n`;
             });
             if(shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
-            
+
             if (navigator.share) {
                 navigator.share({ title: 'M.J. Gross Inventory', text: text }).catch(console.error);
             } else {
@@ -712,12 +745,56 @@
         }
 
         // --- 6. SEARCH & SORT ---
+        function sortKeyToSpanId(col) {
+            return 'sort-' + col.replace(/\s+/g, '_');
+        }
+
+        function clearSortIndicators() {
+            document.querySelectorAll('th span[id^="sort-"]').forEach(sp => sp.innerText = '');
+        }
+
         function sortBy(col) {
             if (sortCol === col) sortDir *= -1;
             else { sortCol = col; sortDir = 1; }
-            document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
-            const sp = document.getElementById('sort-' + col);
-            if(sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
+
+            // sync dropdown
+            const sel = document.getElementById('sort-col-select');
+            if (sel) sel.value = sortCol;
+
+            clearSortIndicators();
+            const sp = document.getElementById(sortKeyToSpanId(col));
+            if (sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
+
+            runSearch();
+        }
+
+        function applySortFromUI() {
+            const sel = document.getElementById('sort-col-select');
+            const col = sel ? sel.value : '';
+            sortCol = col;
+
+            if (!sortDir) sortDir = 1;
+
+            clearSortIndicators();
+            if (sortCol) {
+                const sp = document.getElementById(sortKeyToSpanId(sortCol));
+                if (sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
+            }
+
+            runSearch();
+        }
+
+        function setSortDir(dir) {
+            sortDir = dir;
+            applySortFromUI();
+        }
+
+        function clearSort() {
+            sortCol = '';
+            sortDir = 1;
+            const sel = document.getElementById('sort-col-select');
+            if (sel) sel.value = '';
+            clearSortIndicators();
             runSearch();
         }
 
@@ -725,6 +802,15 @@
             if(!val) return;
             const parts = val.split('-');
             sortCol = parts[0]; sortDir = parts[1] === 'asc' ? 1 : -1;
+
+            // sync desktop dropdown if visible
+            const sel = document.getElementById('sort-col-select');
+            if (sel) sel.value = sortCol;
+
+            clearSortIndicators();
+            const sp = document.getElementById(sortKeyToSpanId(sortCol));
+            if (sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
+
             runSearch();
         }
 
@@ -732,8 +818,8 @@
             const query = (document.getElementById('search-box')?.value || '').toLowerCase();
             const minS = safeParseFloat(document.getElementById('min-size').value);
             const maxS = safeParseFloat(document.getElementById('max-size').value);
-            const minD = safeParseFloat(document.getElementById('depth-min').value);
-            const maxD = safeParseFloat(document.getElementById('depth-max').value);
+            const minDepth = safeParseFloat(document.getElementById('depth-min').value);
+            const maxDepth = safeParseFloat(document.getElementById('depth-max').value);
             const minT = safeParseFloat(document.getElementById('table-min').value);
             const maxT = safeParseFloat(document.getElementById('table-max').value);
             const minR = safeParseFloat(document.getElementById('ratio-min').value);
@@ -783,13 +869,13 @@
 
                 const checkNum = (val, min, max) => {
                     const n = safeParseFloat(val);
-                    if(isNaN(n)) return true; 
+                    if(isNaN(n)) return true;
                     if(!isNaN(min) && n < min) return false;
                     if(!isNaN(max) && n > max) return false;
                     return true;
                 };
 
-                if(!checkNum(getVal(row,'Depth'), minD, maxD)) return false;
+                if(!checkNum(getVal(row,'Depth'), minDepth, maxDepth)) return false;
                 if(!checkNum(getVal(row,'Table'), minT, maxT)) return false;
                 if(!checkNum(getVal(row,'Ratio'), minR, maxR)) return false;
                 if(!checkNum(getVal(row,'measl'), minL, maxL)) return false;
@@ -803,21 +889,24 @@
                 filteredData.sort((a, b) => {
                     let valA = getVal(a, sortCol);
                     let valB = getVal(b, sortCol);
-                    const numA = parseFloat(valA.replace(/[^0-9.-]+/g,""));
-                    const numB = parseFloat(valB.replace(/[^0-9.-]+/g,""));
+
+                    // numeric first when possible
+                    const numA = parseFloat((valA || '').toString().replace(/[^0-9.-]+/g,""));
+                    const numB = parseFloat((valB || '').toString().replace(/[^0-9.-]+/g,""));
                     if (!isNaN(numA) && !isNaN(numB)) return (numA - numB) * sortDir;
-                    return valA.toString().localeCompare(valB.toString()) * sortDir;
+
+                    // otherwise string compare
+                    return (valA || '').toString().localeCompare((valB || '').toString(), undefined, {numeric:true, sensitivity:'base'}) * sortDir;
                 });
             }
 
             renderTable();
         }
 
-        // Subtotal Updater Logic (Called directly without rendering table)
+        // Subtotal Updater Logic
         function updateSubtotals() {
             let sCarats = 0, sPrice = 0, sRap = 0, selCount = 0;
-            
-            // Re-sync all visual checkboxes in case of programmatic change
+
             document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = selectedIds.has(cb.dataset.id); });
 
             filteredData.forEach(row => {
@@ -846,7 +935,7 @@
         // --- 7. RENDER DESKTOP & MOBILE ---
         function renderTable() {
             const tbody = document.getElementById('table-body');
-            
+
             let tCarats = 0, tPrice = 0, tRap = 0;
 
             filteredData.forEach(row => {
@@ -865,14 +954,14 @@
             document.getElementById('tot-price').innerText = '$' + tPrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             document.getElementById('avg-price-ct').innerText = '$' + avgPriceCt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             document.getElementById('avg-rap-disc').innerText = avgRapDisc.toFixed(2) + '%';
-            
+
             tbody.innerHTML = '';
 
             filteredData.forEach((row, i) => {
                 const tr = document.createElement('tr');
                 const id = getVal(row,'ID');
                 tr.className = 'data-row ' + (selectedIds.has(id) ? 'selected' : '');
-                
+
                 tr.onclick = () => {
                     if (window.innerWidth <= 1100) openDrawer(i);
                     else toggleEnvelope(i);
@@ -881,23 +970,19 @@
                 const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
                 const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
                 const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
-                const formatUrl = u => {
-                    if (!u) return '';
-                    return u.startsWith('http') ? u : `https://${u}`;
-                };
+                const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
                 const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
                 const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
                 const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
                 const modalTitle = `${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${id}`;
-                
+
                 const labStr = getVal(row,'Lab') || 'CERT';
                 let labHtml = labStr;
                 if(report) {
                     labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
                 }
 
-                // A. DESKTOP ROW (With Action Checkboxes)
                 tr.innerHTML = `
                     <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
                     <td class="desktop-only" style="text-align:center;">
@@ -928,7 +1013,7 @@
                     <td class="desktop-only" style="font-weight:600;">${formatPct(getVal(row,'Rap Disc'))}</td>
                     <td class="desktop-only">${formatMoneyFull(getVal(row,'Price'))}</td>
                     <td class="desktop-only" style="color:#059669; font-weight:bold;">${formatMoneyFull(getVal(row,'Total Price'))}</td>
-                    
+
                     <td class="mobile-only">
                         <div class="mobile-card">
                             <div class="mc-action-bar">
@@ -949,16 +1034,14 @@
                 `;
                 tbody.appendChild(tr);
 
-                // C. DESKTOP ENVELOPE (Span 24 due to added Action column)
                 const env = document.createElement('tr');
-                env.className = 'envelope-row'; 
+                env.className = 'envelope-row';
                 env.id = `env-${i}`;
-                
+
                 env.innerHTML = `
                     <td colspan="24" style="padding:0;">
                         <div class="env-showcase">
-                            <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-title="${modalTitle.replace(/'/g, "\\'")}" data-loaded="false">
-                                </div>
+                            <div id="media-container-${i}" class="media-container" data-photo="${formatUrl(photo)}" data-video="${formatUrl(video)}" data-title="${modalTitle.replace(/'/g, "\\'")}" data-loaded="false"></div>
                             <div class="env-comments-box">
                                 <h4 style="margin:0 0 10px 0; color:#475569; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Comments & Notes</h4>
                                 <p style="margin:0; font-size:0.9rem; line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided.'}</p>
@@ -968,7 +1051,8 @@
                 `;
                 tbody.appendChild(env);
             });
-            updateSubtotals(); // Sync fresh DOM elements
+
+            updateSubtotals();
         }
 
         // --- 8. LAZY LOAD & MODAL INTERACTIONS ---
@@ -976,21 +1060,21 @@
             const env = document.getElementById(`env-${index}`);
             const btn = document.getElementById(`btn-exp-${index}`);
             const isOpen = env.classList.contains('show');
-            
+
             document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
             document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
-            
-            if (!isOpen) { 
-                env.classList.add('show'); 
-                if(btn) btn.classList.add('open'); 
-                
+
+            if (!isOpen) {
+                env.classList.add('show');
+                if(btn) btn.classList.add('open');
+
                 const mediaCont = document.getElementById(`media-container-${index}`);
                 if (mediaCont && mediaCont.dataset.loaded === "false") {
                     const pUrl = mediaCont.dataset.photo;
                     const vUrl = mediaCont.dataset.video;
                     const title = mediaCont.dataset.title;
                     let html = '';
-                    
+
                     if (pUrl && pUrl !== '') {
                         html += `
                         <div class="env-media-wrapper">
@@ -1014,59 +1098,51 @@
                         }
                     }
                     mediaCont.innerHTML = html;
-                    mediaCont.dataset.loaded = "true"; 
+                    mediaCont.dataset.loaded = "true";
                 }
             }
         }
 
         function openMediaModal(url, type, title) {
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
             document.getElementById('media-modal-title').innerText = title;
             const body = document.getElementById('media-modal-body');
-            
-            if (type === 'img') {
-                body.innerHTML = `<img src="${url}">`;
-            } else if (type === 'vid') {
-                body.innerHTML = `<video src="${url}" controls autoplay loop></video>`;
-            } else {
-                body.innerHTML = `<iframe src="${url}"></iframe>`;
-            }
-            
+
+            if (type === 'img') body.innerHTML = `<img src="${url}">`;
+            else if (type === 'vid') body.innerHTML = `<video src="${url}" controls autoplay loop></video>`;
+            else body.innerHTML = `<iframe src="${url}"></iframe>`;
+
             document.getElementById('media-modal').classList.add('open');
         }
 
         function closeMediaModal() {
             document.getElementById('media-modal').classList.remove('open');
-            document.getElementById('media-modal-body').innerHTML = ''; 
-            
-            if (!document.getElementById('mobile-drawer').classList.contains('open')) {
-                document.body.style.overflow = ''; 
-            }
+            document.getElementById('media-modal-body').innerHTML = '';
+            if (!document.getElementById('mobile-drawer').classList.contains('open')) document.body.style.overflow = '';
         }
 
-        // MOBILE DRAWER
+        // MOBILE DRAWER (kept from your version)
         function openDrawer(index) {
             const row = filteredData[index];
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
             document.getElementById('mobile-drawer').classList.add('open');
-            
+
             const formatNum = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); };
             const titleStr = `${getVal(row,'Shape')} ${formatNum(getVal(row,'Size'))}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
             document.getElementById('drawer-title').innerText = titleStr;
             const modalTitle = `${titleStr} - ID: ${getVal(row,'ID')}`;
-            
+
             const photo = getRobustVal(row, ['Photo', 'Photo(link)', 'Photo (link)', 'Image']);
             const video = getRobustVal(row, ['Video', 'Video(link)', 'Video (link)']);
             const report = getRobustVal(row, ['ReportPDF', 'ReportPDF(link)', 'ReportPDF (link)', 'Cert', 'Report']);
 
             const formatUrl = u => { if (!u) return ''; return u.startsWith('http') ? u : `https://${u}`; };
 
-            // Buttons always present. Gray if disabled.
             const modalBtn = (link, label, icon, type) => {
                 const isDis = (!link || link.trim() === '');
                 const bg = isDis ? '#f1f5f9' : '#f8fafc';
                 const col = isDis ? '#94a3b8' : 'var(--primary)';
-                const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}', '${type}', '${modalTitle.replace(/'/g, "\\'")}')"`;
+                const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}', '${type}', '${modalTitle.replace(/'/g, "\\'")}')"`; // eslint-disable-line
                 const cur = isDis ? 'default' : 'pointer';
                 return `<button ${ev} style="flex:1; padding:8px 5px; background:${bg}; border:1px solid #e2e8f0; border-radius:6px; font-weight:bold; color:${col}; cursor:${cur}; display:flex; align-items:center; justify-content:center; gap:5px; font-size:0.85rem;"><span style="font-size:1.1rem;">${icon}</span>${label}</button>`;
             };
@@ -1083,7 +1159,6 @@
             const formatMoneyFull = v => { const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}); };
             const formatPct = v => { if(!v || v.trim()==='') return ''; return v.toString().replace('%','') + '%'; };
 
-            // Full width photo block
             let photoEmbedHtml = '';
             if(photo) {
                 photoEmbedHtml = `
@@ -1094,7 +1169,6 @@
 
             document.getElementById('drawer-body').innerHTML = `
                 ${photoEmbedHtml}
-
                 <div style="display:flex; gap:10px; margin-bottom:20px; justify-content:center;">
                     ${modalBtn(photo, 'Photo', '📷', 'img')}
                     ${modalBtn(video, 'Video', '🎥', (video||'').toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
@@ -1110,14 +1184,14 @@
 
                 <div style="padding-top:15px; border-top:1px solid #e2e8f0; margin-bottom:20px;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                        <div style="font-size:1rem; color:#475569; font-weight:700; display:flex; align-items:center;">Price/Ct:</div>
+                        <div style="font-size:1rem; color:#475569; font-weight:700;">Price/Ct:</div>
                         <div style="font-size:1.1rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Price'))}</div>
                     </div>
                     <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                         <div style="font-size:0.95rem; color:#64748b; font-weight:600;">Total Price:</div>
                         <div style="font-size:1.1rem; color:#059669; font-weight:800;">${formatMoneyFull(getVal(row,'Total Price'))}</div>
                     </div>
-                    
+
                     <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                         <div style="font-size:0.9rem; color:#64748b; font-weight:600;">Rap Disc:</div>
                         <div style="font-size:0.9rem; color:#dc2626; font-weight:700;">${formatPct(getVal(row,'Rap Disc'))}</div>
@@ -1139,9 +1213,9 @@
             `;
         }
 
-        function closeDrawer() { 
-            document.body.style.overflow = ''; 
-            document.getElementById('mobile-drawer').classList.remove('open'); 
+        function closeDrawer() {
+            document.body.style.overflow = '';
+            document.getElementById('mobile-drawer').classList.remove('open');
         }
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('show'); }
     </script>
