@@ -23,6 +23,10 @@
     *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
     body{margin:0;padding:0;background-color:var(--bg-gray);color:#1e293b;font-size:13px;overflow-x:hidden;}
 
+    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+
     /* HEADER */
     header{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:2500;width:100%;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
     .header-inner{max-width:var(--max-w);margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:10px 20px;width:100%;}
@@ -30,94 +34,83 @@
     .logo-img{height:35px;}
     .header-controls{font-weight:600;color:var(--text-muted);font-size:0.85rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 
-    .action-btn{background:none;border:1px solid var(--border);padding:6px 10px;border-radius:8px;font-size:1rem;cursor:pointer;transition:0.2s;background:#f8fafc;display:inline-flex;align-items:center;gap:6px;}
+    .action-btn{
+      background:none;border:1px solid var(--border);padding:7px 10px;border-radius:12px;
+      font-size:0.95rem;cursor:pointer;transition:0.2s;background:#f8fafc;display:inline-flex;align-items:center;gap:8px;
+      font-weight:900;color:#0f172a;
+    }
     .action-btn:hover{background:#e2e8f0;border-color:#cbd5e1;}
-    .logout-btn{color:#dc2626;text-decoration:none;border:1px solid #fca5a5;padding:6px 10px;border-radius:8px;transition:0.2s;margin-left:2px;background:#fff;}
+    .logout-btn{color:#dc2626;text-decoration:none;border:1px solid #fca5a5;padding:7px 10px;border-radius:12px;transition:0.2s;background:#fff;font-weight:900;}
     .logout-btn:hover{background:#fef2f2;}
 
-    /* Compact sort icon button */
-    .sort-icon-btn{padding:6px 10px;}
-    .sort-az-icon{display:inline-flex;align-items:center;gap:4px;font-weight:900;color:#0f172a;line-height:1;}
-    .sort-az-icon .az{font-size:0.95rem;}
-    .sort-az-icon .ar{font-size:0.95rem;opacity:0.85;}
-    .sort-active-dot{
-      width:8px;height:8px;border-radius:999px;background:#0ea5e9;display:none;
+    /* Sort button keeps dot */
+    .sort-active-dot{width:8px;height:8px;border-radius:999px;background:#0ea5e9;display:none;}
+    .action-btn.sort-btn.active .sort-active-dot{display:inline-block;}
+
+    /* Share icon */
+    .share-icon{
+      width:18px;height:18px;display:inline-block;
     }
-    .sort-icon-btn.active .sort-active-dot{display:inline-block;}
+    .share-icon svg{width:18px;height:18px;display:block;fill:none;stroke:#0f172a;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 
     /* LOADING */
     .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;height:calc(100vh - 60px);text-align:center;padding:20px;}
     .loader{border:4px solid #f3f3f3;border-top:4px solid var(--accent);border-radius:50%;width:40px;height:40px;animation:spin 1s linear infinite;margin-bottom:15px;}
-    @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
 
     /* LAYOUT */
     .inventory-container{display:none;min-height:calc(100vh - 60px);max-width:var(--max-w);margin:0 auto;width:100%;}
     .sidebar{width:320px;background:var(--bg-gray);border-right:1px solid var(--border);padding:20px 20px 20px 0;flex-shrink:0;overflow-y:auto;height:calc(100vh - 60px);position:sticky;top:60px;z-index:100;}
     .sidebar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-    .btn-reset{background:none;border:none;color:var(--accent);font-weight:bold;cursor:pointer;font-size:0.8rem;text-transform:uppercase;padding:0;}
+    .btn-reset{background:none;border:none;color:var(--accent);font-weight:1000;cursor:pointer;font-size:0.8rem;text-transform:uppercase;padding:0;}
     .btn-reset:hover{text-decoration:underline;}
     .filter-group{margin-bottom:20px;}
-    .filter-label{font-weight:800;display:block;margin-bottom:12px;font-size:0.7rem;letter-spacing:1px;color:var(--text-muted);text-transform:uppercase;}
+    .filter-label{font-weight:1000;display:block;margin-bottom:12px;font-size:0.7rem;letter-spacing:1px;color:var(--text-muted);text-transform:uppercase;}
 
     /* FILTERS */
     .shape-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-    .btn-toggle{background:#fff;border:1px solid #cbd5e1;padding:8px 4px;font-size:0.75rem;cursor:pointer;border-radius:8px;transition:0.1s;font-weight:600;color:#475569;text-align:center;}
+    .btn-toggle{background:#fff;border:1px solid #cbd5e1;padding:8px 4px;font-size:0.75rem;cursor:pointer;border-radius:12px;transition:0.1s;font-weight:800;color:#475569;text-align:center;}
     .btn-toggle.active{background-color:var(--primary);color:#fff;border-color:var(--primary);}
 
-    /* Favorite filter button (with real SVG heart) */
     .btn-fav{
-      background:#fff;border:1px solid #fca5a5;padding:10px;font-size:0.9rem;cursor:pointer;border-radius:10px;
-      font-weight:900;color:#dc2626;width:100%;margin-bottom:20px;transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
+      background:#fff;border:1px solid #fca5a5;padding:10px;font-size:0.9rem;cursor:pointer;border-radius:14px;
+      font-weight:1000;color:#dc2626;width:100%;margin-bottom:20px;transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
     }
     .btn-fav.active{background:#fef2f2;border-color:#ef4444;}
-    .fav-heart{
-      width:18px;height:18px;display:inline-block;
-      fill:#ef4444;
-    }
 
     .carat-row{display:grid;gap:6px;margin-bottom:6px;}
     .row-3{grid-template-columns:repeat(3,1fr);}
     .row-4{grid-template-columns:repeat(4,1fr);}
 
     .touch-bar{display:flex;width:100%;margin-bottom:10px;flex-wrap:wrap;}
-    .touch-btn{flex:1 1 auto;padding:8px 0;background:#fff;border:1px solid #cbd5e1;margin-left:-1px;cursor:pointer;font-size:0.7rem;font-weight:600;color:#475569;text-align:center;min-width:30px;}
-    .touch-btn:first-child{border-top-left-radius:8px;border-bottom-left-radius:8px;margin-left:0;}
-    .touch-btn:last-child{border-top-right-radius:8px;border-bottom-right-radius:8px;}
+    .touch-btn{flex:1 1 auto;padding:8px 0;background:#fff;border:1px solid #cbd5e1;margin-left:-1px;cursor:pointer;font-size:0.7rem;font-weight:900;color:#475569;text-align:center;min-width:30px;}
+    .touch-btn:first-child{border-top-left-radius:12px;border-bottom-left-radius:12px;margin-left:0;}
+    .touch-btn:last-child{border-top-right-radius:12px;border-bottom-right-radius:12px;}
     .touch-btn.active{background-color:var(--primary);color:#fff;border-color:var(--primary);z-index:1;position:relative;}
 
     .range-row{display:flex;gap:10px;align-items:center;margin-bottom:8px;}
-    .range-input{width:100%;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:0.8rem;}
-    .mm-label{font-size:0.75rem;font-weight:800;color:var(--text-muted);width:15px;}
+    .range-input{width:100%;padding:8px;border:1px solid #ccc;border-radius:12px;font-size:0.8rem;}
+    .mm-label{font-size:0.75rem;font-weight:1000;color:var(--text-muted);width:15px;}
 
     /* RESULTS */
     .results-area{flex-grow:1;padding:0 0 20px 20px;display:flex;flex-direction:column;min-width:0;}
     .dashboard-wrapper{position:sticky;top:56px;z-index:90;background:var(--bg-gray);padding:18px 0 12px 0;}
 
-    .summary-dashboard{display:flex;gap:10px;background:var(--white);padding:12px 15px;border-radius:12px;box-shadow:0 2px 5px rgba(0,0,0,0.05);border:1px solid var(--border);flex-wrap:wrap;}
+    .summary-dashboard{display:flex;gap:10px;background:var(--white);padding:12px 15px;border-radius:16px;box-shadow:0 2px 5px rgba(0,0,0,0.05);border:1px solid var(--border);flex-wrap:wrap;}
     .sum-card{flex:1;display:flex;flex-direction:column;border-right:1px solid var(--border);padding-right:10px;min-width:90px;}
     .sum-card:last-child{border-right:none;padding-right:0;}
-    .sum-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;font-weight:800;margin-bottom:2px;}
-    .sum-val{font-size:0.98rem;font-weight:900;color:var(--primary);}
-    /* Selected totals: no parentheses, more prominent */
+    .sum-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;font-weight:1000;margin-bottom:2px;}
+    .sum-val{font-size:0.98rem;font-weight:1000;color:var(--primary);}
     .sum-sub{
-      font-size:0.78rem;
-      color:#0f172a;
-      font-weight:900;
-      margin-top:4px;
-      min-height:16px;
-      padding:2px 6px;
-      border-radius:8px;
-      background:#eef2ff;
-      display:inline-block;
-      width:fit-content;
+      font-size:0.78rem;color:#0f172a;font-weight:1000;margin-top:4px;min-height:16px;
+      padding:2px 6px;border-radius:12px;background:#eef2ff;display:inline-block;width:fit-content;
     }
     .sum-sub:empty{display:none;}
 
     /* TABLE */
-    .table-container{background:var(--white);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);overflow-x:auto;flex-grow:1;border:1px solid var(--border);}
+    .table-container{background:var(--white);border-radius:18px;box-shadow:0 2px 8px rgba(0,0,0,0.05);overflow-x:auto;flex-grow:1;border:1px solid var(--border);}
     table{width:max-content;min-width:100%;border-collapse:collapse;}
     th{
-      background:#f8fafc;color:#475569;padding:12px 5px;text-align:left;font-size:0.7rem;text-transform:uppercase;font-weight:900;
+      background:#f8fafc;color:#475569;padding:12px 5px;text-align:left;font-size:0.7rem;text-transform:uppercase;font-weight:1000;
       border-bottom:2px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0;z-index:10;
     }
     th:hover{background:#e2e8f0;}
@@ -136,16 +129,13 @@
     .data-row:hover .btn-expand{border-color:var(--primary);color:var(--primary);}
     .btn-expand.open{background:var(--accent);color:white;border-color:var(--accent);transform:rotate(45deg);}
 
-    .lab-link{color:#2563eb;font-weight:900;text-decoration:underline;cursor:pointer;}
+    .lab-link{color:#2563eb;font-weight:1000;text-decoration:underline;cursor:pointer;}
     .lab-link:hover{color:#1d4ed8;}
 
     .row-checkbox{transform:scale(1.25);cursor:pointer;margin-right:6px;}
 
-    /* Heart (SVG) */
-    .heart-btn{
-      width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;
-      cursor:pointer;user-select:none;
-    }
+    /* Heart */
+    .heart-btn{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;}
     .heart-btn svg{width:18px;height:18px;fill:#e2e8f0;stroke:#ef4444;stroke-width:2px;}
     .heart-btn.liked svg{fill:#ef4444;stroke:#ef4444;}
 
@@ -155,95 +145,91 @@
     .env-showcase{display:flex;padding:20px;gap:20px;border-bottom:2px solid var(--border);}
     .media-container{display:flex;gap:20px;flex-direction:row;flex-wrap:wrap;}
     .env-media-wrapper{display:flex;flex-direction:column;gap:8px;width:250px;flex-shrink:0;}
-    .env-media-embed{width:100%;height:250px;border:1px solid #cbd5e1;border-radius:12px;overflow:hidden;background:#fff;display:flex;align-items:flex-start;justify-content:center;position:relative;}
+    .env-media-embed{width:100%;height:250px;border:1px solid #cbd5e1;border-radius:16px;overflow:hidden;background:#fff;display:flex;align-items:flex-start;justify-content:center;position:relative;}
     .env-media-embed iframe,.env-media-embed img,.env-media-embed video{width:100%;height:100%;object-fit:contain;object-position:top;border:none;}
-    .env-comments-box{flex-grow:1;max-width:520px;background:#fff;padding:15px;border-radius:12px;border:1px solid #e2e8f0;}
+    .env-comments-box{flex-grow:1;max-width:520px;background:#fff;padding:15px;border-radius:16px;border:1px solid #e2e8f0;}
+
+    .env-action-btn{
+      width:100%;
+      padding:8px;
+      border-radius:14px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      font-weight:1000;
+      cursor:pointer;
+    }
+    .env-action-btn:hover{background:#f8fafc;border-color:#94a3b8;}
 
     /* MEDIA MODAL */
     .media-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:4000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
     .media-modal-overlay.open{display:flex;animation:fadeIn 0.2s ease-out;}
-    .media-modal-content{background:var(--white);width:100%;max-width:1200px;height:90vh;border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.3);}
+    .media-modal-content{background:var(--white);width:100%;max-width:1200px;height:90vh;border-radius:18px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.3);}
     .media-modal-header{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#f8fafc;}
     .media-modal-title{font-size:1.05rem;font-weight:1000;color:var(--primary);}
     .media-modal-body{flex-grow:1;background:#e2e8f0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
     .media-modal-body img,.media-modal-body iframe,.media-modal-body video{width:100%;height:100%;object-fit:contain;border:none;}
 
-    /* SORT MODAL (Excel feel) */
+    /* SORT MODAL */
     .sort-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.45);z-index:3500;align-items:center;justify-content:center;padding:18px;}
-    .sort-overlay.open{display:flex;}
+    .sort-overlay.open{display:flex;animation:fadeIn 0.12s ease-out;}
     .sort-modal{
-      width: min(720px, 96vw);
-      background:#fff;border:1px solid #e2e8f0;border-radius:16px;
+      width:min(720px,96vw);
+      background:#fff;border:1px solid #e2e8f0;border-radius:20px;
       box-shadow:0 20px 60px rgba(0,0,0,0.25);
       overflow:hidden;
     }
-    .sort-head{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:14px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;
-    }
+    .sort-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;}
     .sort-title{font-weight:1000;color:#0f172a;font-size:1rem;}
     .sort-head-actions{display:flex;gap:8px;align-items:center;}
-    .sort-close{
-      border:none;background:transparent;font-size:1.6rem;cursor:pointer;color:#475569;line-height:1;
-    }
+    .sort-close{border:none;background:transparent;font-size:1.6rem;cursor:pointer;color:#475569;line-height:1;}
     .sort-close:hover{color:#0f172a;}
     .sort-body{padding:14px 16px;}
     .sort-note{color:#64748b;font-size:0.85rem;margin:0 0 10px 0;}
 
     .sort-level{
       display:grid;
-      grid-template-columns: 44px 1fr 150px 44px 44px 44px;
-      gap:10px;
-      align-items:center;
+      grid-template-columns:44px 1fr 150px 44px 44px 44px;
+      gap:10px;align-items:center;
       padding:10px 10px;
       border:1px solid #e2e8f0;
-      border-radius:14px;
+      border-radius:18px;
       background:#fff;
       margin-bottom:10px;
     }
     .lvl-badge{
-      width:34px;
-      height:34px;
-      border-radius:10px;
-      background:#0f172a;
-      color:#fff;
+      width:34px;height:34px;border-radius:14px;background:#0f172a;color:#fff;
       display:flex;align-items:center;justify-content:center;
-      font-weight:1000;
-      font-size:0.9rem;
+      font-weight:1000;font-size:0.9rem;
     }
     .sort-select{
       width:100%;
       padding:10px 10px;
       border:1px solid #cbd5e1;
-      border-radius:12px;
+      border-radius:16px;
       background:#fff;
-      font-weight:800;
+      font-weight:1000;
       color:#0f172a;
     }
     .dir-btn{
       width:100%;
       padding:10px 10px;
       border:1px solid #cbd5e1;
-      border-radius:12px;
+      border-radius:16px;
       background:#fff;
       font-weight:1000;
       cursor:pointer;
-      display:flex;align-items:center;justify-content:center;
-      gap:6px;
+      display:flex;align-items:center;justify-content:center;gap:6px;
     }
-    .dir-btn.asc{color:#0f172a;}
-    .dir-btn.desc{color:#0f172a;}
     .dir-btn:hover{background:#f8fafc;}
     .icon-btn{
-      width:38px;height:38px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;
+      width:38px;height:38px;border-radius:16px;border:1px solid #cbd5e1;background:#fff;
       cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:1000;color:#0f172a;
     }
     .icon-btn:hover{background:#f8fafc;}
     .icon-btn:disabled{opacity:0.35;cursor:default;background:#f8fafc;border-color:#e2e8f0;color:#94a3b8;}
 
-    /* Delete button is X and red */
     .trash-btn{
-      width:38px;height:38px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;
+      width:38px;height:38px;border-radius:16px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;
       display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:1.2rem;color:#ef4444;line-height:1;
     }
     .trash-btn:hover{background:#fef2f2;border-color:#fca5a5;}
@@ -253,17 +239,11 @@
       padding:12px 16px;background:#fff;border-top:1px solid #e2e8f0;
       display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
     }
-    .btn-ghost{
-      padding:10px 12px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;font-weight:1000;cursor:pointer;
-    }
+    .btn-ghost{padding:10px 12px;border-radius:16px;border:1px solid #cbd5e1;background:#fff;font-weight:1000;cursor:pointer;}
     .btn-ghost:hover{background:#f8fafc;}
-    .btn-primary{
-      padding:10px 14px;border-radius:12px;border:1px solid #0f172a;background:#0f172a;color:#fff;font-weight:1000;cursor:pointer;
-    }
+    .btn-primary{padding:10px 14px;border-radius:16px;border:1px solid #0f172a;background:#0f172a;color:#fff;font-weight:1000;cursor:pointer;}
     .btn-primary:hover{filter:brightness(1.05);}
-    .btn-danger{
-      padding:10px 12px;border-radius:12px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-weight:1000;cursor:pointer;
-    }
+    .btn-danger{padding:10px 12px;border-radius:16px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-weight:1000;cursor:pointer;}
     .btn-danger:hover{background:#fef2f2;}
     .sort-actions-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 
@@ -284,15 +264,15 @@
       .results-area{padding:0 10px 10px 10px;}
       .dashboard-wrapper{top:56px;padding:10px 0 10px 0;}
       .summary-dashboard{display:grid;grid-template-columns:20% 33.33% 1fr;gap:6px;padding:10px;margin-bottom:5px;}
-      .sum-card{border:1px solid #e2e8f0;background:#f8fafc;padding:6px;border-radius:10px;border-right:1px solid #e2e8f0!important;min-width:0;}
+      .sum-card{border:1px solid #e2e8f0;background:#f8fafc;padding:6px;border-radius:16px;border-right:1px solid #e2e8f0!important;min-width:0;}
       .sum-label{font-size:0.55rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
       .sum-val{font-size:0.78rem;}
-      .sum-sub{font-size:0.62rem;padding:2px 5px;border-radius:8px;}
+      .sum-sub{font-size:0.62rem;padding:2px 5px;border-radius:12px;}
 
       table,tbody,tr{display:block;width:100%;min-width:100%;}
       thead{display:none;}
       .table-container{background:transparent;box-shadow:none;border:none;}
-      .data-row{background:var(--white);border-radius:14px;margin-bottom:10px;padding:15px;box-shadow:0 2px 4px rgba(0,0,0,0.04);border:1px solid #e2e8f0;position:relative;cursor:pointer;}
+      .data-row{background:var(--white);border-radius:18px;margin-bottom:10px;padding:15px;box-shadow:0 2px 4px rgba(0,0,0,0.04);border:1px solid #e2e8f0;position:relative;cursor:pointer;}
       .data-row.selected{background-color:var(--select-row);border-color:#93c5fd;}
       .data-row td{padding:0;border:none;display:none;}
       td.mobile-only{display:block;}
@@ -301,1276 +281,1352 @@
       .mobile-card{display:flex;flex-direction:column;gap:6px;}
       .mc-action-bar{display:flex;gap:12px;align-items:center;margin-bottom:4px;}
       .mc-line1{font-size:1.05rem;font-weight:1000;color:var(--primary);letter-spacing:-0.5px;margin-right:90px;}
-      .mc-line2,.mc-line3{font-size:0.85rem;color:#475569;font-weight:600;}
+      .mc-line2,.mc-line3{font-size:0.85rem;color:#475569;font-weight:900;}
       .mc-line4{font-size:0.75rem;color:#94a3b8;margin-top:2px;}
       .mc-price-wrap{position:absolute;top:15px;right:15px;text-align:right;display:flex;flex-direction:column;gap:2px;}
       .mc-price{font-weight:1000;font-size:0.88rem;color:#059669;line-height:1;}
-      .mc-rap{position:absolute;bottom:15px;right:15px;font-size:0.8rem;font-weight:900;color:#475569;}
+      .mc-rap{position:absolute;bottom:15px;right:15px;font-size:0.8rem;font-weight:1000;color:#475569;}
 
       /* drawer overlay */
       .drawer-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:3000;align-items:flex-end;}
       .drawer-overlay.open{display:flex;}
-      .drawer-content{background:var(--white);width:100%;height:90vh;border-radius:20px 20px 0 0;display:flex;flex-direction:column;animation:slideUp 0.3s ease-out;overflow:hidden;}
+      .drawer-content{background:var(--white);width:100%;height:90vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:slideUp 0.3s ease-out;overflow:hidden;}
       .drawer-header{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#f8fafc;}
       .drawer-body{overflow-y:auto;padding:20px;flex-grow:1;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch;}
 
-      @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+      .sort-level{grid-template-columns:44px 1fr 1fr 44px 44px 44px;}
     }
   </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="header-inner">
-      <div class="logo-section">
-        <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
-      </div>
-
-      <div class="header-controls">
-        <!-- Sort icon button (compact for mobile too) -->
-        <button id="btn-open-sort" class="action-btn sort-icon-btn" onclick="openSortModal()" title="Sort">
-          <span class="sort-az-icon" aria-hidden="true">
-            <span class="az">A</span><span class="ar">↕</span><span class="az">Z</span>
-          </span>
-          <span class="sort-active-dot" aria-hidden="true"></span>
-        </button>
-
-        <button class="action-btn" onclick="exportExcel()" title="Export Selected to Excel">📊</button>
-        <button class="action-btn" onclick="shareSelected()" title="Share Selected">📤</button>
-        <a href="index.html" class="logout-btn">Exit</a>
-      </div>
+<header>
+  <div class="header-inner">
+    <div class="logo-section">
+      <img src="images/logo.jpg" alt="MJG" class="logo-img" onerror="this.src='https://via.placeholder.com/100x35?text=MJG'">
     </div>
-  </header>
 
-  <div class="loading-state" id="loading-state">
-    <div class="loader"></div>
-    <h2 style="margin:0 0 10px 0; color:var(--primary);">Loading Live Inventory</h2>
-    <p style="color:#64748b; margin:0;" id="loading-text">Fetching data from server...</p>
-  </div>
-
-  <div class="inventory-container" id="app-container">
-
-    <aside class="sidebar" id="sidebar">
-      <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
-
-      <div class="sidebar-header">
-        <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
-        <button class="btn-reset" onclick="resetFilters()">Reset All</button>
-      </div>
-
-      <button class="btn-fav" id="btn-fav-filter" onclick="toggleLikedFilter()">
-        <svg class="fav-heart" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 21s-7.2-4.35-9.6-8.4C.2 9 .9 5.9 3.5 4.2 5.6 2.9 8.4 3.2 10.1 5c.8.8 1.9 2.1 1.9 2.1s1.1-1.3 1.9-2.1c1.7-1.8 4.5-2.1 6.6-.8 2.6 1.7 3.3 4.8 1.1 8.4C19.2 16.65 12 21 12 21z"/>
-        </svg>
-        <span>Show Favorites Only</span>
+    <div class="header-controls">
+      <button id="btn-open-sort" class="action-btn sort-btn" onclick="openSortModal()" title="Sort">
+        <span>Sort</span>
+        <span class="sort-active-dot" aria-hidden="true"></span>
       </button>
 
-      <div class="filter-group">
-        <span class="filter-label">SHAPE</span>
-        <div class="shape-grid">
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Round', this)">Round</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Oval', this)">Oval</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Cushion', this)">Cushion</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Emerald', this)">Emerald</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Pear', this)">Pear</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Radiant', this)">Radiant</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Princess', this)">Princess</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Asscher', this)">Asscher</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Marquise', this)">Marquise</button>
-          <button class="btn-toggle" onclick="toggleFilter('shape', 'Heart', this)">Heart</button>
-        </div>
-      </div>
+      <button class="action-btn" onclick="exportExcel()" title="Export">
+        <span>Export</span>
+      </button>
 
-      <div class="filter-group">
-        <span class="filter-label">SIZE (CARAT)</span>
-        <div class="carat-row row-3">
-          <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
-          <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
-          <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
-        </div>
-        <div class="carat-row row-4">
-          <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
-          <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
-          <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
-          <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
-        </div>
-        <div class="range-row">
-          <input type="number" id="min-size" class="range-input" placeholder="Min Size" step="0.01" oninput="runSearch()">
-          <input type="number" id="max-size" class="range-input" placeholder="Max Size" step="0.01" oninput="runSearch()">
-        </div>
-      </div>
+      <button class="action-btn" onclick="shareSelected()" title="Share">
+        <span class="share-icon" aria-hidden="true">
+          <!-- iOS-ish "turn up/right" share arrow -->
+          <svg viewBox="0 0 24 24">
+            <path d="M14 5h5v5"></path>
+            <path d="M10 14L19 5"></path>
+            <path d="M19 14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"></path>
+          </svg>
+        </span>
+      </button>
 
-      <div class="filter-group">
-        <span class="filter-label">COLOR</span>
-        <div class="touch-bar" id="color-bar"></div>
-        <span class="filter-label" style="margin-top:15px;">CLARITY</span>
-        <div class="touch-bar" id="clarity-bar"></div>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">CUT</span>
-        <div class="touch-bar" id="cut-bar"></div>
-        <span class="filter-label">POLISH</span>
-        <div class="touch-bar" id="pol-bar"></div>
-        <span class="filter-label">SYMMETRY</span>
-        <div class="touch-bar" id="sym-bar"></div>
-        <span class="filter-label">FLUORESCENCE</span>
-        <div class="touch-bar" id="fluo-bar"></div>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">DEPTH %</span>
-        <div class="range-row">
-          <input type="number" id="depth-min" class="range-input" placeholder="Min" oninput="runSearch()">
-          <input type="number" id="depth-max" class="range-input" placeholder="Max" oninput="runSearch()">
-        </div>
-        <span class="filter-label" style="margin-top:10px;">TABLE %</span>
-        <div class="range-row">
-          <input type="number" id="table-min" class="range-input" placeholder="Min" oninput="runSearch()">
-          <input type="number" id="table-max" class="range-input" placeholder="Max" oninput="runSearch()">
-        </div>
-        <span class="filter-label" style="margin-top:10px;">RATIO</span>
-        <div class="range-row">
-          <input type="number" id="ratio-min" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
-          <input type="number" id="ratio-max" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
-        </div>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">MEASUREMENTS (MM)</span>
-        <div class="range-row">
-          <span class="mm-label">L</span>
-          <input type="number" id="min-l" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
-          <input type="number" id="max-l" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
-        </div>
-        <div class="range-row">
-          <span class="mm-label">W</span>
-          <input type="number" id="min-w" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
-          <input type="number" id="max-w" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
-        </div>
-        <div class="range-row">
-          <span class="mm-label">D</span>
-          <input type="number" id="min-d" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
-          <input type="number" id="max-d" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
-        </div>
-      </div>
-
-      <div class="filter-group">
-        <span class="filter-label">LAB</span>
-        <div class="touch-bar" id="lab-bar"></div>
-      </div>
-
-      <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:10px;" onkeyup="runSearch()">
-
-      <div class="apply-btn-wrapper mobile-only">
-        <button onclick="toggleSidebar()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:900;">APPLY FILTERS</button>
-      </div>
-    </aside>
-
-    <main class="results-area">
-      <div class="dashboard-wrapper">
-        <div class="summary-dashboard">
-          <div class="sum-card">
-            <span class="sum-label">Stones</span>
-            <span class="sum-val" id="tot-count">0</span>
-            <div class="sum-sub" id="sel-count"></div>
-          </div>
-          <div class="sum-card">
-            <span class="sum-label">Total Rap</span>
-            <span class="sum-val" id="tot-rap">$0.00</span>
-            <div class="sum-sub" id="sel-rap"></div>
-          </div>
-          <div class="sum-card">
-            <span class="sum-label">Avg / Ct</span>
-            <span class="sum-val" id="avg-price-ct">$0.00</span>
-            <div class="sum-sub" id="sel-avg-price"></div>
-          </div>
-          <div class="sum-card">
-            <span class="sum-label">Carats</span>
-            <span class="sum-val" id="tot-carats">0.00</span>
-            <div class="sum-sub" id="sel-carats"></div>
-          </div>
-          <div class="sum-card">
-            <span class="sum-label">Avg Disc</span>
-            <span class="sum-val" id="avg-rap-disc">0.00%</span>
-            <div class="sum-sub" id="sel-avg-disc"></div>
-          </div>
-          <div class="sum-card">
-            <span class="sum-label">Total Price</span>
-            <span class="sum-val" id="tot-price">$0.00</span>
-            <div class="sum-sub" id="sel-price"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="table-container">
-        <table id="inventory-table">
-          <thead>
-            <tr>
-              <th style="width:30px;"></th>
-              <th style="width:90px; text-align:center;">Select</th>
-              <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
-              <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
-              <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
-              <th onclick="sortBy('Color')">Col <span id="sort-Color"></span></th>
-              <th onclick="sortBy('Clarity')">Clar <span id="sort-Clarity"></span></th>
-              <th onclick="sortBy('measl')">L <span id="sort-measl"></span></th>
-              <th onclick="sortBy('measw')">W <span id="sort-measw"></span></th>
-              <th onclick="sortBy('measd')">D <span id="sort-measd"></span></th>
-              <th onclick="sortBy('Ratio')">Ratio <span id="sort-Ratio"></span></th>
-              <th onclick="sortBy('Lab')">Lab <span id="sort-Lab"></span></th>
-              <th onclick="sortBy('Cut')">Cut <span id="sort-Cut"></span></th>
-              <th onclick="sortBy('Pol')">Pol <span id="sort-Pol"></span></th>
-              <th onclick="sortBy('Sym')">Sym <span id="sort-Sym"></span></th>
-              <th onclick="sortBy('Fluo')">Flor <span id="sort-Fluo"></span></th>
-              <th onclick="sortBy('Depth')">Dep% <span id="sort-Depth"></span></th>
-              <th onclick="sortBy('Table')">Tab% <span id="sort-Table"></span></th>
-              <th onclick="sortBy('Culet')">Cul <span id="sort-Culet"></span></th>
-              <th onclick="sortBy('Girdle')">Grd <span id="sort-Girdle"></span></th>
-              <th onclick="sortBy('Rap')">Rap $ <span id="sort-Rap"></span></th>
-              <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
-              <th onclick="sortBy('Price')">Price/Ct <span id="sort-Price"></span></th>
-              <th onclick="sortBy('Total Price')">Total $ <span id="sort-Total Price"></span></th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-    </main>
+      <a href="index.html" class="logout-btn">Exit</a>
+    </div>
   </div>
+</header>
 
-  <!-- SORT MODAL -->
-  <div class="sort-overlay" id="sort-overlay" onclick="closeSortModalOnBackdrop(event)">
-    <div class="sort-modal" role="dialog" aria-modal="true" aria-label="Sort">
-      <div class="sort-head">
-        <div class="sort-title">Sort (Excel Style)</div>
-        <div class="sort-head-actions">
-          <button class="btn-ghost" onclick="addSortLevel()" title="Add another level">+ Add level</button>
-          <button class="sort-close" onclick="closeSortModal()" aria-label="Close">✕</button>
+<div class="loading-state" id="loading-state">
+  <div class="loader"></div>
+  <h2 style="margin:0 0 10px 0; color:var(--primary);">Loading Live Inventory</h2>
+  <p style="color:#64748b; margin:0;" id="loading-text">Fetching data from server...</p>
+</div>
+
+<div class="inventory-container" id="app-container">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="mobile-only" style="text-align:right; margin-bottom:15px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
+
+    <div class="sidebar-header">
+      <h3 style="margin:0; font-size:1.1rem;">Filters</h3>
+      <button class="btn-reset" onclick="resetFilters()">Reset All</button>
+    </div>
+
+    <button class="btn-fav" id="btn-fav-filter" onclick="toggleLikedFilter()">
+      <span class="heart-btn liked" id="fav-filter-heart" aria-hidden="true"></span>
+      <span>Show Favorites Only</span>
+    </button>
+
+    <div class="filter-group">
+      <span class="filter-label">SHAPE</span>
+      <div class="shape-grid" id="shape-grid">
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Round', this)">Round</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Oval', this)">Oval</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Cushion', this)">Cushion</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Emerald', this)">Emerald</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Pear', this)">Pear</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Radiant', this)">Radiant</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Princess', this)">Princess</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Asscher', this)">Asscher</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Marquise', this)">Marquise</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Heart', this)">Heart</button>
+        <button class="btn-toggle" onclick="toggleFilter('shape', 'Other', this)">Other</button>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">SIZE (CARAT)</span>
+      <div class="carat-row row-3">
+        <button class="btn-toggle" onclick="toggleCarat(0.30, 0.99, this)">0.30-0.99</button>
+        <button class="btn-toggle" onclick="toggleCarat(1.00, 1.49, this)">1.00-1.49</button>
+        <button class="btn-toggle" onclick="toggleCarat(1.50, 1.99, this)">1.50-1.99</button>
+      </div>
+      <div class="carat-row row-4">
+        <button class="btn-toggle" onclick="toggleCarat(2.00, 2.99, this)">2.00-2.99</button>
+        <button class="btn-toggle" onclick="toggleCarat(3.00, 3.99, this)">3.00-3.99</button>
+        <button class="btn-toggle" onclick="toggleCarat(4.00, 4.99, this)">4.00-4.99</button>
+        <button class="btn-toggle" onclick="toggleCarat(5.00, 99.9, this)">5.00+</button>
+      </div>
+      <div class="range-row">
+        <input type="number" id="min-size" class="range-input" placeholder="Min Size" step="0.01" oninput="runSearch()">
+        <input type="number" id="max-size" class="range-input" placeholder="Max Size" step="0.01" oninput="runSearch()">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">COLOR</span>
+      <div class="touch-bar" id="color-bar"></div>
+      <span class="filter-label" style="margin-top:15px;">CLARITY</span>
+      <div class="touch-bar" id="clarity-bar"></div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">CUT</span>
+      <div class="touch-bar" id="cut-bar"></div>
+      <span class="filter-label">POLISH</span>
+      <div class="touch-bar" id="pol-bar"></div>
+      <span class="filter-label">SYMMETRY</span>
+      <div class="touch-bar" id="sym-bar"></div>
+      <span class="filter-label">FLUORESCENCE</span>
+      <div class="touch-bar" id="fluo-bar"></div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">DEPTH %</span>
+      <div class="range-row">
+        <input type="number" id="depth-min" class="range-input" placeholder="Min" oninput="runSearch()">
+        <input type="number" id="depth-max" class="range-input" placeholder="Max" oninput="runSearch()">
+      </div>
+
+      <span class="filter-label" style="margin-top:10px;">TABLE %</span>
+      <div class="range-row">
+        <input type="number" id="table-min" class="range-input" placeholder="Min" oninput="runSearch()">
+        <input type="number" id="table-max" class="range-input" placeholder="Max" oninput="runSearch()">
+      </div>
+
+      <span class="filter-label" style="margin-top:10px;">RATIO</span>
+      <div class="carat-row row-2" style="grid-template-columns:1fr 1fr;">
+        <button class="btn-toggle" id="btn-ratio-square" onclick="toggleRatioPreset(1.00, 1.05, this)">Square 1.00-1.05</button>
+        <button class="btn-toggle" id="btn-ratio-rect" onclick="toggleRatioPreset(1.06, 3.99, this)">Rect 1.06-3.99</button>
+      </div>
+      <div class="range-row" style="margin-top:6px;">
+        <input type="number" id="ratio-min" class="range-input" placeholder="Min" step="0.01" oninput="clearRatioPresetUI(); runSearch();">
+        <input type="number" id="ratio-max" class="range-input" placeholder="Max" step="0.01" oninput="clearRatioPresetUI(); runSearch();">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">MEASUREMENTS (MM)</span>
+      <div class="range-row">
+        <span class="mm-label">L</span>
+        <input type="number" id="min-l" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+        <input type="number" id="max-l" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+      </div>
+      <div class="range-row">
+        <span class="mm-label">W</span>
+        <input type="number" id="min-w" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+        <input type="number" id="max-w" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+      </div>
+      <div class="range-row">
+        <span class="mm-label">D</span>
+        <input type="number" id="min-d" class="range-input" placeholder="Min" step="0.01" oninput="runSearch()">
+        <input type="number" id="max-d" class="range-input" placeholder="Max" step="0.01" oninput="runSearch()">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">LAB</span>
+      <div class="touch-bar" id="lab-bar"></div>
+    </div>
+
+    <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:16px;" onkeyup="runSearch()">
+
+    <div class="apply-btn-wrapper mobile-only">
+      <button onclick="toggleSidebar()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:16px; font-weight:1000;">APPLY FILTERS</button>
+    </div>
+  </aside>
+
+  <main class="results-area">
+    <div class="dashboard-wrapper">
+      <div class="summary-dashboard">
+        <div class="sum-card">
+          <span class="sum-label">Stones</span>
+          <span class="sum-val" id="tot-count">0</span>
+          <div class="sum-sub" id="sel-count"></div>
         </div>
-      </div>
-
-      <div class="sort-body">
-        <p class="sort-note">Choose one or more sort levels. Level <b>1</b> is the primary sort. Use ▲/▼ to reorder priority.</p>
-        <div id="sort-levels"></div>
-      </div>
-
-      <div class="sort-foot">
-        <button class="btn-danger" onclick="clearAllSort()">Clear sort</button>
-        <div class="sort-actions-right">
-          <button class="btn-ghost" onclick="closeSortModal()">Cancel</button>
-          <button class="btn-primary" onclick="applyMultiSort()">Apply</button>
+        <div class="sum-card">
+          <span class="sum-label">Total Rap</span>
+          <span class="sum-val" id="tot-rap">$0.00</span>
+          <div class="sum-sub" id="sel-rap"></div>
+        </div>
+        <div class="sum-card">
+          <span class="sum-label">Avg / Ct</span>
+          <span class="sum-val" id="avg-price-ct">$0.00</span>
+          <div class="sum-sub" id="sel-avg-price"></div>
+        </div>
+        <div class="sum-card">
+          <span class="sum-label">Carats</span>
+          <span class="sum-val" id="tot-carats">0.00</span>
+          <div class="sum-sub" id="sel-carats"></div>
+        </div>
+        <div class="sum-card">
+          <span class="sum-label">Avg Disc</span>
+          <span class="sum-val" id="avg-rap-disc">0.00%</span>
+          <div class="sum-sub" id="sel-avg-disc"></div>
+        </div>
+        <div class="sum-card">
+          <span class="sum-label">Total Price</span>
+          <span class="sum-val" id="tot-price">$0.00</span>
+          <div class="sum-sub" id="sel-price"></div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- MEDIA MODAL -->
-  <div class="media-modal-overlay" id="media-modal">
-    <div class="media-modal-content">
-      <div class="media-modal-header">
-        <div class="media-modal-title" id="media-modal-title"></div>
-        <button onclick="closeMediaModal()" style="background:none;border:none;font-size:2rem;cursor:pointer;line-height:1;color:#475569;">✕</button>
+    <div class="table-container">
+      <table id="inventory-table">
+        <thead>
+          <tr>
+            <th style="width:30px;"></th>
+            <th style="width:90px; text-align:center;">Select</th>
+
+            <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
+            <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
+            <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
+            <th onclick="sortBy('Color')">Col <span id="sort-Color"></span></th>
+            <th onclick="sortBy('Clarity')">Clar <span id="sort-Clarity"></span></th>
+            <th onclick="sortBy('measl')">L <span id="sort-measl"></span></th>
+            <th onclick="sortBy('measw')">W <span id="sort-measw"></span></th>
+            <th onclick="sortBy('measd')">D <span id="sort-measd"></span></th>
+            <th onclick="sortBy('Ratio')">Ratio <span id="sort-Ratio"></span></th>
+            <th onclick="sortBy('Lab')">Lab <span id="sort-Lab"></span></th>
+            <th onclick="sortBy('Cut')">Cut <span id="sort-Cut"></span></th>
+            <th onclick="sortBy('Pol')">Pol <span id="sort-Pol"></span></th>
+            <th onclick="sortBy('Sym')">Sym <span id="sort-Sym"></span></th>
+            <th onclick="sortBy('Fluo')">Flor <span id="sort-Fluo"></span></th>
+            <th onclick="sortBy('Depth')">Dep% <span id="sort-Depth"></span></th>
+            <th onclick="sortBy('Table')">Tab% <span id="sort-Table"></span></th>
+            <th onclick="sortBy('Culet')">Cul <span id="sort-Culet"></span></th>
+            <th onclick="sortBy('Girdle')">Grd <span id="sort-Girdle"></span></th>
+            <th onclick="sortBy('Rap')">Rap $ <span id="sort-Rap"></span></th>
+            <th onclick="sortBy('Rap Disc')">Rap% <span id="sort-Rap Disc"></span></th>
+            <th onclick="sortBy('Price')">Price/Ct <span id="sort-Price"></span></th>
+            <th onclick="sortBy('Total Price')">Total $ <span id="sort-Total Price"></span></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- SORT MODAL -->
+<div class="sort-overlay" id="sort-overlay" onclick="closeSortModalOnBackdrop(event)">
+  <div class="sort-modal" role="dialog" aria-modal="true" aria-label="Sort">
+    <div class="sort-head">
+      <div class="sort-title">Sort (Excel Style)</div>
+      <div class="sort-head-actions">
+        <button class="btn-ghost" onclick="addSortLevel()" title="Add another level">+ Add level</button>
+        <button class="sort-close" onclick="closeSortModal()" aria-label="Close">✕</button>
       </div>
-      <div class="media-modal-body" id="media-modal-body"></div>
+    </div>
+
+    <div class="sort-body">
+      <p class="sort-note">Choose one or more sort levels. Level <b>1</b> is the primary sort. Use ▲/▼ to reorder priority.</p>
+      <div id="sort-levels"></div>
+    </div>
+
+    <div class="sort-foot">
+      <button class="btn-danger" onclick="clearAllSort()">Clear sort</button>
+      <div class="sort-actions-right">
+        <button class="btn-ghost" onclick="closeSortModal()">Cancel</button>
+        <button class="btn-primary" onclick="applyMultiSort()">Apply</button>
+      </div>
     </div>
   </div>
+</div>
 
-  <!-- MOBILE DRAWER -->
-  <div class="drawer-overlay" id="mobile-drawer">
-    <div class="drawer-content">
-      <div class="drawer-header">
-        <div id="drawer-title" style="font-size:1.1rem;font-weight:1000;color:var(--primary);"></div>
-        <button onclick="closeDrawer()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;line-height:1;">✕</button>
-      </div>
-      <div class="drawer-body" id="drawer-body"></div>
+<!-- MEDIA MODAL -->
+<div class="media-modal-overlay" id="media-modal">
+  <div class="media-modal-content">
+    <div class="media-modal-header">
+      <div class="media-modal-title" id="media-modal-title"></div>
+      <button onclick="closeMediaModal()" style="background:none;border:none;font-size:2rem;cursor:pointer;line-height:1;color:#475569;">✕</button>
     </div>
+    <div class="media-modal-body" id="media-modal-body"></div>
   </div>
+</div>
 
-  <script>
-    // -----------------------------
-    // 1) CONFIG & STATE
-    // -----------------------------
-    let inventoryData = [];
-    let filteredData = [];
+<!-- MOBILE DRAWER -->
+<div class="drawer-overlay" id="mobile-drawer">
+  <div class="drawer-content">
+    <div class="drawer-header">
+      <div id="drawer-title" style="font-size:1.1rem;font-weight:1000;color:var(--primary);"></div>
+      <button onclick="closeDrawer()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;line-height:1;">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer-body"></div>
+  </div>
+</div>
 
-    // Single-column (header click) sort
-    let sortCol = '';
-    let sortDir = 1;
+<script>
+  // -----------------------------
+  // CONFIG & STATE
+  // -----------------------------
+  let inventoryData = [];
+  let filteredData = [];
 
-    // Multi-sort modal state
-    // Each item: { col: 'Size', dir: 'asc'|'desc' }
-    let sortSpecs = [];
+  // Unified sort state: [{ col:'Size', dir:'asc'|'desc' }, ...]
+  let sortSpecs = [];
 
-    let activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [], likedOnly: false };
-    let selectedIds = new Set();
-    let likedIds = new Set();
+  let activeFilters = {
+    shape: [],
+    caratRanges: [],
+    color: [],
+    clarity: [],
+    lab: [],
+    cut: [],
+    pol: [],
+    sym: [],
+    fluo: [],
+    likedOnly: false,
+    ratioPreset: null
+  };
 
-    const config = {
-      colors: ['D','E','F','G','H','I','J','K','L'],
-      clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
-      labs: ['GIA','IGI','HRD'],
-      grades: ['EX','VG','GD','FR','F'],
-      fluos: ['NON','FNT','MED','STG','VST']
+  let selectedIds = new Set();
+  let likedIds = new Set();
+
+  // shapes known (for "Other")
+  const KNOWN_SHAPES = new Set(['ROUND','OVAL','CUSHION','EMERALD','PEAR','RADIANT','PRINCESS','ASSCHER','MARQUISE','HEART']);
+
+  const config = {
+    colors: ['D','E','F','G','H','I','J','K','L'],
+    clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
+    labs: ['GIA','IGI','HRD'],
+    // No 'F' here; FR covers "Fair"
+    grades: ['EX','VG','GD','FR'],
+    // Fluorescence order and letters in your list: N F M ST VST
+    fluos: ['N','F','M','ST','VST']
+  };
+
+  const SORTABLE_COLUMNS = [
+    'ID','Shape','Size','Color','Clarity','measl','measw','measd','Ratio','Lab','Cut','Pol','Sym','Fluo',
+    'Depth','Table','Culet','Girdle','Rap','Rap Disc','Price','Total Price'
+  ];
+
+  // -----------------------------
+  // LOAD CSV (5-min cache bucket)
+  // -----------------------------
+  window.onload = function() {
+    const cacheBuster = Math.floor(Date.now() / 300000);
+    fetch('inventory.csv?v=' + cacheBuster)
+      .then(res => {
+        if (!res.ok) throw new Error('Could not find inventory.csv');
+        return res.text();
+      })
+      .then(csvText => parseCSV(csvText))
+      .catch(err => {
+        console.error('Error loading CSV:', err);
+        document.getElementById('loading-text').innerText = "Error: Couldn't load inventory.csv from this folder.";
+        document.getElementById('loading-text').style.color = '#dc2626';
+        document.querySelector('.loader').style.display = 'none';
+      });
+  };
+
+  // -----------------------------
+  // ESCAPING
+  // -----------------------------
+  function escapeHtml(str){
+    return (str ?? '').toString()
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#039;");
+  }
+  function cssEscape(s){
+    return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/"/g,'\\"');
+  }
+
+  // -----------------------------
+  // CSV PARSER
+  // -----------------------------
+  function parseCSV(text) {
+    let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
+    for (l of text) {
+      if ('"' === l) {
+        if (s && l === p) row[i] += l;
+        s = !s;
+      } else if (',' === l && s) l = row[++i] = '';
+      else if ('\n' === l && s) {
+        if ('\r' === p) row[i] = row[i].slice(0, -1);
+        row = ret[++r] = [l = '']; i = 0;
+      } else row[i] += l;
+      p = l;
+    }
+
+    const rawHeaders = ret[0].map(h => h.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"").trim());
+    const data = [];
+    for (let j = 1; j < ret.length; j++) {
+      if (ret[j].length < 2 || ret[j].join('').trim() === '') continue;
+      let obj = {};
+      rawHeaders.forEach((h, index) => {
+        obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
+      });
+
+      // Split Measurements into measl/measw/measd
+      let measRaw = obj['measurements'] || '';
+      let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
+      obj['measl'] = parts[0] || '';
+      obj['measw'] = parts[1] || '';
+      obj['measd'] = parts[2] || '';
+
+      data.push(obj);
+    }
+
+    inventoryData = data;
+
+    document.getElementById('fav-filter-heart').innerHTML = heartSvg();
+
+    document.getElementById('loading-state').style.display = 'none';
+    document.getElementById('app-container').style.display = 'flex';
+
+    initTouchBars();
+    runSearch();
+  }
+
+  // -----------------------------
+  // HELPERS
+  // -----------------------------
+  function safeParseFloat(val) {
+    if (val === null || val === undefined) return NaN;
+    const cleaned = val.toString().replace(/[$,\s]/g, '');
+    const n = parseFloat(cleaned);
+    return isNaN(n) ? NaN : n;
+  }
+  function getVal(row, exactHeader) {
+    return row[(exactHeader || '').toLowerCase()] || '';
+  }
+  function getRobustVal(row, possibleKeys) {
+    for (let k of possibleKeys) {
+      let lowerK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
+      let found = Object.keys(row).find(rk => rk.replace(/[^a-z0-9]/g, '') === lowerK);
+      if (found && row[found] && row[found].trim() !== '') return row[found].trim();
+    }
+    return '';
+  }
+  function formatUrl(u) {
+    if (!u) return '';
+    return u.startsWith('http') ? u : `https://${u}`;
+  }
+  function money(v) {
+    const n = safeParseFloat(v);
+    return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  function num2(v) {
+    const n = safeParseFloat(v);
+    return isNaN(n) ? '' : n.toFixed(2);
+  }
+  // measurement display: always 2 decimals (2.20 not 2.2)
+  function meas2(v) {
+    const n = safeParseFloat(v);
+    return isNaN(n) ? (v || '') : n.toFixed(2);
+  }
+  function pct(v) {
+    if (!v || v.toString().trim() === '') return '';
+    return v.toString().replace('%','') + '%';
+  }
+
+  function heartSvg() {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-7.2-4.35-9.6-8.4C.2 9 .9 5.9 3.5 4.2 5.6 2.9 8.4 3.2 10.1 5c.8.8 1.9 2.1 1.9 2.1s1.1-1.3 1.9-2.1c1.7-1.8 4.5-2.1 6.6-.8 2.6 1.7 3.3 4.8 1.1 8.4C19.2 16.65 12 21 12 21z"/>
+      </svg>`;
+  }
+
+  // Fluorescence normalization:
+  // CSV may contain: NON/FNT/MED/STG/VST or N/F/M/ST/VST
+  function normalizeFluo(v){
+    const s = (v || '').toString().trim().toUpperCase();
+    if (!s) return '';
+    if (s === 'NON') return 'N';
+    if (s === 'FNT') return 'F';
+    if (s === 'MED') return 'M';
+    if (s === 'STG') return 'ST';
+    if (s === 'VST') return 'VST';
+    // If already N/F/M/ST/VST keep it
+    return s;
+  }
+
+  // -----------------------------
+  // TOUCH BARS
+  // -----------------------------
+  function initTouchBars() {
+    initTouchBar('color-bar', config.colors, 'color');
+    initTouchBar('clarity-bar', config.clarities, 'clarity');
+    initTouchBar('lab-bar', config.labs, 'lab');
+    initTouchBar('cut-bar', config.grades, 'cut');
+    initTouchBar('pol-bar', config.grades, 'pol');
+    initTouchBar('sym-bar', config.grades, 'sym');
+    initTouchBar('fluo-bar', config.fluos, 'fluo');
+  }
+
+  function initTouchBar(id, items, filterKey) {
+    const container = document.getElementById(id);
+    container.innerHTML = '';
+    items.forEach((item, index) => {
+      const btn = document.createElement('div');
+      btn.className = 'touch-btn';
+      btn.innerText = item;
+      btn.onclick = () => handleRangeClick(index, items, filterKey, id);
+      container.appendChild(btn);
+    });
+  }
+
+  function handleRangeClick(index, items, key, domId) {
+    let active = activeFilters[key];
+    const clickedItem = items[index];
+
+    if (active.length === 1 && active[0] === clickedItem) activeFilters[key] = [];
+    else if (active.includes(clickedItem)) activeFilters[key] = [clickedItem];
+    else if (active.length === 0) activeFilters[key] = [clickedItem];
+    else {
+      const activeIndices = active.map(val => items.indexOf(val));
+      const min = Math.min(...activeIndices, index);
+      const max = Math.max(...activeIndices, index);
+      activeFilters[key] = [];
+      for (let i=min; i<=max; i++) activeFilters[key].push(items[i]);
+    }
+
+    updateTouchUI(domId, items, activeFilters[key]);
+    runSearch();
+  }
+
+  function updateTouchUI(domId, items, activeArr) {
+    const btns = document.getElementById(domId).children;
+    for (let i=0; i<btns.length; i++) {
+      btns[i].classList.toggle('active', activeArr.includes(items[i]));
+    }
+  }
+
+  // -----------------------------
+  // FILTER LOGIC
+  // -----------------------------
+  function toggleFilter(key, val, btn) {
+    btn.classList.toggle('active');
+    const arr = activeFilters[key];
+    arr.includes(val) ? arr.splice(arr.indexOf(val), 1) : arr.push(val);
+    runSearch();
+  }
+
+  function toggleCarat(min, max, btn) {
+    btn.classList.toggle('active');
+    const ranges = activeFilters.caratRanges;
+    const idx = ranges.findIndex(r => r.min === min && r.max === max);
+    if (idx > -1) ranges.splice(idx, 1);
+    else ranges.push({min, max});
+    document.getElementById('min-size').value = '';
+    document.getElementById('max-size').value = '';
+    runSearch();
+  }
+
+  function toggleLikedFilter() {
+    activeFilters.likedOnly = !activeFilters.likedOnly;
+    const btn = document.getElementById('btn-fav-filter');
+    btn.classList.toggle('active', activeFilters.likedOnly);
+    runSearch();
+  }
+
+  // Ratio presets (square/rect)
+  function clearRatioPresetUI(){
+    activeFilters.ratioPreset = null;
+    document.getElementById('btn-ratio-square')?.classList.remove('active');
+    document.getElementById('btn-ratio-rect')?.classList.remove('active');
+  }
+  function toggleRatioPreset(min, max, btn){
+    const isActive = btn.classList.contains('active');
+    // only one preset at a time
+    document.getElementById('btn-ratio-square')?.classList.remove('active');
+    document.getElementById('btn-ratio-rect')?.classList.remove('active');
+
+    if (isActive) {
+      activeFilters.ratioPreset = null;
+      document.getElementById('ratio-min').value = '';
+      document.getElementById('ratio-max').value = '';
+    } else {
+      btn.classList.add('active');
+      activeFilters.ratioPreset = { min, max };
+      document.getElementById('ratio-min').value = min.toFixed(2);
+      document.getElementById('ratio-max').value = max.toFixed(2);
+    }
+    runSearch();
+  }
+
+  function resetFilters() {
+    activeFilters = {
+      shape: [],
+      caratRanges: [],
+      color: [],
+      clarity: [],
+      lab: [],
+      cut: [],
+      pol: [],
+      sym: [],
+      fluo: [],
+      likedOnly: false,
+      ratioPreset: null
     };
 
-    // Columns available for sorting in the modal
-    const SORTABLE_COLUMNS = [
-      'ID','Shape','Size','Color','Clarity','measl','measw','measd','Ratio','Lab','Cut','Pol','Sym','Fluo',
-      'Depth','Table','Culet','Girdle','Rap','Rap Disc','Price','Total Price'
-    ];
+    document.getElementById('search-box').value = '';
+    document.querySelectorAll('.range-input').forEach(input => input.value = '');
+    document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btn-fav-filter').classList.remove('active');
 
-    // -----------------------------
-    // 2) AUTO-LOAD CSV
-    // -----------------------------
-    window.onload = function() {
-      // cache-bust so GitHub Pages updates quickly
-      const url = 'inventory.csv?v=' + Date.now();
-      fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error('Could not find inventory.csv');
-          return res.text();
-        })
-        .then(csvText => {
-          parseCSV(csvText);
-        })
-        .catch(err => {
-          console.error('Error loading CSV:', err);
-          document.getElementById('loading-text').innerText = "Error: Couldn't load inventory.csv from this folder.";
-          document.getElementById('loading-text').style.color = '#dc2626';
-          document.querySelector('.loader').style.display = 'none';
-        });
-    };
+    ['color-bar','clarity-bar','lab-bar','cut-bar','pol-bar','sym-bar','fluo-bar'].forEach(id => {
+      Array.from(document.getElementById(id).children).forEach(btn => btn.classList.remove('active'));
+    });
 
-    // -----------------------------
-    // 3) CSV PARSER (ROBUST)
-    // -----------------------------
-    function parseCSV(text) {
-      let p = '', row = [''], ret = [row], i = 0, r = 0, s = !0, l;
-      for (l of text) {
-        if ('"' === l) {
-          if (s && l === p) row[i] += l;
-          s = !s;
-        } else if (',' === l && s) l = row[++i] = '';
-        else if ('\n' === l && s) {
-          if ('\r' === p) row[i] = row[i].slice(0, -1);
-          row = ret[++r] = [l = '']; i = 0;
-        } else row[i] += l;
-        p = l;
-      }
+    runSearch();
+  }
 
-      const rawHeaders = ret[0].map(h => h.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,"").trim());
-      const data = [];
-      for (let j = 1; j < ret.length; j++) {
-        if (ret[j].length < 2 || ret[j].join('').trim() === '') continue;
-        let obj = {};
-        rawHeaders.forEach((h, index) => {
-          obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
-        });
+  // -----------------------------
+  // SELECTION & FAVORITES
+  // -----------------------------
+  function toggleSelect(id, event) {
+    if (event) event.stopPropagation();
+    if (selectedIds.has(id)) selectedIds.delete(id);
+    else selectedIds.add(id);
 
-        // Split Measurements into measl/measw/measd for sorting/filtering
-        let measRaw = obj['measurements'] || '';
-        let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
-        obj['measl'] = parts[0] || '';
-        obj['measw'] = parts[1] || '';
-        obj['measd'] = parts[2] || '';
-
-        data.push(obj);
-      }
-
-      inventoryData = data;
-
-      document.getElementById('loading-state').style.display = 'none';
-      document.getElementById('app-container').style.display = 'flex';
-
-      initTouchBars();
-      runSearch();
+    const rCheckbox = document.querySelector(`.row-checkbox[data-id="${cssEscape(id)}"]`);
+    if (rCheckbox) {
+      const rowTr = rCheckbox.closest('.data-row');
+      if (rowTr) rowTr.classList.toggle('selected', selectedIds.has(id));
     }
+    updateSubtotals();
+  }
 
-    function initTouchBars() {
-      initTouchBar('color-bar', config.colors, 'color');
-      initTouchBar('clarity-bar', config.clarities, 'clarity');
-      initTouchBar('lab-bar', config.labs, 'lab');
-      initTouchBar('cut-bar', config.grades, 'cut');
-      initTouchBar('pol-bar', config.grades, 'pol');
-      initTouchBar('sym-bar', config.grades, 'sym');
-      initTouchBar('fluo-bar', config.fluos, 'fluo');
+  function toggleLike(id, event) {
+    if (event) event.stopPropagation();
+    if (likedIds.has(id)) likedIds.delete(id);
+    else likedIds.add(id);
+
+    document.querySelectorAll(`.heart-btn[data-id="${cssEscape(id)}"]`).forEach(btn => {
+      btn.classList.toggle('liked', likedIds.has(id));
+    });
+
+    if (activeFilters.likedOnly) runSearch();
+  }
+
+  // -----------------------------
+  // SORT (Unified)
+  // -----------------------------
+  function updateSortButtonState(){
+    document.getElementById('btn-open-sort').classList.toggle('active', sortSpecs.length > 0);
+  }
+  function updateHeaderArrows(){
+    document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
+    if (!sortSpecs.length) return;
+    const primary = sortSpecs[0];
+    const sp = document.getElementById('sort-' + primary.col);
+    if (sp) sp.innerText = (primary.dir === 'asc' ? ' ↑' : ' ↓');
+  }
+  function sortBy(col) {
+    if (sortSpecs.length && sortSpecs[0].col === col) {
+      sortSpecs[0].dir = (sortSpecs[0].dir === 'asc') ? 'desc' : 'asc';
+      sortSpecs = [sortSpecs[0]];
+    } else {
+      sortSpecs = [{ col, dir: 'asc' }];
     }
+    updateSortButtonState();
+    updateHeaderArrows();
+    runSearch();
+  }
 
-    // -----------------------------
-    // 4) HELPERS
-    // -----------------------------
-    function safeParseFloat(val) {
-      if (val === null || val === undefined) return NaN;
-      const cleaned = val.toString().replace(/[$,\s]/g, '');
-      const n = parseFloat(cleaned);
-      return isNaN(n) ? NaN : n;
+  // -----------------------------
+  // MULTI SORT MODAL
+  // -----------------------------
+  function openSortModal() {
+    if (!sortSpecs.length) sortSpecs = [{ col: 'ID', dir: 'asc' }];
+    renderSortModalLevels();
+    document.getElementById('sort-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSortModalOnBackdrop(e){
+    if (e.target.id === 'sort-overlay') closeSortModal();
+  }
+  function closeSortModal() {
+    document.getElementById('sort-overlay').classList.remove('open');
+    if (!document.getElementById('mobile-drawer').classList.contains('open') &&
+        !document.getElementById('media-modal').classList.contains('open')) {
+      document.body.style.overflow = '';
     }
+  }
+  function addSortLevel() {
+    sortSpecs.push({ col: 'ID', dir: 'asc' });
+    renderSortModalLevels();
+  }
+  function clearAllSort() {
+    sortSpecs = [];
+    updateSortButtonState();
+    updateHeaderArrows();
+    closeSortModal();
+    runSearch();
+  }
+  function moveSortLevel(idx, dir) {
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= sortSpecs.length) return;
+    const tmp = sortSpecs[idx];
+    sortSpecs[idx] = sortSpecs[newIdx];
+    sortSpecs[newIdx] = tmp;
+    renderSortModalLevels();
+  }
+  function removeSortLevel(idx) {
+    sortSpecs.splice(idx, 1);
+    renderSortModalLevels();
+  }
+  function toggleDir(idx) {
+    sortSpecs[idx].dir = (sortSpecs[idx].dir === 'asc') ? 'desc' : 'asc';
+    renderSortModalLevels();
+  }
+  function renderSortModalLevels() {
+    const wrap = document.getElementById('sort-levels');
+    wrap.innerHTML = '';
 
-    function getVal(row, exactHeader) {
-      return row[(exactHeader || '').toLowerCase()] || '';
-    }
+    sortSpecs.forEach((spec, idx) => {
+      const row = document.createElement('div');
+      row.className = 'sort-level';
 
-    function getRobustVal(row, possibleKeys) {
-      for (let k of possibleKeys) {
-        let lowerK = k.toLowerCase().replace(/[^a-z0-9]/g, '');
-        let found = Object.keys(row).find(rk => rk.replace(/[^a-z0-9]/g, '') === lowerK);
-        if (found && row[found] && row[found].trim() !== '') return row[found].trim();
-      }
-      return '';
-    }
+      const badge = document.createElement('div');
+      badge.className = 'lvl-badge';
+      badge.textContent = String(idx + 1);
 
-    function formatUrl(u) {
-      if (!u) return '';
-      return u.startsWith('http') ? u : `https://${u}`;
-    }
-
-    function money(v) {
-      const n = safeParseFloat(v);
-      return isNaN(n) ? '' : '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-
-    function num2(v) {
-      const n = safeParseFloat(v);
-      return isNaN(n) ? '' : n.toFixed(2);
-    }
-
-    function pct(v) {
-      if (!v || v.toString().trim() === '') return '';
-      return v.toString().replace('%','') + '%';
-    }
-
-    function heartSvg() {
-      return `
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 21s-7.2-4.35-9.6-8.4C.2 9 .9 5.9 3.5 4.2 5.6 2.9 8.4 3.2 10.1 5c.8.8 1.9 2.1 1.9 2.1s1.1-1.3 1.9-2.1c1.7-1.8 4.5-2.1 6.6-.8 2.6 1.7 3.3 4.8 1.1 8.4C19.2 16.65 12 21 12 21z"/>
-        </svg>`;
-    }
-
-    // -----------------------------
-    // 5) TOUCH BARS
-    // -----------------------------
-    function initTouchBar(id, items, filterKey) {
-      const container = document.getElementById(id);
-      container.innerHTML = '';
-      items.forEach((item, index) => {
-        const btn = document.createElement('div');
-        btn.className = 'touch-btn';
-        btn.innerText = item;
-        btn.onclick = () => handleRangeClick(index, items, filterKey, id);
-        container.appendChild(btn);
+      const sel = document.createElement('select');
+      sel.className = 'sort-select';
+      SORTABLE_COLUMNS.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
       });
-    }
+      sel.value = spec.col;
+      sel.onchange = () => { sortSpecs[idx].col = sel.value; };
 
-    function handleRangeClick(index, items, key, domId) {
-      let active = activeFilters[key];
-      const clickedItem = items[index];
+      const dirBtn = document.createElement('button');
+      dirBtn.className = 'dir-btn';
+      dirBtn.innerHTML = (spec.dir === 'asc') ? 'Sort A→Z' : 'Sort Z→A';
+      dirBtn.onclick = () => toggleDir(idx);
 
-      if (active.length === 1 && active[0] === clickedItem) activeFilters[key] = [];
-      else if (active.includes(clickedItem)) activeFilters[key] = [clickedItem];
-      else if (active.length === 0) activeFilters[key] = [clickedItem];
-      else {
-        const activeIndices = active.map(val => items.indexOf(val));
-        const min = Math.min(...activeIndices, index);
-        const max = Math.max(...activeIndices, index);
-        activeFilters[key] = [];
-        for (let i=min; i<=max; i++) activeFilters[key].push(items[i]);
+      const up = document.createElement('button');
+      up.className = 'icon-btn';
+      up.title = 'Move up';
+      up.innerHTML = '▲';
+      up.disabled = idx === 0;
+      up.onclick = () => moveSortLevel(idx, -1);
+
+      const down = document.createElement('button');
+      down.className = 'icon-btn';
+      down.title = 'Move down';
+      down.innerHTML = '▼';
+      down.disabled = idx === sortSpecs.length - 1;
+      down.onclick = () => moveSortLevel(idx, +1);
+
+      const trash = document.createElement('button');
+      trash.className = 'trash-btn';
+      trash.title = 'Remove level';
+      trash.innerHTML = '✕';
+      trash.disabled = sortSpecs.length <= 1;
+      trash.onclick = () => removeSortLevel(idx);
+
+      row.appendChild(badge);
+      row.appendChild(sel);
+      row.appendChild(dirBtn);
+      row.appendChild(up);
+      row.appendChild(down);
+      row.appendChild(trash);
+
+      wrap.appendChild(row);
+    });
+  }
+  function applyMultiSort() {
+    // de-dupe columns keeping first occurrence
+    const seen = new Set();
+    sortSpecs = sortSpecs.filter(s => {
+      if (seen.has(s.col)) return false;
+      seen.add(s.col);
+      return true;
+    });
+
+    updateSortButtonState();
+    updateHeaderArrows();
+
+    closeSortModal();
+    runSearch();
+  }
+
+  // -----------------------------
+  // SEARCH + FILTER + SORT
+  // -----------------------------
+  function runSearch() {
+    const query = (document.getElementById('search-box')?.value || '').toLowerCase();
+
+    const minS = safeParseFloat(document.getElementById('min-size').value);
+    const maxS = safeParseFloat(document.getElementById('max-size').value);
+
+    const minDepth = safeParseFloat(document.getElementById('depth-min').value);
+    const maxDepth = safeParseFloat(document.getElementById('depth-max').value);
+
+    const minTable = safeParseFloat(document.getElementById('table-min').value);
+    const maxTable = safeParseFloat(document.getElementById('table-max').value);
+
+    const minRatio = safeParseFloat(document.getElementById('ratio-min').value);
+    const maxRatio = safeParseFloat(document.getElementById('ratio-max').value);
+
+    const minL = safeParseFloat(document.getElementById('min-l').value);
+    const maxL = safeParseFloat(document.getElementById('max-l').value);
+
+    const minW = safeParseFloat(document.getElementById('min-w').value);
+    const maxW = safeParseFloat(document.getElementById('max-w').value);
+
+    const minDmm = safeParseFloat(document.getElementById('min-d').value);
+    const maxDmm = safeParseFloat(document.getElementById('max-d').value);
+
+    filteredData = inventoryData.filter(row => {
+      const id = getVal(row,'ID');
+
+      if (activeFilters.likedOnly && !likedIds.has(id)) return false;
+
+      if (query) {
+        const searchable = (id + ' ' + getVal(row,'Shape') + ' ' + getVal(row,'Color') + ' ' + getVal(row,'Clarity')).toLowerCase();
+        if (!searchable.includes(query)) return false;
       }
 
-      updateTouchUI(domId, items, activeFilters[key]);
-      runSearch();
-    }
+      // shape with "Other"
+      if (activeFilters.shape.length) {
+        const shape = (getVal(row,'Shape') || '').toString().trim().toUpperCase();
+        const otherSelected = activeFilters.shape.includes('Other');
+        const specific = activeFilters.shape.filter(s => s !== 'Other').map(s => s.toUpperCase());
 
-    function updateTouchUI(domId, items, activeArr) {
-      const btns = document.getElementById(domId).children;
-      for (let i=0; i<btns.length; i++) {
-        btns[i].classList.toggle('active', activeArr.includes(items[i]));
+        const isKnown = KNOWN_SHAPES.has(shape);
+        const matchesSpecific = specific.length ? specific.includes(shape) : false;
+        const matchesOther = otherSelected ? (!isKnown && shape !== '') : false;
+
+        if (!(matchesSpecific || matchesOther)) return false;
       }
-    }
 
-    // -----------------------------
-    // 6) FILTER LOGIC
-    // -----------------------------
-    function toggleFilter(key, val, btn) {
-      btn.classList.toggle('active');
-      const arr = activeFilters[key];
-      arr.includes(val) ? arr.splice(arr.indexOf(val), 1) : arr.push(val);
-      runSearch();
-    }
+      const checkArr = (key, csvHeader, normalizer=null) => {
+        if (!activeFilters[key].length) return true;
+        let val = (getVal(row, csvHeader) || '').toUpperCase().trim();
+        if (normalizer) val = normalizer(val);
+        return activeFilters[key].some(f => val === f.toUpperCase() || val.includes(f.toUpperCase()));
+      };
 
-    function toggleCarat(min, max, btn) {
-      btn.classList.toggle('active');
-      const ranges = activeFilters.caratRanges;
-      const idx = ranges.findIndex(r => r.min === min && r.max === max);
-      if (idx > -1) ranges.splice(idx, 1);
-      else ranges.push({min, max});
-      document.getElementById('min-size').value = '';
-      document.getElementById('max-size').value = '';
-      runSearch();
-    }
+      if (!checkArr('color','Color')) return false;
+      if (!checkArr('clarity','Clarity')) return false;
+      if (!checkArr('lab','Lab')) return false;
+      if (!checkArr('cut','Cut')) return false;
+      if (!checkArr('pol','Pol')) return false;
+      if (!checkArr('sym','Sym')) return false;
+      if (!checkArr('fluo','Fluo', normalizeFluo)) return false;
 
-    function toggleLikedFilter() {
-      activeFilters.likedOnly = !activeFilters.likedOnly;
-      const btn = document.getElementById('btn-fav-filter');
-      btn.classList.toggle('active', activeFilters.likedOnly);
-      runSearch();
-    }
-
-    function resetFilters() {
-      activeFilters = { shape: [], caratRanges: [], color: [], clarity: [], lab: [], cut: [], pol: [], sym: [], fluo: [], likedOnly: false };
-      document.getElementById('search-box').value = '';
-      document.querySelectorAll('.range-input').forEach(input => input.value = '');
-      document.querySelectorAll('.btn-toggle').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('btn-fav-filter').classList.remove('active');
-      ['color-bar','clarity-bar','lab-bar','cut-bar','pol-bar','sym-bar','fluo-bar'].forEach(id => {
-        Array.from(document.getElementById(id).children).forEach(btn => btn.classList.remove('active'));
-      });
-      runSearch();
-    }
-
-    // -----------------------------
-    // 7) SELECTION & FAVORITES
-    // -----------------------------
-    function toggleSelect(id, event) {
-      if (event) event.stopPropagation();
-      if (selectedIds.has(id)) selectedIds.delete(id);
-      else selectedIds.add(id);
-
-      const rCheckbox = document.querySelector(`.row-checkbox[data-id="${cssEscape(id)}"]`);
-      if (rCheckbox) {
-        const rowTr = rCheckbox.closest('.data-row');
-        if (rowTr) rowTr.classList.toggle('selected', selectedIds.has(id));
+      const size = safeParseFloat(getVal(row,'Size'));
+      let sMatch = true;
+      if (!isNaN(minS) || !isNaN(maxS)) {
+        sMatch = (isNaN(minS) || size >= minS) && (isNaN(maxS) || size <= maxS);
+      } else if (activeFilters.caratRanges.length) {
+        sMatch = activeFilters.caratRanges.some(r => size >= r.min && size <= r.max);
       }
-      updateSubtotals();
-    }
+      if (!sMatch) return false;
 
-    function toggleLike(id, event) {
-      if (event) event.stopPropagation();
-      if (likedIds.has(id)) likedIds.delete(id);
-      else likedIds.add(id);
-
-      document.querySelectorAll(`.heart-btn[data-id="${cssEscape(id)}"]`).forEach(btn => {
-        btn.classList.toggle('liked', likedIds.has(id));
-      });
-
-      if (activeFilters.likedOnly) runSearch();
-    }
-
-    // simple CSS.escape fallback
-    function cssEscape(s){
-      return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/"/g,'\\"');
-    }
-
-    // -----------------------------
-    // 8) SINGLE COLUMN SORT (header click)
-    // -----------------------------
-    function sortBy(col) {
-      // When you use header sorting, we keep it working, but we ALSO clear multi-sort,
-      // so you don't get "mystery" multi sort overriding.
-      // If you prefer them to combine, tell me and I'll adjust.
-      sortSpecs = [];
-      updateSortButtonState();
-
-      if (sortCol === col) sortDir *= -1;
-      else { sortCol = col; sortDir = 1; }
-
-      document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
-      const sp = document.getElementById('sort-' + col);
-      if (sp) sp.innerText = sortDir === 1 ? ' ↑' : ' ↓';
-
-      runSearch();
-    }
-
-    // -----------------------------
-    // 9) MULTI SORT MODAL
-    // -----------------------------
-    function openSortModal() {
-      // If no specs, start with a single level (primary)
-      if (!sortSpecs.length) {
-        sortSpecs = [{ col: 'ID', dir: 'asc' }];
-      }
-      // When using multi-sort, clear header sort arrows visually
-      sortCol = '';
-      document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
-
-      renderSortModalLevels();
-      document.getElementById('sort-overlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeSortModalOnBackdrop(e){
-      if (e.target.id === 'sort-overlay') closeSortModal();
-    }
-
-    function closeSortModal() {
-      document.getElementById('sort-overlay').classList.remove('open');
-      if (!document.getElementById('mobile-drawer').classList.contains('open') &&
-          !document.getElementById('media-modal').classList.contains('open')) {
-        document.body.style.overflow = '';
-      }
-    }
-
-    function updateSortButtonState(){
-      const btn = document.getElementById('btn-open-sort');
-      btn.classList.toggle('active', sortSpecs.length > 0);
-    }
-
-    function addSortLevel() {
-      sortSpecs.push({ col: 'ID', dir: 'asc' });
-      renderSortModalLevels();
-    }
-
-    function clearAllSort() {
-      sortSpecs = [];
-      updateSortButtonState();
-      closeSortModal();
-      runSearch();
-    }
-
-    function moveSortLevel(idx, dir) {
-      const newIdx = idx + dir;
-      if (newIdx < 0 || newIdx >= sortSpecs.length) return;
-      const temp = sortSpecs[idx];
-      sortSpecs[idx] = sortSpecs[newIdx];
-      sortSpecs[newIdx] = temp;
-      renderSortModalLevels();
-    }
-
-    function removeSortLevel(idx) {
-      sortSpecs.splice(idx, 1);
-      renderSortModalLevels();
-    }
-
-    function toggleDir(idx) {
-      sortSpecs[idx].dir = (sortSpecs[idx].dir === 'asc') ? 'desc' : 'asc';
-      renderSortModalLevels();
-    }
-
-    function renderSortModalLevels() {
-      const wrap = document.getElementById('sort-levels');
-      wrap.innerHTML = '';
-
-      sortSpecs.forEach((spec, idx) => {
-        const row = document.createElement('div');
-        row.className = 'sort-level';
-
-        const badge = document.createElement('div');
-        badge.className = 'lvl-badge';
-        badge.textContent = String(idx + 1);
-
-        const sel = document.createElement('select');
-        sel.className = 'sort-select';
-        SORTABLE_COLUMNS.forEach(c => {
-          const opt = document.createElement('option');
-          opt.value = c;
-          opt.textContent = c;
-          sel.appendChild(opt);
-        });
-        sel.value = spec.col;
-        sel.onchange = () => { sortSpecs[idx].col = sel.value; };
-
-        const dirBtn = document.createElement('button');
-        dirBtn.className = 'dir-btn';
-        dirBtn.classList.add(spec.dir === 'asc' ? 'asc' : 'desc');
-        dirBtn.innerHTML = spec.dir === 'asc' ? 'Sort A→Z' : 'Sort Z→A';
-        dirBtn.onclick = () => toggleDir(idx);
-
-        const up = document.createElement('button');
-        up.className = 'icon-btn';
-        up.title = 'Move up';
-        up.innerHTML = '▲';
-        up.disabled = idx === 0;
-        up.onclick = () => moveSortLevel(idx, -1);
-
-        const down = document.createElement('button');
-        down.className = 'icon-btn';
-        down.title = 'Move down';
-        down.innerHTML = '▼';
-        down.disabled = idx === sortSpecs.length - 1;
-        down.onclick = () => moveSortLevel(idx, +1);
-
-        const trash = document.createElement('button');
-        trash.className = 'trash-btn';
-        trash.title = 'Remove level';
-        trash.innerHTML = '✕';
-        trash.disabled = sortSpecs.length <= 1;
-        trash.onclick = () => removeSortLevel(idx);
-
-        row.appendChild(badge);
-        row.appendChild(sel);
-        row.appendChild(dirBtn);
-        row.appendChild(up);
-        row.appendChild(down);
-        row.appendChild(trash);
-
-        wrap.appendChild(row);
-      });
-    }
-
-    function applyMultiSort() {
-      // enable multi sort and clear header arrows
-      sortCol = '';
-      document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
-
-      updateSortButtonState();
-      closeSortModal();
-      runSearch();
-    }
-
-    // -----------------------------
-    // 10) SEARCH & FILTER & SORT PIPELINE
-    // -----------------------------
-    function runSearch() {
-      const query = (document.getElementById('search-box')?.value || '').toLowerCase();
-
-      const minS = safeParseFloat(document.getElementById('min-size').value);
-      const maxS = safeParseFloat(document.getElementById('max-size').value);
-
-      const minDepth = safeParseFloat(document.getElementById('depth-min').value);
-      const maxDepth = safeParseFloat(document.getElementById('depth-max').value);
-
-      const minTable = safeParseFloat(document.getElementById('table-min').value);
-      const maxTable = safeParseFloat(document.getElementById('table-max').value);
-
-      const minRatio = safeParseFloat(document.getElementById('ratio-min').value);
-      const maxRatio = safeParseFloat(document.getElementById('ratio-max').value);
-
-      const minL = safeParseFloat(document.getElementById('min-l').value);
-      const maxL = safeParseFloat(document.getElementById('max-l').value);
-
-      const minW = safeParseFloat(document.getElementById('min-w').value);
-      const maxW = safeParseFloat(document.getElementById('max-w').value);
-
-      const minDmm = safeParseFloat(document.getElementById('min-d').value);
-      const maxDmm = safeParseFloat(document.getElementById('max-d').value);
-
-      filteredData = inventoryData.filter(row => {
-        const id = getVal(row,'ID');
-
-        if (activeFilters.likedOnly && !likedIds.has(id)) return false;
-
-        if (query) {
-          const searchable = (id + ' ' + getVal(row,'Shape') + ' ' + getVal(row,'Color') + ' ' + getVal(row,'Clarity')).toLowerCase();
-          if (!searchable.includes(query)) return false;
-        }
-
-        const checkArr = (key, csvHeader) => {
-          if (!activeFilters[key].length) return true;
-          const val = (getVal(row, csvHeader) || '').toUpperCase();
-          return activeFilters[key].some(f => val === f.toUpperCase() || val.includes(f.toUpperCase()));
-        };
-
-        if (!checkArr('shape','Shape')) return false;
-        if (!checkArr('color','Color')) return false;
-        if (!checkArr('clarity','Clarity')) return false;
-        if (!checkArr('lab','Lab')) return false;
-        if (!checkArr('cut','Cut')) return false;
-        if (!checkArr('pol','Pol')) return false;
-        if (!checkArr('sym','Sym')) return false;
-        if (!checkArr('fluo','Fluo')) return false;
-
-        // Size range logic
-        const size = safeParseFloat(getVal(row,'Size'));
-        let sMatch = true;
-        if (!isNaN(minS) || !isNaN(maxS)) {
-          sMatch = (isNaN(minS) || size >= minS) && (isNaN(maxS) || size <= maxS);
-        } else if (activeFilters.caratRanges.length) {
-          sMatch = activeFilters.caratRanges.some(r => size >= r.min && size <= r.max);
-        }
-        if (!sMatch) return false;
-
-        const checkNum = (val, min, max) => {
-          const n = safeParseFloat(val);
-          if (isNaN(n)) return true;
-          if (!isNaN(min) && n < min) return false;
-          if (!isNaN(max) && n > max) return false;
-          return true;
-        };
-
-        if (!checkNum(getVal(row,'Depth'), minDepth, maxDepth)) return false;
-        if (!checkNum(getVal(row,'Table'), minTable, maxTable)) return false;
-        if (!checkNum(getVal(row,'Ratio'), minRatio, maxRatio)) return false;
-        if (!checkNum(getVal(row,'measl'), minL, maxL)) return false;
-        if (!checkNum(getVal(row,'measw'), minW, maxW)) return false;
-        if (!checkNum(getVal(row,'measd'), minDmm, maxDmm)) return false;
-
+      const checkNum = (val, min, max) => {
+        const n = safeParseFloat(val);
+        if (isNaN(n)) return true;
+        if (!isNaN(min) && n < min) return false;
+        if (!isNaN(max) && n > max) return false;
         return true;
-      });
+      };
 
-      // Apply sorts:
-      // A) Multi-sort if present
-      if (sortSpecs.length) {
-        filteredData = applySortSpecs(filteredData, sortSpecs);
+      if (!checkNum(getVal(row,'Depth'), minDepth, maxDepth)) return false;
+      if (!checkNum(getVal(row,'Table'), minTable, maxTable)) return false;
+      if (!checkNum(getVal(row,'Ratio'), minRatio, maxRatio)) return false;
+      if (!checkNum(getVal(row,'measl'), minL, maxL)) return false;
+      if (!checkNum(getVal(row,'measw'), minW, maxW)) return false;
+      if (!checkNum(getVal(row,'measd'), minDmm, maxDmm)) return false;
+
+      return true;
+    });
+
+    if (sortSpecs.length) {
+      filteredData = applySortSpecs(filteredData, sortSpecs);
+    }
+
+    renderTable();
+  }
+
+  function compareVals(valA, valB, dir){
+    const a = (valA ?? '').toString();
+    const b = (valB ?? '').toString();
+    const numA = parseFloat(a.replace(/[^0-9.-]+/g,""));
+    const numB = parseFloat(b.replace(/[^0-9.-]+/g,""));
+    if (!isNaN(numA) && !isNaN(numB)) return (numA - numB) * dir;
+    return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }) * dir;
+  }
+
+  function applySortSpecs(arr, specs){
+    const decorated = arr.map((row, idx) => ({ row, idx }));
+    decorated.sort((A,B) => {
+      for (const s of specs) {
+        const dir = (s.dir === 'asc') ? 1 : -1;
+        const cmp = compareVals(getVal(A.row, s.col), getVal(B.row, s.col), dir);
+        if (cmp !== 0) return cmp;
       }
-      // B) Else single-column header sort if present
-      else if (sortCol) {
-        filteredData.sort((a,b) => compareVals(getVal(a, sortCol), getVal(b, sortCol), sortDir));
-      }
+      return A.idx - B.idx;
+    });
+    return decorated.map(d => d.row);
+  }
 
-      renderTable();
-    }
+  // -----------------------------
+  // SUBTOTALS
+  // -----------------------------
+  function updateSubtotals() {
+    let sCarats=0, sPrice=0, sRap=0, selCount=0;
 
-    function compareVals(valA, valB, dir){
-      const a = (valA ?? '').toString();
-      const b = (valB ?? '').toString();
-      const numA = parseFloat(a.replace(/[^0-9.-]+/g,""));
-      const numB = parseFloat(b.replace(/[^0-9.-]+/g,""));
-      if (!isNaN(numA) && !isNaN(numB)) return (numA - numB) * dir;
-      return a.localeCompare(b) * dir;
-    }
+    document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = selectedIds.has(cb.dataset.id); });
 
-    // Stable multi-sort
-    function applySortSpecs(arr, specs){
-      // decorate
-      const decorated = arr.map((row, idx) => ({ row, idx }));
-      decorated.sort((A,B) => {
-        for (const s of specs) {
-          const dir = (s.dir === 'asc') ? 1 : -1;
-          const cmp = compareVals(getVal(A.row, s.col), getVal(B.row, s.col), dir);
-          if (cmp !== 0) return cmp;
-        }
-        return A.idx - B.idx; // stable
-      });
-      return decorated.map(d => d.row);
-    }
-
-    // -----------------------------
-    // 11) SUBTOTALS (Selected)
-    // -----------------------------
-    function updateSubtotals() {
-      let sCarats=0, sPrice=0, sRap=0, selCount=0;
-
-      document.querySelectorAll('.row-checkbox').forEach(cb => { cb.checked = selectedIds.has(cb.dataset.id); });
-
-      filteredData.forEach(row => {
-        const id = getVal(row,'ID');
-        if (selectedIds.has(id)) {
-          selCount++;
-          const size = safeParseFloat(getVal(row,'Size')) || 0;
-          const tp = safeParseFloat(getVal(row,'Total Price')) || 0;
-          const rapPerCt = safeParseFloat(getVal(row,'Rap')) || 0;
-          sCarats += size;
-          sPrice += tp;
-          sRap += (size * rapPerCt);
-        }
-      });
-
-      const fMoney = v => '$' + v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-      const fPct = v => v.toFixed(2) + '%';
-
-      const sAvgPriceCt = sCarats > 0 ? (sPrice / sCarats) : 0;
-      const sAvgRapDisc = sRap > 0 ? ((sPrice / sRap) - 1) * 100 : 0;
-
-      document.getElementById('sel-count').innerText = selCount ? `Selected: ${selCount}` : '';
-      document.getElementById('sel-carats').innerText = selCount ? `Selected: ${sCarats.toFixed(2)}` : '';
-      document.getElementById('sel-rap').innerText = selCount ? `Selected: ${fMoney(sRap)}` : '';
-      document.getElementById('sel-price').innerText = selCount ? `Selected: ${fMoney(sPrice)}` : '';
-      document.getElementById('sel-avg-price').innerText = selCount ? `Selected: ${fMoney(sAvgPriceCt)}` : '';
-      document.getElementById('sel-avg-disc').innerText = selCount ? `Selected: ${fPct(sAvgRapDisc)}` : '';
-    }
-
-    // -----------------------------
-    // 12) RENDER TABLE
-    // -----------------------------
-    function renderTable() {
-      const tbody = document.getElementById('table-body');
-
-      // totals for filtered set
-      let tCarats=0, tPrice=0, tRap=0;
-      filteredData.forEach(row => {
+    filteredData.forEach(row => {
+      const id = getVal(row,'ID');
+      if (selectedIds.has(id)) {
+        selCount++;
         const size = safeParseFloat(getVal(row,'Size')) || 0;
         const tp = safeParseFloat(getVal(row,'Total Price')) || 0;
         const rapPerCt = safeParseFloat(getVal(row,'Rap')) || 0;
-        tCarats += size; tPrice += tp; tRap += (size * rapPerCt);
-      });
-
-      const avgPriceCt = tCarats > 0 ? (tPrice / tCarats) : 0;
-      const avgRapDisc = tRap > 0 ? ((tPrice / tRap) - 1) * 100 : 0;
-
-      document.getElementById('tot-count').innerText = filteredData.length.toLocaleString();
-      document.getElementById('tot-carats').innerText = tCarats.toFixed(2);
-      document.getElementById('tot-rap').innerText = '$' + tRap.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-      document.getElementById('tot-price').innerText = '$' + tPrice.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-      document.getElementById('avg-price-ct').innerText = '$' + avgPriceCt.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-      document.getElementById('avg-rap-disc').innerText = avgRapDisc.toFixed(2) + '%';
-
-      tbody.innerHTML = '';
-
-      filteredData.forEach((row, i) => {
-        const id = getVal(row,'ID');
-
-        const tr = document.createElement('tr');
-        tr.className = 'data-row ' + (selectedIds.has(id) ? 'selected' : '');
-        tr.onclick = () => {
-          if (window.innerWidth <= 1100) openDrawer(i);
-          else toggleEnvelope(i);
-        };
-
-        const photo = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
-        const video = getRobustVal(row, ['Video','Video(link)','Video (link)']);
-        const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
-
-        const modalTitle = `${num2(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${id}`;
-
-        const labStr = getVal(row,'Lab') || 'CERT';
-        let labHtml = labStr;
-        if (report) {
-          labHtml = `<a href="${formatUrl(report)}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${labStr}</a>`;
-        }
-
-        const heartClass = likedIds.has(id) ? 'heart-btn liked' : 'heart-btn';
-
-        tr.innerHTML = `
-          <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
-
-          <td class="desktop-only" style="text-align:center;">
-            <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-              <input type="checkbox" data-id="${id}" class="row-checkbox" onclick="toggleSelect('${id}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
-              <span class="${heartClass}" data-id="${id}" onclick="toggleLike('${id}', event)">${heartSvg()}</span>
-            </div>
-          </td>
-
-          <td class="desktop-only">${id}</td>
-          <td class="desktop-only"><b>${getVal(row,'Shape')}</b></td>
-          <td class="desktop-only">${num2(getVal(row,'Size'))}</td>
-          <td class="desktop-only">${getVal(row,'Color')}</td>
-          <td class="desktop-only">${getVal(row,'Clarity')}</td>
-          <td class="desktop-only">${getVal(row,'measl')}</td>
-          <td class="desktop-only">${getVal(row,'measw')}</td>
-          <td class="desktop-only">${getVal(row,'measd')}</td>
-          <td class="desktop-only">${getVal(row,'Ratio')}</td>
-          <td class="desktop-only">${labHtml}</td>
-          <td class="desktop-only">${getVal(row,'Cut')}</td>
-          <td class="desktop-only">${getVal(row,'Pol')}</td>
-          <td class="desktop-only">${getVal(row,'Sym')}</td>
-          <td class="desktop-only">${getVal(row,'Fluo')}</td>
-          <td class="desktop-only">${pct(getVal(row,'Depth'))}</td>
-          <td class="desktop-only">${pct(getVal(row,'Table'))}</td>
-          <td class="desktop-only">${getVal(row,'Culet')}</td>
-          <td class="desktop-only">${getVal(row,'Girdle')}</td>
-          <td class="desktop-only">${money(getVal(row,'Rap'))}</td>
-          <td class="desktop-only" style="font-weight:900;">${pct(getVal(row,'Rap Disc'))}</td>
-          <td class="desktop-only">${money(getVal(row,'Price'))}</td>
-          <td class="desktop-only" style="color:#059669; font-weight:1000;">${money(getVal(row,'Total Price'))}</td>
-
-          <td class="mobile-only">
-            <div class="mobile-card">
-              <div class="mc-action-bar">
-                <input type="checkbox" data-id="${id}" class="row-checkbox" onclick="toggleSelect('${id}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
-                <span class="${heartClass}" data-id="${id}" onclick="toggleLike('${id}', event)">${heartSvg()}</span>
-              </div>
-              <div class="mc-price-wrap">
-                <div class="mc-price">${money(getVal(row,'Price'))}/ct</div>
-                <div class="mc-price">${money(getVal(row,'Total Price'))}</div>
-              </div>
-              <div class="mc-rap">${pct(getVal(row,'Rap Disc'))}</div>
-              <div class="mc-line1">${getVal(row,'Shape')} ${num2(getVal(row,'Size'))} ${getVal(row,'Color')} ${getVal(row,'Clarity')} ${getVal(row,'Lab')}</div>
-              <div class="mc-line2">L: ${getVal(row,'measl')} W: ${getVal(row,'measw')} D: ${getVal(row,'measd')} • R: ${getVal(row,'Ratio')}</div>
-              <div class="mc-line3">D:${getVal(row,'Depth')}% T:${getVal(row,'Table')}% P:${getVal(row,'Pol')} S:${getVal(row,'Sym')} F:${getVal(row,'Fluo')}</div>
-              <div class="mc-line4">Stock #: ${id}</div>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(tr);
-
-        // envelope row (desktop only)
-        const env = document.createElement('tr');
-        env.className = 'envelope-row';
-        env.id = `env-${i}`;
-        env.innerHTML = `
-          <td colspan="24" style="padding:0;">
-            <div class="env-showcase">
-              <div id="media-container-${i}" class="media-container"
-                   data-photo="${formatUrl(photo)}"
-                   data-video="${formatUrl(video)}"
-                   data-title="${modalTitle.replace(/'/g,"\\'")}"
-                   data-loaded="false"></div>
-              <div class="env-comments-box">
-                <h4 style="margin:0 0 10px 0;color:#475569;border-bottom:1px solid #e2e8f0;padding-bottom:5px;">Comments & Notes</h4>
-                <p style="margin:0;font-size:0.9rem;line-height:1.6;">${getVal(row,'Comments') || 'No additional comments provided.'}</p>
-              </div>
-            </div>
-          </td>
-        `;
-        tbody.appendChild(env);
-      });
-
-      updateSubtotals();
-      updateSortButtonState();
-    }
-
-    // -----------------------------
-    // 13) ENVELOPE + MEDIA MODAL
-    // -----------------------------
-    function toggleEnvelope(index) {
-      const env = document.getElementById(`env-${index}`);
-      const btn = document.getElementById(`btn-exp-${index}`);
-      const isOpen = env.classList.contains('show');
-
-      document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
-      document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
-
-      if (!isOpen) {
-        env.classList.add('show');
-        if (btn) btn.classList.add('open');
-
-        const mediaCont = document.getElementById(`media-container-${index}`);
-        if (mediaCont && mediaCont.dataset.loaded === "false") {
-          const pUrl = mediaCont.dataset.photo;
-          const vUrl = mediaCont.dataset.video;
-          const title = mediaCont.dataset.title;
-
-          let html = '';
-
-          if (pUrl) {
-            html += `
-              <div class="env-media-wrapper">
-                <div class="env-media-embed"><img src="${pUrl}" onerror="this.style.display='none'"></div>
-                <button class="btn-toggle" style="width:100%;padding:8px;border-radius:10px;" onclick="openMediaModal('${pUrl}','img','${title}')">⛶ View Full Screen</button>
-              </div>`;
-          }
-
-          if (vUrl) {
-            if (vUrl.toLowerCase().endsWith('.mp4')) {
-              html += `
-                <div class="env-media-wrapper">
-                  <div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted></video></div>
-                  <button class="btn-toggle" style="width:100%;padding:8px;border-radius:10px;" onclick="openMediaModal('${vUrl}','vid','${title}')">⛶ View Full Screen</button>
-                </div>`;
-            } else {
-              html += `
-                <div class="env-media-wrapper">
-                  <div class="env-media-embed"><iframe src="${vUrl}" allowfullscreen></iframe></div>
-                  <button class="btn-toggle" style="width:100%;padding:8px;border-radius:10px;" onclick="openMediaModal('${vUrl}','iframe','${title}')">⛶ View Full Screen</button>
-                </div>`;
-            }
-          }
-
-          mediaCont.innerHTML = html;
-          mediaCont.dataset.loaded = "true";
-        }
+        sCarats += size;
+        sPrice += tp;
+        sRap += (size * rapPerCt);
       }
-    }
+    });
 
-    function openMediaModal(url, type, title) {
-      document.body.style.overflow = 'hidden';
-      document.getElementById('media-modal-title').innerText = title;
-      const body = document.getElementById('media-modal-body');
+    const fMoney = v => '$' + v.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    const fPct = v => v.toFixed(2) + '%';
 
-      if (type === 'img') body.innerHTML = `<img src="${url}">`;
-      else if (type === 'vid') body.innerHTML = `<video src="${url}" controls autoplay loop></video>`;
-      else body.innerHTML = `<iframe src="${url}"></iframe>`;
+    const sAvgPriceCt = sCarats > 0 ? (sPrice / sCarats) : 0;
+    const sAvgRapDisc = sRap > 0 ? ((sPrice / sRap) - 1) * 100 : 0;
 
-      document.getElementById('media-modal').classList.add('open');
-    }
+    document.getElementById('sel-count').innerText = selCount ? `Selected: ${selCount}` : '';
+    document.getElementById('sel-carats').innerText = selCount ? `Selected: ${sCarats.toFixed(2)}` : '';
+    document.getElementById('sel-rap').innerText = selCount ? `Selected: ${fMoney(sRap)}` : '';
+    document.getElementById('sel-price').innerText = selCount ? `Selected: ${fMoney(sPrice)}` : '';
+    document.getElementById('sel-avg-price').innerText = selCount ? `Selected: ${fMoney(sAvgPriceCt)}` : '';
+    document.getElementById('sel-avg-disc').innerText = selCount ? `Selected: ${fPct(sAvgRapDisc)}` : '';
+  }
 
-    function closeMediaModal() {
-      document.getElementById('media-modal').classList.remove('open');
-      document.getElementById('media-modal-body').innerHTML = '';
-      if (!document.getElementById('mobile-drawer').classList.contains('open') &&
-          !document.getElementById('sort-overlay').classList.contains('open')) {
-        document.body.style.overflow = '';
-      }
-    }
+  // -----------------------------
+  // RENDER TABLE
+  // -----------------------------
+  function renderTable() {
+    const tbody = document.getElementById('table-body');
 
-    // -----------------------------
-    // 14) MOBILE DRAWER
-    // -----------------------------
-    function openDrawer(index) {
-      const row = filteredData[index];
-      document.body.style.overflow = 'hidden';
-      document.getElementById('mobile-drawer').classList.add('open');
+    let tCarats=0, tPrice=0, tRap=0;
+    filteredData.forEach(row => {
+      const size = safeParseFloat(getVal(row,'Size')) || 0;
+      const tp = safeParseFloat(getVal(row,'Total Price')) || 0;
+      const rapPerCt = safeParseFloat(getVal(row,'Rap')) || 0;
+      tCarats += size; tPrice += tp; tRap += (size * rapPerCt);
+    });
 
-      const titleStr = `${getVal(row,'Shape')} ${num2(getVal(row,'Size'))}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
-      document.getElementById('drawer-title').innerText = titleStr;
-      const modalTitle = `${titleStr} - ID: ${getVal(row,'ID')}`;
+    const avgPriceCt = tCarats > 0 ? (tPrice / tCarats) : 0;
+    const avgRapDisc = tRap > 0 ? ((tPrice / tRap) - 1) * 100 : 0;
+
+    document.getElementById('tot-count').innerText = filteredData.length.toLocaleString();
+    document.getElementById('tot-carats').innerText = tCarats.toFixed(2);
+    document.getElementById('tot-rap').innerText = '$' + tRap.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('tot-price').innerText = '$' + tPrice.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('avg-price-ct').innerText = '$' + avgPriceCt.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+    document.getElementById('avg-rap-disc').innerText = avgRapDisc.toFixed(2) + '%';
+
+    tbody.innerHTML = '';
+    const frag = document.createDocumentFragment();
+
+    filteredData.forEach((row, i) => {
+      const id = getVal(row,'ID');
+
+      const tr = document.createElement('tr');
+      tr.className = 'data-row ' + (selectedIds.has(id) ? 'selected' : '');
+      tr.onclick = () => {
+        if (window.innerWidth <= 1100) openDrawer(i);
+        else toggleEnvelope(i);
+      };
 
       const photo = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
       const video = getRobustVal(row, ['Video','Video(link)','Video (link)']);
       const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
 
-      const modalBtn = (link, label, icon, type) => {
-        const isDis = (!link || link.trim() === '');
-        const bg = isDis ? '#f1f5f9' : '#f8fafc';
-        const col = isDis ? '#94a3b8' : 'var(--primary)';
-        const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}','${type}','${modalTitle.replace(/'/g,"\\'")}')"`
-        const cur = isDis ? 'default' : 'pointer';
-        return `<button ${ev} style="flex:1;padding:10px 8px;background:${bg};border:1px solid #e2e8f0;border-radius:12px;font-weight:1000;color:${col};cursor:${cur};display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.9rem;">
-          <span style="font-size:1.1rem;">${icon}</span>${label}
-        </button>`;
-      };
+      const modalTitle = `${num2(getVal(row,'Size'))}ct ${getVal(row,'Shape')} ${getVal(row,'Color')} ${getVal(row,'Clarity')} - ID: ${id}`;
 
-      const certBtn = (link, label, icon) => {
-        const isDis = (!link || link.trim() === '');
-        const bg = isDis ? '#f1f5f9' : '#f8fafc';
-        const col = isDis ? '#94a3b8' : 'var(--primary)';
-        const tag = isDis ? 'div' : 'a';
-        const ev = isDis ? '' : `href="${formatUrl(link)}" target="_blank"`;
-        return `<${tag} ${ev} style="flex:1;padding:10px 8px;background:${bg};border:1px solid #e2e8f0;border-radius:12px;font-weight:1000;color:${col};text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.9rem;">
-          <span style="font-size:1.1rem;">${icon}</span>${label}
-        </${tag}>`;
-      };
-
-      let photoEmbedHtml = '';
-      if (photo) {
-        photoEmbedHtml = `
-          <div style="width:100%;background:#fff;border-radius:14px;overflow:hidden;margin-bottom:15px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;">
-            <img src="${formatUrl(photo)}" style="width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">
-          </div>`;
+      const labStr = getVal(row,'Lab') || 'CERT';
+      let labHtml = escapeHtml(labStr);
+      if (report) {
+        labHtml = `<a href="${escapeHtml(formatUrl(report))}" target="_blank" class="lab-link" onclick="event.stopPropagation();">${escapeHtml(labStr)}</a>`;
       }
 
-      document.getElementById('drawer-body').innerHTML = `
-        ${photoEmbedHtml}
+      const heartClass = likedIds.has(id) ? 'heart-btn liked' : 'heart-btn';
+      const fluoDisplay = normalizeFluo(getVal(row,'Fluo'));
 
-        <div style="display:flex;gap:10px;margin-bottom:18px;justify-content:center;">
-          ${modalBtn(photo, 'Photo', '📷', 'img')}
-          ${modalBtn(video, 'Video', '🎥', (video||'').toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
-          ${certBtn(report, 'Report', '📄')}
-        </div>
+      tr.innerHTML = `
+        <td class="col-expand desktop-only"><button id="btn-exp-${i}" class="btn-expand">+</button></td>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
-          <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">MEASUREMENTS</span><br><b style="font-size:1.05rem;">${getVal(row,'Measurements')||'-'}</b></div>
-          <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">RATIO</span><br><b style="font-size:1.05rem;">${getVal(row,'Ratio')||'-'}</b></div>
-          <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">DEPTH / TABLE</span><br><b style="font-size:1.05rem;">${pct(getVal(row,'Depth'))} / ${pct(getVal(row,'Table'))}</b></div>
-          <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">CULET / GIRDLE</span><br><b style="font-size:1.05rem;">${getVal(row,'Culet')||'-'} / ${getVal(row,'Girdle')||'-'}</b></div>
-        </div>
+        <td class="desktop-only" style="text-align:center;">
+          <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
+            <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeHtml(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
+            <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeHtml(id)}', event)">${heartSvg()}</span>
+          </div>
+        </td>
 
-        <div style="padding-top:15px;border-top:1px solid #e2e8f0;margin-bottom:18px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-            <div style="font-size:1rem;color:#475569;font-weight:1000;">Price/Ct:</div>
-            <div style="font-size:1.1rem;color:#059669;font-weight:1000;">${money(getVal(row,'Price'))}</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
-            <div style="font-size:0.95rem;color:#64748b;font-weight:900;">Total Price:</div>
-            <div style="font-size:1.1rem;color:#059669;font-weight:1000;">${money(getVal(row,'Total Price'))}</div>
-          </div>
+        <td class="desktop-only">${escapeHtml(id)}</td>
+        <td class="desktop-only"><b>${escapeHtml(getVal(row,'Shape'))}</b></td>
+        <td class="desktop-only">${escapeHtml(num2(getVal(row,'Size')))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Color'))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Clarity'))}</td>
+        <td class="desktop-only">${escapeHtml(meas2(getVal(row,'measl')))}</td>
+        <td class="desktop-only">${escapeHtml(meas2(getVal(row,'measw')))}</td>
+        <td class="desktop-only">${escapeHtml(meas2(getVal(row,'measd')))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Ratio'))}</td>
+        <td class="desktop-only">${labHtml}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Cut'))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Pol'))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Sym'))}</td>
+        <td class="desktop-only">${escapeHtml(fluoDisplay)}</td>
+        <td class="desktop-only">${escapeHtml(pct(getVal(row,'Depth')))}</td>
+        <td class="desktop-only">${escapeHtml(pct(getVal(row,'Table')))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Culet'))}</td>
+        <td class="desktop-only">${escapeHtml(getVal(row,'Girdle'))}</td>
+        <td class="desktop-only">${escapeHtml(money(getVal(row,'Rap')))}</td>
+        <td class="desktop-only" style="font-weight:1000;">${escapeHtml(pct(getVal(row,'Rap Disc')))}</td>
+        <td class="desktop-only">${escapeHtml(money(getVal(row,'Price')))}</td>
+        <td class="desktop-only" style="color:#059669; font-weight:1000;">${escapeHtml(money(getVal(row,'Total Price')))}</td>
 
-          <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
-            <div style="font-size:0.9rem;color:#64748b;font-weight:900;">Rap Disc:</div>
-            <div style="font-size:0.9rem;color:#dc2626;font-weight:1000;">${pct(getVal(row,'Rap Disc'))}</div>
+        <td class="mobile-only">
+          <div class="mobile-card">
+            <div class="mc-action-bar">
+              <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeHtml(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
+              <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeHtml(id)}', event)">${heartSvg()}</span>
+            </div>
+            <div class="mc-price-wrap">
+              <div class="mc-price">${escapeHtml(money(getVal(row,'Price')))} /ct</div>
+              <div class="mc-price">${escapeHtml(money(getVal(row,'Total Price')))}</div>
+            </div>
+            <div class="mc-rap">${escapeHtml(pct(getVal(row,'Rap Disc')))}</div>
+            <div class="mc-line1">${escapeHtml(getVal(row,'Shape'))} ${escapeHtml(num2(getVal(row,'Size')))} ${escapeHtml(getVal(row,'Color'))} ${escapeHtml(getVal(row,'Clarity'))} ${escapeHtml(getVal(row,'Lab'))}</div>
+            <div class="mc-line2">L: ${escapeHtml(meas2(getVal(row,'measl')))} W: ${escapeHtml(meas2(getVal(row,'measw')))} D: ${escapeHtml(meas2(getVal(row,'measd')))} • R: ${escapeHtml(getVal(row,'Ratio'))}</div>
+            <div class="mc-line3">D:${escapeHtml(getVal(row,'Depth'))}% T:${escapeHtml(getVal(row,'Table'))}% P:${escapeHtml(getVal(row,'Pol'))} S:${escapeHtml(getVal(row,'Sym'))} F:${escapeHtml(fluoDisplay)}</div>
+            <div class="mc-line4">Stock #: ${escapeHtml(id)}</div>
           </div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
-            <div style="font-size:0.9rem;color:#64748b;font-weight:900;">Rap Value:</div>
-            <div style="font-size:0.9rem;color:#64748b;font-weight:900;">${money(getVal(row,'Rap'))}/ct</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;">
-            <div style="font-size:0.9rem;color:#64748b;font-weight:900;">Stock ID:</div>
-            <div style="font-size:0.9rem;color:#64748b;font-weight:900;">${getVal(row,'ID')}</div>
-          </div>
-        </div>
-
-        <div style="background:#f1f5f9;padding:15px;border-radius:14px;margin-bottom:10px;">
-          <div style="font-weight:1000;margin-bottom:6px;color:#475569;font-size:1rem;">Comments</div>
-          <div style="font-size:1rem;line-height:1.5;">${getVal(row,'Comments') || 'No comments listed.'}</div>
-        </div>
+        </td>
       `;
-    }
+      frag.appendChild(tr);
 
-    function closeDrawer() {
-      document.getElementById('mobile-drawer').classList.remove('open');
-      if (!document.getElementById('media-modal').classList.contains('open') &&
-          !document.getElementById('sort-overlay').classList.contains('open')) {
-        document.body.style.overflow = '';
+      const env = document.createElement('tr');
+      env.className = 'envelope-row';
+      env.id = `env-${i}`;
+      env.innerHTML = `
+        <td colspan="24" style="padding:0;">
+          <div class="env-showcase">
+            <div id="media-container-${i}" class="media-container"
+                 data-photo="${escapeHtml(formatUrl(photo))}"
+                 data-video="${escapeHtml(formatUrl(video))}"
+                 data-title="${escapeHtml(modalTitle)}"
+                 data-loaded="false"></div>
+            <div class="env-comments-box">
+              <h4 style="margin:0 0 10px 0;color:#475569;border-bottom:1px solid #e2e8f0;padding-bottom:5px;">Comments & Notes</h4>
+              <p style="margin:0;font-size:0.9rem;line-height:1.6;">${escapeHtml(getVal(row,'Comments') || 'No additional comments provided.')}</p>
+            </div>
+          </div>
+        </td>
+      `;
+      frag.appendChild(env);
+    });
+
+    tbody.appendChild(frag);
+
+    updateSubtotals();
+    updateSortButtonState();
+    updateHeaderArrows();
+  }
+
+  // -----------------------------
+  // ENVELOPE + MEDIA MODAL
+  // -----------------------------
+  function toggleEnvelope(index) {
+    const env = document.getElementById(`env-${index}`);
+    const btn = document.getElementById(`btn-exp-${index}`);
+    const isOpen = env.classList.contains('show');
+
+    document.querySelectorAll('.envelope-row.show').forEach(e => e.classList.remove('show'));
+    document.querySelectorAll('.btn-expand.open').forEach(b => b.classList.remove('open'));
+
+    if (!isOpen) {
+      env.classList.add('show');
+      if (btn) btn.classList.add('open');
+
+      const mediaCont = document.getElementById(`media-container-${index}`);
+      if (mediaCont && mediaCont.dataset.loaded === "false") {
+        const pUrl = mediaCont.dataset.photo;
+        const vUrl = mediaCont.dataset.video;
+        const title = mediaCont.dataset.title;
+
+        let html = '';
+
+        if (pUrl) {
+          html += `
+            <div class="env-media-wrapper">
+              <div class="env-media-embed"><img src="${pUrl}" onerror="this.style.display='none'"></div>
+              <button class="env-action-btn" onclick="openMediaModal('${pUrl}','img','${escapeHtml(title)}')">⛶ View Full Screen</button>
+            </div>`;
+        }
+
+        if (vUrl) {
+          if (vUrl.toLowerCase().endsWith('.mp4')) {
+            html += `
+              <div class="env-media-wrapper">
+                <div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted></video></div>
+                <button class="env-action-btn" onclick="openMediaModal('${vUrl}','vid','${escapeHtml(title)}')">⛶ View Full Screen</button>
+              </div>`;
+          } else {
+            html += `
+              <div class="env-media-wrapper">
+                <div class="env-media-embed"><iframe src="${vUrl}" allowfullscreen></iframe></div>
+                <button class="env-action-btn" onclick="openMediaModal('${vUrl}','iframe','${escapeHtml(title)}')">⛶ View Full Screen</button>
+              </div>`;
+          }
+        }
+
+        mediaCont.innerHTML = html;
+        mediaCont.dataset.loaded = "true";
       }
     }
+  }
 
-    function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('show'); }
+  function openMediaModal(url, type, title) {
+    document.body.style.overflow = 'hidden';
+    document.getElementById('media-modal-title').innerText = title;
+    const body = document.getElementById('media-modal-body');
 
-    // -----------------------------
-    // 15) EXPORT (Excel-friendly links)
-    // -----------------------------
-    function exportExcel() {
-      // export selected if any else all filtered
-      let exportData = filteredData;
-      if (selectedIds.size > 0) exportData = filteredData.filter(r => selectedIds.has(getVal(r,'ID')));
-      if (!exportData.length) { alert('No stones available to export.'); return; }
+    if (type === 'img') body.innerHTML = `<img src="${url}">`;
+    else if (type === 'vid') body.innerHTML = `<video src="${url}" controls autoplay loop></video>`;
+    else body.innerHTML = `<iframe src="${url}"></iframe>`;
 
-      // Excel hyperlink formula:
-      // =HYPERLINK("https://...","Photo Link")
-      const H = (url, label) => {
-        const u = formatUrl(url);
-        if (!u) return '';
-        // escape quotes for CSV
-        const uu = u.replace(/"/g,'""');
-        const ll = (label||'Link').replace(/"/g,'""');
-        return `=HYPERLINK("${uu}","${ll}")`;
-      };
+    document.getElementById('media-modal').classList.add('open');
+  }
 
-      let csv = '';
-      csv += "M.J. Gross Inc.\n";
-      csv += "Address: 580 5th Ave, New York, NY 10036\n";
-      csv += "Phone: (212) 555-0198\n\n";
+  function closeMediaModal() {
+    document.getElementById('media-modal').classList.remove('open');
+    document.getElementById('media-modal-body').innerHTML = '';
+    if (!document.getElementById('mobile-drawer').classList.contains('open') &&
+        !document.getElementById('sort-overlay').classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
+  }
 
-      const headers = [
-        "ID","Shape","Size","Color","Clarity","Measurements","Ratio","Lab","Cut","Pol","Sym","Fluo","Depth","Table",
-        "Rap Disc","Price/Ct","Total Price","Report Link","Photo Link","Video Link"
+  // -----------------------------
+  // MOBILE DRAWER (unchanged structure)
+  // -----------------------------
+  function openDrawer(index) {
+    const row = filteredData[index];
+    document.body.style.overflow = 'hidden';
+    document.getElementById('mobile-drawer').classList.add('open');
+
+    const titleStr = `${getVal(row,'Shape')} ${num2(getVal(row,'Size'))}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
+    document.getElementById('drawer-title').innerText = titleStr;
+    const modalTitle = `${titleStr} - ID: ${getVal(row,'ID')}`;
+
+    const photo = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
+    const video = getRobustVal(row, ['Video','Video(link)','Video (link)']);
+    const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
+
+    const modalBtn = (link, label, icon, type) => {
+      const isDis = (!link || link.trim() === '');
+      const bg = isDis ? '#f1f5f9' : '#f8fafc';
+      const col = isDis ? '#94a3b8' : 'var(--primary)';
+      const ev = isDis ? '' : `onclick="openMediaModal('${formatUrl(link)}','${type}','${escapeHtml(modalTitle)}')"`
+      const cur = isDis ? 'default' : 'pointer';
+      return `<button ${ev} style="flex:1;padding:10px 8px;background:${bg};border:1px solid #e2e8f0;border-radius:16px;font-weight:1000;color:${col};cursor:${cur};display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.9rem;">
+        <span style="font-size:1.1rem;">${icon}</span>${label}
+      </button>`;
+    };
+
+    const certBtn = (link, label, icon) => {
+      const isDis = (!link || link.trim() === '');
+      const bg = isDis ? '#f1f5f9' : '#f8fafc';
+      const col = isDis ? '#94a3b8' : 'var(--primary)';
+      const tag = isDis ? 'div' : 'a';
+      const ev = isDis ? '' : `href="${formatUrl(link)}" target="_blank"`;
+      return `<${tag} ${ev} style="flex:1;padding:10px 8px;background:${bg};border:1px solid #e2e8f0;border-radius:16px;font-weight:1000;color:${col};text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.9rem;">
+        <span style="font-size:1.1rem;">${icon}</span>${label}
+      </${tag}>`;
+    };
+
+    const fluoDisplay = normalizeFluo(getVal(row,'Fluo'));
+
+    let photoEmbedHtml = '';
+    if (photo) {
+      photoEmbedHtml = `
+        <div style="width:100%;background:#fff;border-radius:18px;overflow:hidden;margin-bottom:15px;display:flex;align-items:center;justify-content:center;border:1px solid #e2e8f0;">
+          <img src="${formatUrl(photo)}" style="width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">
+        </div>`;
+    }
+
+    document.getElementById('drawer-body').innerHTML = `
+      ${photoEmbedHtml}
+
+      <div style="display:flex;gap:10px;margin-bottom:18px;justify-content:center;">
+        ${modalBtn(photo, 'Photo', '📷', 'img')}
+        ${modalBtn(video, 'Video', '🎥', (video||'').toLowerCase().endsWith('.mp4') ? 'vid' : 'iframe')}
+        ${certBtn(report, 'Report', '📄')}
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">MEASUREMENTS</span><br><b style="font-size:1.05rem;">${escapeHtml(getVal(row,'Measurements')||'-')}</b></div>
+        <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">RATIO</span><br><b style="font-size:1.05rem;">${escapeHtml(getVal(row,'Ratio')||'-')}</b></div>
+        <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">DEPTH / TABLE</span><br><b style="font-size:1.05rem;">${escapeHtml(pct(getVal(row,'Depth')))} / ${escapeHtml(pct(getVal(row,'Table')))}</b></div>
+        <div><span style="font-size:0.82rem;color:#64748b;font-weight:1000;">FLUORESCENCE</span><br><b style="font-size:1.05rem;">${escapeHtml(fluoDisplay||'-')}</b></div>
+      </div>
+
+      <div style="padding-top:15px;border-top:1px solid #e2e8f0;margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+          <div style="font-size:1rem;color:#475569;font-weight:1000;">Price/Ct:</div>
+          <div style="font-size:1.1rem;color:#059669;font-weight:1000;">${escapeHtml(money(getVal(row,'Price')))}</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-size:0.95rem;color:#64748b;font-weight:1000;">Total Price:</div>
+          <div style="font-size:1.1rem;color:#059669;font-weight:1000;">${escapeHtml(money(getVal(row,'Total Price')))}</div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+          <div style="font-size:0.9rem;color:#64748b;font-weight:1000;">Rap Disc:</div>
+          <div style="font-size:0.9rem;color:#dc2626;font-weight:1000;">${escapeHtml(pct(getVal(row,'Rap Disc')))}</div>
+        </div>
+      </div>
+
+      <div style="background:#f1f5f9;padding:15px;border-radius:18px;margin-bottom:10px;">
+        <div style="font-weight:1000;margin-bottom:6px;color:#475569;font-size:1rem;">Comments</div>
+        <div style="font-size:1rem;line-height:1.5;">${escapeHtml(getVal(row,'Comments') || 'No comments listed.')}</div>
+      </div>
+    `;
+  }
+
+  function closeDrawer() {
+    document.getElementById('mobile-drawer').classList.remove('open');
+    if (!document.getElementById('media-modal').classList.contains('open') &&
+        !document.getElementById('sort-overlay').classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('show'); }
+
+  // -----------------------------
+  // EXPORT (Excel-friendly hyperlinks)
+  // -----------------------------
+  function exportExcel() {
+    let exportData = filteredData;
+    if (selectedIds.size > 0) exportData = filteredData.filter(r => selectedIds.has(getVal(r,'ID')));
+    if (!exportData.length) { alert('No stones available to export.'); return; }
+
+    const H = (url, label) => {
+      const u = formatUrl(url);
+      if (!u) return '';
+      const uu = u.replace(/"/g,'""').replace(/\r?\n/g,' ');
+      const ll = (label||'Link').replace(/"/g,'""').replace(/\r?\n/g,' ');
+      return `=HYPERLINK("${uu}","${ll}")`;
+    };
+
+    let csv = '';
+    csv += "M.J. Gross Inc.\n";
+    csv += "Address: 580 5th Ave, New York, NY 10036\n";
+    csv += "Phone: (212) 555-0198\n\n";
+
+    const headers = [
+      "ID","Shape","Size","Color","Clarity","Measurements","Ratio","Lab","Cut","Pol","Sym","Fluo","Depth","Table",
+      "Rap Disc","Price/Ct","Total Price","Report Link","Photo Link","Video Link"
+    ];
+    csv += headers.join(",") + "\n";
+
+    exportData.forEach(row => {
+      const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
+      const photo  = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
+      const video  = getRobustVal(row, ['Video','Video(link)','Video (link)']);
+
+      const rowData = [
+        getVal(row,'ID'),
+        getVal(row,'Shape'),
+        getVal(row,'Size'),
+        getVal(row,'Color'),
+        getVal(row,'Clarity'),
+        getVal(row,'Measurements'),
+        getVal(row,'Ratio'),
+        getVal(row,'Lab'),
+        getVal(row,'Cut'),
+        getVal(row,'Pol'),
+        getVal(row,'Sym'),
+        normalizeFluo(getVal(row,'Fluo')),
+        getVal(row,'Depth'),
+        getVal(row,'Table'),
+        getVal(row,'Rap Disc'),
+        safeParseFloat(getVal(row,'Price')),
+        safeParseFloat(getVal(row,'Total Price')),
+        H(report, "Report Link"),
+        H(photo, "Photo Link"),
+        H(video, "Video Link")
       ];
-      csv += headers.join(",") + "\n";
 
-      exportData.forEach(row => {
-        const report = getRobustVal(row, ['ReportPDF','ReportPDF(link)','ReportPDF (link)','Cert','Report']);
-        const photo  = getRobustVal(row, ['Photo','Photo(link)','Photo (link)','Image']);
-        const video  = getRobustVal(row, ['Video','Video(link)','Video (link)']);
+      csv += rowData.map(v => `"${(v ?? '').toString().replace(/"/g,'""')}"`).join(",") + "\n";
+    });
 
-        const rowData = [
-          getVal(row,'ID'),
-          getVal(row,'Shape'),
-          getVal(row,'Size'),
-          getVal(row,'Color'),
-          getVal(row,'Clarity'),
-          getVal(row,'Measurements'),
-          getVal(row,'Ratio'),
-          getVal(row,'Lab'),
-          getVal(row,'Cut'),
-          getVal(row,'Pol'),
-          getVal(row,'Sym'),
-          getVal(row,'Fluo'),
-          getVal(row,'Depth'),
-          getVal(row,'Table'),
-          getVal(row,'Rap Disc'),
-          safeParseFloat(getVal(row,'Price')),
-          safeParseFloat(getVal(row,'Total Price')),
-          H(report, "Report Link"),
-          H(photo, "Photo Link"),
-          H(video, "Video Link")
-        ];
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'MJ_Gross_Inventory.csv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
-        csv += rowData.map(v => `"${(v ?? '').toString().replace(/"/g,'""')}"`).join(",") + "\n";
-      });
+  // -----------------------------
+  // SHARE (uses same text)
+  // -----------------------------
+  function shareSelected() {
+    let shareData = filteredData;
+    if (selectedIds.size > 0) shareData = filteredData.filter(r => selectedIds.has(getVal(r,'ID')));
+    if (!shareData.length) { alert("No stones available to share."); return; }
 
-      const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'MJ_Gross_Inventory.csv';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    let text = "M.J. Gross Inc. - Diamond Selection\n\n";
+    shareData.slice(0,30).forEach(r => {
+      text += `- ${safeParseFloat(getVal(r,'Size')).toFixed(2)}ct ${getVal(r,'Shape')} ${getVal(r,'Color')} ${getVal(r,'Clarity')} | Total: $${safeParseFloat(getVal(r,'Total Price')).toLocaleString()}\n`;
+    });
+    if (shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
+
+    if (navigator.share) {
+      navigator.share({ title:'M.J. Gross Inventory', text }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(text);
+      alert("Selection copied to clipboard!");
     }
-
-    // -----------------------------
-    // 16) SHARE
-    // -----------------------------
-    function shareSelected() {
-      let shareData = filteredData;
-      if (selectedIds.size > 0) shareData = filteredData.filter(r => selectedIds.has(getVal(r,'ID')));
-      if (!shareData.length) { alert("No stones available to share."); return; }
-
-      let text = "M.J. Gross Inc. - Diamond Selection\n\n";
-      shareData.slice(0,30).forEach(r => {
-        text += `- ${safeParseFloat(getVal(r,'Size')).toFixed(2)}ct ${getVal(r,'Shape')} ${getVal(r,'Color')} ${getVal(r,'Clarity')} | Total: $${safeParseFloat(getVal(r,'Total Price')).toLocaleString()}\n`;
-      });
-      if (shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
-
-      if (navigator.share) {
-        navigator.share({ title:'M.J. Gross Inventory', text }).catch(console.error);
-      } else {
-        navigator.clipboard.writeText(text);
-        alert("Selection copied to clipboard!");
-      }
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
