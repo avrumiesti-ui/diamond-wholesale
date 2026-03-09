@@ -881,8 +881,8 @@
     <div class="sort-head">
       <div class="sort-title">Sort (Excel Style)</div>
       <div class="sort-head-actions">
-        <button class="btn-ghost" onclick="addSortLevel()" title="Add another level">+ Add level</button>
-        <button class="sort-close" onclick="closeSortModal()" aria-label="Close">✕</button>
+        <button type="button" class="btn-ghost" onclick="addSortLevel()" title="Add another level">+ Add level</button>
+        <button type="button" class="sort-close" onclick="closeSortModal()" aria-label="Close">✕</button>
       </div>
     </div>
 
@@ -892,10 +892,10 @@
     </div>
 
     <div class="sort-foot">
-      <button class="btn-danger" onclick="clearAllSort()">Clear sort</button>
+      <button type="button" class="btn-danger" onclick="clearAllSort()">Clear sort</button>
       <div class="sort-actions-right">
-        <button class="btn-ghost" onclick="closeSortModal()">Cancel</button>
-        <button class="btn-primary" onclick="applyMultiSort()">Apply</button>
+        <button type="button" class="btn-ghost" onclick="closeSortModal()">Cancel</button>
+        <button type="button" class="btn-primary" onclick="applyMultiSort()">Apply</button>
       </div>
     </div>
   </div>
@@ -1265,7 +1265,11 @@
     }
   }
 
-  function addSortLevel() { sortSpecs.push({ col: 'ID', dir: 'asc' }); renderSortModalLevels(); }
+  function addSortLevel() {
+    sortSpecs.push({ col: 'ID', dir: 'asc' });
+    renderSortModalLevels();
+  }
+
   function clearAllSort() {
     sortSpecs = [];
     updateSortButtonState();
@@ -1283,8 +1287,15 @@
     renderSortModalLevels();
   }
 
-  function removeSortLevel(idx) { sortSpecs.splice(idx, 1); renderSortModalLevels(); }
-  function toggleDir(idx) { sortSpecs[idx].dir = (sortSpecs[idx].dir === 'asc') ? 'desc' : 'asc'; renderSortModalLevels(); }
+  function removeSortLevel(idx) {
+    sortSpecs.splice(idx, 1);
+    renderSortModalLevels();
+  }
+
+  function toggleDir(idx) {
+    sortSpecs[idx].dir = (sortSpecs[idx].dir === 'asc') ? 'desc' : 'asc';
+    renderSortModalLevels();
+  }
 
   function renderSortModalLevels() {
     const wrap = document.getElementById('sort-levels');
@@ -1307,33 +1318,55 @@
         sel.appendChild(opt);
       });
       sel.value = spec.col;
-      sel.onchange = () => { sortSpecs[idx].col = sel.value; };
+      sel.onchange = () => {
+        sortSpecs[idx].col = sel.value;
+      };
 
       const dirBtn = document.createElement('button');
+      dirBtn.type = 'button';
       dirBtn.className = 'dir-btn';
       dirBtn.innerHTML = (spec.dir === 'asc') ? 'Sort A→Z' : 'Sort Z→A';
-      dirBtn.onclick = () => toggleDir(idx);
+      dirBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleDir(idx);
+      };
 
       const up = document.createElement('button');
+      up.type = 'button';
       up.className = 'icon-btn';
       up.title = 'Move up';
       up.innerHTML = '▲';
       up.disabled = idx === 0;
-      up.onclick = () => moveSortLevel(idx, -1);
+      up.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveSortLevel(idx, -1);
+      };
 
       const down = document.createElement('button');
+      down.type = 'button';
       down.className = 'icon-btn';
       down.title = 'Move down';
       down.innerHTML = '▼';
       down.disabled = idx === sortSpecs.length - 1;
-      down.onclick = () => moveSortLevel(idx, +1);
+      down.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        moveSortLevel(idx, +1);
+      };
 
       const trash = document.createElement('button');
+      trash.type = 'button';
       trash.className = 'trash-btn';
       trash.title = 'Remove level';
       trash.innerHTML = '✕';
       trash.disabled = sortSpecs.length <= 1;
-      trash.onclick = () => removeSortLevel(idx);
+      trash.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        removeSortLevel(idx);
+      };
 
       const moveWrap = document.createElement('div');
       moveWrap.className = 'sort-move-wrap';
@@ -1342,9 +1375,9 @@
 
       row.appendChild(badge);
       row.appendChild(sel);
+      row.appendChild(trash);
       row.appendChild(dirBtn);
       row.appendChild(moveWrap);
-      row.appendChild(trash);
 
       wrap.appendChild(row);
     });
@@ -1385,6 +1418,28 @@
       return A.idx - B.idx;
     });
     return decorated.map(d => d.row);
+  }
+
+  function applyMultiSort() {
+    const cleaned = [];
+    const seen = new Set();
+
+    for (const s of sortSpecs) {
+      if (!s || !s.col) continue;
+      if (seen.has(s.col)) continue;
+      seen.add(s.col);
+      cleaned.push({
+        col: s.col,
+        dir: s.dir === 'desc' ? 'desc' : 'asc'
+      });
+    }
+
+    sortSpecs = cleaned;
+
+    updateSortButtonState();
+    updateHeaderArrows();
+    runSearch();
+    closeSortModal();
   }
 
   function runSearch() {
@@ -1713,6 +1768,9 @@
     document.body.style.overflow = 'hidden';
     document.getElementById('mobile-drawer').classList.add('open');
 
+    const drawerBody = document.getElementById('drawer-body');
+    drawerBody.scrollTop = 0;
+
     const titleStr = `${getVal(row,'Shape')} ${num2(getVal(row,'Size'))}ct ${getVal(row,'Color')} ${getVal(row,'Clarity')}`;
     document.getElementById('drawer-title').innerText = titleStr;
 
@@ -1758,7 +1816,7 @@
 
     const comments = getVal(row,'Comments') || '';
 
-    document.getElementById('drawer-body').innerHTML = `
+    drawerBody.innerHTML = `
       <div class="drawer-photo-box">
         ${buildReliablePhotoHtml(photo)}
       </div>
@@ -1778,6 +1836,8 @@
         <div class="v">${escapeHtml(comments || 'No comments listed.')}</div>
       </div>
     `;
+
+    drawerBody.scrollTop = 0;
   }
 
   function closeDrawer() {
@@ -1874,7 +1934,9 @@
     document.body.removeChild(link);
   }
 
-  function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('show'); }
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('show');
+  }
 </script>
 </body>
 </html>
