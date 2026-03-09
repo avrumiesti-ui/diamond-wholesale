@@ -74,12 +74,71 @@
     .btn-reset{background:none;border:none;color:var(--accent);font-weight:1000;cursor:pointer;font-size:0.8rem;text-transform:uppercase;padding:0;}
     .btn-reset:hover{text-decoration:underline;}
     .filter-group{margin-bottom:20px;}
-    .filter-label{font-weight:1000;display:block;margin-bottom:12px;font-size:0.7rem;letter-spacing:1px;color:var(--text-muted);text-transform:uppercase;}
+    .filter-label{
+      font-weight:500;
+      display:block;
+      margin-bottom:12px;
+      font-size:0.7rem;
+      letter-spacing:1px;
+      color:var(--text-muted);
+      text-transform:uppercase;
+    }
 
     /* FILTERS */
     .shape-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
-    .btn-toggle{background:#fff;border:1px solid #cbd5e1;padding:8px 4px;font-size:0.75rem;cursor:pointer;border-radius:12px;transition:0.1s;font-weight:800;color:#475569;text-align:center;}
+    .btn-toggle{
+      background:#fff;
+      border:1px solid #cbd5e1;
+      padding:7px 4px 6px;
+      font-size:0.62rem;
+      cursor:pointer;
+      border-radius:12px;
+      transition:0.1s;
+      font-weight:500;
+      color:#475569;
+      text-align:center;
+      line-height:1.1;
+    }
     .btn-toggle.active{background-color:var(--primary);color:#fff;border-color:var(--primary);}
+
+    .shape-btn{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:4px;
+      min-height:58px;
+    }
+    .shape-btn .shape-plot{
+      width:22px;
+      height:22px;
+      display:block;
+    }
+    .shape-btn .shape-label{
+      font-size:0.58rem;
+      font-weight:500;
+      line-height:1.05;
+      letter-spacing:0;
+    }
+    .shape-btn svg{
+      width:22px;
+      height:22px;
+      display:block;
+    }
+    .shape-btn svg .outline{
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.8;
+      stroke-linejoin:round;
+      stroke-linecap:round;
+    }
+    .shape-btn svg .facet{
+      fill:none;
+      stroke:currentColor;
+      stroke-width:1.05;
+      stroke-linejoin:round;
+      stroke-linecap:round;
+    }
 
     .btn-fav{
       background:#fff;border:1px solid #fca5a5;padding:10px;font-size:0.9rem;cursor:pointer;border-radius:14px;
@@ -298,12 +357,15 @@
       align-items:center;
       justify-content:center;
       margin-bottom:12px;
+      position:relative;
     }
     .drawer-photo-box img{
       width:100%;
       height:100%;
       object-fit:contain;
-      display:block;
+      object-position:center;
+      display:block !important;
+      background:#fff;
     }
     .drawer-action-row{
       display:flex;
@@ -334,7 +396,7 @@
     }
     .drawer-kv{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns:1fr 1fr;
       gap:12px;
       margin-bottom:14px;
     }
@@ -498,17 +560,117 @@
     <div class="filter-group">
       <span class="filter-label">SHAPE</span>
       <div class="shape-grid">
-        <button class="btn-toggle" onclick="toggleFilter('shape','Round',this)">Round</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Oval',this)">Oval</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Cushion',this)">Cushion</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Emerald',this)">Emerald</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Pear',this)">Pear</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Radiant',this)">Radiant</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Princess',this)">Princess</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Asscher',this)">Asscher</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Marquise',this)">Marquise</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Heart',this)">Heart</button>
-        <button class="btn-toggle" onclick="toggleFilter('shape','Other',this)">Other</button>
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Round',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="outline" cx="12" cy="12" r="8.2"></circle>
+              <path class="facet" d="M12 4.8v14.4M4.8 12h14.4M7.2 7.2l9.6 9.6M16.8 7.2l-9.6 9.6"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Round</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Oval',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <ellipse class="outline" cx="12" cy="12" rx="6.6" ry="8.4"></ellipse>
+              <path class="facet" d="M12 4.2v15.6M6.6 12h10.8M8.2 7.2l7.6 9.6M15.8 7.2l-7.6 9.6"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Oval</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Cushion',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect class="outline" x="5.2" y="5.2" width="13.6" height="13.6" rx="3.4"></rect>
+              <path class="facet" d="M12 5.8v12.4M5.8 12h12.4M8 8l8 8M16 8l-8 8"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Cushion</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Emerald',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M8 4.8h8l3.2 3.2v8L16 19.2H8L4.8 16V8z"></path>
+              <rect class="facet" x="8.5" y="8.5" width="7" height="7"></rect>
+              <path class="facet" d="M12 4.8v14.4M4.8 12h14.4"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Emerald</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Pear',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M12 4.2c2.2 0 3.9 1.8 3.9 4 0 1.4-.7 2.5-1.3 3.3l-2.6 4.1-2.6-4.1c-.6-.8-1.3-1.9-1.3-3.3 0-2.2 1.7-4 3.9-4zM12 15.6c-2.6 0-5.1 1.8-5.1 4.2 0 .2 0 .3.1.5h10c.1-.2.1-.3.1-.5 0-2.4-2.5-4.2-5.1-4.2z"></path>
+              <path class="facet" d="M12 4.8v10.2M9.3 8.5h5.4M10 17.3h4"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Pear</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Radiant',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M7.6 4.8h8.8l2.8 2.8v8.8l-2.8 2.8H7.6l-2.8-2.8V7.6z"></path>
+              <path class="facet" d="M12 5.2v13.6M5.2 12h13.6M8.2 8.2l7.6 7.6M15.8 8.2l-7.6 7.6"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Radiant</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Princess',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect class="outline" x="5.2" y="5.2" width="13.6" height="13.6"></rect>
+              <path class="facet" d="M12 5.2v13.6M5.2 12h13.6M5.2 5.2l13.6 13.6M18.8 5.2L5.2 18.8"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Princess</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Asscher',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M8 4.8h8l3.2 3.2v8L16 19.2H8L4.8 16V8z"></path>
+              <path class="facet" d="M9 7.7h6l1.3 1.3v6L15 16.3H9L7.7 15V9z"></path>
+              <path class="facet" d="M12 4.8v14.4M4.8 12h14.4"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Asscher</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Marquise',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M12 4.2c3 1.8 5.8 4.9 7.2 7.8-1.4 2.9-4.2 6-7.2 7.8-3-1.8-5.8-4.9-7.2-7.8 1.4-2.9 4.2-6 7.2-7.8z"></path>
+              <path class="facet" d="M12 4.8v14.4M6 12h12M8 8l8 8M16 8l-8 8"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Marquise</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Heart',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path class="outline" d="M12 19.5s-6.8-4.1-9.1-7.8c-2-3.1.3-7 4-7 2 0 3.6 1.1 5.1 3 1.5-1.9 3.1-3 5.1-3 3.7 0 6 3.9 4 7-2.3 3.7-9.1 7.8-9.1 7.8z"></path>
+              <path class="facet" d="M12 7.8v9M7.8 10.3h8.4"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Heart</span>
+        </button>
+
+        <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Other',this)">
+          <span class="shape-plot">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <polygon class="outline" points="12,4.8 18.2,9 15.8,18.2 8.2,18.2 5.8,9"></polygon>
+              <path class="facet" d="M12 4.8v13.4M6.7 9.4h10.6"></path>
+            </svg>
+          </span>
+          <span class="shape-label">Other</span>
+        </button>
       </div>
     </div>
 
@@ -743,7 +905,7 @@
   // -----------------------------
   let inventoryData = [];
   let filteredData = [];
-  let sortSpecs = []; // [{col, dir}]
+  let sortSpecs = [];
   let selectedIds = new Set();
   let likedIds = new Set();
 
@@ -767,7 +929,7 @@
     colors: ['D','E','F','G','H','I','J','K','L'],
     clarities: ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'],
     labs: ['GIA','IGI','HRD'],
-    grades: ['EX','VG','GD','FR'], // removed F (FR covers Fair)
+    grades: ['EX','VG','GD','FR'],
     fluos: ['N','F','M','ST','VST']
   };
 
@@ -777,10 +939,10 @@
   ];
 
   // -----------------------------
-  // LOAD CSV (THIS IS WHAT GOT LOST)
+  // LOAD CSV
   // -----------------------------
   window.onload = function() {
-    const cacheBuster = Math.floor(Date.now() / 300000); // 5-min bucket
+    const cacheBuster = Math.floor(Date.now() / 300000);
     fetch('inventory.csv?v=' + cacheBuster)
       .then(res => {
         if (!res.ok) throw new Error('Could not find inventory.csv');
@@ -809,17 +971,30 @@
       .replaceAll('"','&quot;')
       .replaceAll("'","&#039;");
   }
+
+  function escapeJsString(str){
+    return (str ?? '').toString()
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '\\"')
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
+      .replace(/<\/script/gi, '<\\/script');
+  }
+
   function cssEscape(s){
     return (window.CSS && CSS.escape) ? CSS.escape(s) : String(s).replace(/"/g,'\\"');
   }
+
   function safeParseFloat(val) {
     if (val === null || val === undefined) return NaN;
     const cleaned = val.toString().replace(/[$,\s]/g, '');
     const n = parseFloat(cleaned);
     return isNaN(n) ? NaN : n;
   }
+
   function getVal(row, exactHeader) { return row[(exactHeader || '').toLowerCase()] || ''; }
-  function formatUrl(u){ if(!u) return ''; return u.startsWith('http') ? u : `https://${u}`; }
+  function formatUrl(u){ if(!u) return ''; return /^https?:\/\//i.test(u) ? u : `https://${u}`; }
   function money(v){ const n = safeParseFloat(v); return isNaN(n) ? '' : '$' + n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
   function num2(v){ const n = safeParseFloat(v); return isNaN(n) ? '' : n.toFixed(2); }
   function meas2(v){ const n = safeParseFloat(v); return isNaN(n) ? (v || '') : n.toFixed(2); }
@@ -878,7 +1053,6 @@
         obj[h.toLowerCase()] = ret[j][index] ? ret[j][index].trim() : '';
       });
 
-      // measurements split
       let measRaw = obj['measurements'] || '';
       let parts = measRaw.toLowerCase().replace(/\s+/g, '').split(/x|\*/i);
       obj['measl'] = parts[0] || '';
@@ -890,7 +1064,6 @@
 
     inventoryData = data;
 
-    // init UI
     document.getElementById('fav-filter-heart').innerHTML = heartSvg();
 
     document.getElementById('loading-state').style.display = 'none';
@@ -1046,11 +1219,12 @@
   }
 
   // -----------------------------
-  // SORT (single header click + multi sort)
+  // SORT
   // -----------------------------
   function updateSortButtonState(){
     document.getElementById('btn-open-sort').classList.toggle('active', sortSpecs.length > 0);
   }
+
   function updateHeaderArrows(){
     document.querySelectorAll('th span').forEach(sp => sp.innerText = '');
     if (!sortSpecs.length) return;
@@ -1058,6 +1232,7 @@
     const sp = document.getElementById('sort-' + primary.col);
     if (sp) sp.innerText = (primary.dir === 'asc' ? ' ↑' : ' ↓');
   }
+
   function sortBy(col) {
     if (sortSpecs.length && sortSpecs[0].col === col) {
       sortSpecs[0].dir = (sortSpecs[0].dir === 'asc') ? 'desc' : 'asc';
@@ -1076,9 +1251,11 @@
     document.getElementById('sort-overlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
+
   function closeSortModalOnBackdrop(e){
     if (e.target.id === 'sort-overlay') closeSortModal();
   }
+
   function closeSortModal() {
     document.getElementById('sort-overlay').classList.remove('open');
     if (!document.getElementById('mobile-drawer').classList.contains('open') &&
@@ -1086,6 +1263,7 @@
       document.body.style.overflow = '';
     }
   }
+
   function addSortLevel() { sortSpecs.push({ col: 'ID', dir: 'asc' }); renderSortModalLevels(); }
   function clearAllSort() {
     sortSpecs = [];
@@ -1094,6 +1272,7 @@
     closeSortModal();
     runSearch();
   }
+
   function moveSortLevel(idx, dir) {
     const newIdx = idx + dir;
     if (newIdx < 0 || newIdx >= sortSpecs.length) return;
@@ -1102,8 +1281,10 @@
     sortSpecs[newIdx] = tmp;
     renderSortModalLevels();
   }
+
   function removeSortLevel(idx) { sortSpecs.splice(idx, 1); renderSortModalLevels(); }
   function toggleDir(idx) { sortSpecs[idx].dir = (sortSpecs[idx].dir === 'asc') ? 'desc' : 'asc'; renderSortModalLevels(); }
+
   function renderSortModalLevels() {
     const wrap = document.getElementById('sort-levels');
     wrap.innerHTML = '';
@@ -1163,6 +1344,7 @@
       wrap.appendChild(row);
     });
   }
+
   function applyMultiSort() {
     const seen = new Set();
     sortSpecs = sortSpecs.filter(s => {
@@ -1184,6 +1366,7 @@
     if (!isNaN(numA) && !isNaN(numB)) return (numA - numB) * dir;
     return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }) * dir;
   }
+
   function applySortSpecs(arr, specs){
     const decorated = arr.map((row, idx) => ({ row, idx }));
     decorated.sort((A,B) => {
@@ -1378,8 +1561,8 @@
 
         <td class="desktop-only" style="text-align:center;">
           <div style="display:flex; align-items:center; justify-content:center; gap:10px;">
-            <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeHtml(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
-            <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeHtml(id)}', event)">${heartSvg()}</span>
+            <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeJsString(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
+            <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeJsString(id)}', event)">${heartSvg()}</span>
           </div>
         </td>
 
@@ -1421,8 +1604,8 @@
 
             <div class="mc-line4">
               <span class="mc-inline-actions" onclick="event.stopPropagation();">
-                <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeHtml(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
-                <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeHtml(id)}', event)">${heartSvg()}</span>
+                <input type="checkbox" data-id="${escapeHtml(id)}" class="row-checkbox" onclick="toggleSelect('${escapeJsString(id)}', event)" ${selectedIds.has(id) ? 'checked' : ''}>
+                <span class="${heartClass}" data-id="${escapeHtml(id)}" onclick="toggleLike('${escapeJsString(id)}', event)">${heartSvg()}</span>
               </span>
               <span>Stock #: ${escapeHtml(id)}</span>
             </div>
@@ -1482,24 +1665,20 @@
           html += `
             <div class="env-media-wrapper">
               <div class="env-media-embed"><img src="${pUrl}" onerror="this.style.display='none'"></div>
-              <button class="env-action-btn" onclick="openMediaModal('${pUrl}','img','${escapeHtml(title)}')">⛶ View Full Screen</button>
+              <button class="env-action-btn" onclick="openMediaModal('${escapeJsString(pUrl)}','img','${escapeJsString(title)}')">⛶ View Full Screen</button>
             </div>`;
         }
 
         if (vUrl) {
-          if (vUrl.toLowerCase().endsWith('.mp4')) {
-            html += `
-              <div class="env-media-wrapper">
-                <div class="env-media-embed"><video src="${vUrl}" controls autoplay loop muted></video></div>
-                <button class="env-action-btn" onclick="openMediaModal('${vUrl}','vid','${escapeHtml(title)}')">⛶ View Full Screen</button>
-              </div>`;
-          } else {
-            html += `
-              <div class="env-media-wrapper">
-                <div class="env-media-embed"><iframe src="${vUrl}" allowfullscreen></iframe></div>
-                <button class="env-action-btn" onclick="openMediaModal('${vUrl}','iframe','${escapeHtml(title)}')">⛶ View Full Screen</button>
-              </div>`;
-          }
+          html += `
+            <div class="env-media-wrapper">
+              <div class="env-media-embed" style="align-items:center;justify-content:center;padding:16px;">
+                <a href="${vUrl}" target="_blank" rel="noopener" class="env-action-btn" style="text-decoration:none;">
+                  🎥 Open Video in New Tab
+                </a>
+              </div>
+              <button class="env-action-btn" onclick="window.open('${escapeJsString(vUrl)}','_blank','noopener')">⤴ Open Video</button>
+            </div>`;
         }
 
         mediaCont.innerHTML = html;
@@ -1509,7 +1688,7 @@
   }
 
   // -----------------------------
-  // MOBILE DRAWER (RESTORED FULL)
+  // MOBILE DRAWER
   // -----------------------------
   function openDrawer(index) {
     const row = filteredData[index];
@@ -1562,10 +1741,12 @@
       .join('');
 
     const comments = getVal(row,'Comments') || '';
+    const photoUrl = formatUrl(photo);
 
     document.getElementById('drawer-body').innerHTML = `
       <div class="drawer-photo-box">
-        ${photo ? `<img src="${escapeHtml(formatUrl(photo))}" onerror="this.style.display='none'">`
+        ${photo ? `<img src="${escapeHtml(photoUrl)}" alt="Diamond photo" loading="eager"
+                  onerror="this.onerror=null; this.closest('.drawer-photo-box').innerHTML='<div style=&quot;color:#94a3b8;font-weight:1000;&quot;>No Photo</div>';">`
                 : `<div style="color:#94a3b8;font-weight:1000;">No Photo</div>`}
       </div>
 
@@ -1601,9 +1782,9 @@
     document.getElementById('media-modal-title').innerText = title;
     const body = document.getElementById('media-modal-body');
 
-    if (type === 'img') body.innerHTML = `<img src="${url}">`;
-    else if (type === 'vid') body.innerHTML = `<video src="${url}" controls autoplay loop></video>`;
-    else body.innerHTML = `<iframe src="${url}"></iframe>`;
+    if (type === 'img') body.innerHTML = `<img src="${escapeHtml(url)}">`;
+    else if (type === 'vid') body.innerHTML = `<video src="${escapeHtml(url)}" controls autoplay loop></video>`;
+    else body.innerHTML = `<iframe src="${escapeHtml(url)}"></iframe>`;
 
     document.getElementById('media-modal').classList.add('open');
   }
@@ -1618,7 +1799,7 @@
   }
 
   // -----------------------------
-  // EXPORT (Excel HYPERLINK)
+  // EXPORT
   // -----------------------------
   function exportExcel() {
     let exportData = filteredData;
@@ -1695,15 +1876,17 @@
 
     let text = "M.J. Gross Inc. - Diamond Selection\n\n";
     shareData.slice(0,30).forEach(r => {
-      text += `- ${safeParseFloat(getVal(r,'Size')).toFixed(2)}ct ${getVal(r,'Shape')} ${getVal(r,'Color')} ${getVal(r,'Clarity')} | Total: $${safeParseFloat(getVal(r,'Total Price')).toLocaleString()}\n`;
+      text += `- ${(safeParseFloat(getVal(r,'Size')) || 0).toFixed(2)}ct ${getVal(r,'Shape')} ${getVal(r,'Color')} ${getVal(r,'Clarity')} | Total: $${(safeParseFloat(getVal(r,'Total Price')) || 0).toLocaleString()}\n`;
     });
     if (shareData.length > 30) text += `\n...and ${shareData.length - 30} more.`;
 
     if (navigator.share) {
       navigator.share({ title:'M.J. Gross Inventory', text }).catch(console.error);
-    } else {
+    } else if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text);
       alert("Selection copied to clipboard!");
+    } else {
+      alert(text);
     }
   }
 
@@ -1714,4 +1897,3 @@
 </script>
 </body>
 </html>
-equest is resolving to and why it’s failing.
