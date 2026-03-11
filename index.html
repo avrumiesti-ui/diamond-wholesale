@@ -18,6 +18,7 @@
       --hover-row:#f8fafc;
       --select-row:#eff6ff;
       --max-w:1600px;
+      --shape-stroke:#4A80C9;
     }
 
     *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
@@ -136,12 +137,13 @@
       font-size:0.55rem;
       cursor:pointer;
       border-radius:10px;
-      transition:0.1s;
+      transition:0.12s ease;
       font-weight:400;
       color:#475569;
       text-align:center;
       line-height:1.05;
     }
+    .btn-toggle:hover{border-color:#94a3b8;background:#fcfcfd;}
     .btn-toggle.active{background-color:var(--primary);color:#fff;border-color:var(--primary);}
 
     .shape-btn{
@@ -157,9 +159,12 @@
     }
 
     .shape-btn .shape-plot{
-      width:18px;
-      height:18px;
-      display:block;
+      width:22px;
+      height:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--shape-stroke);
     }
 
     .shape-btn .shape-label{
@@ -175,25 +180,32 @@
     }
 
     .shape-btn svg{
-      width:18px;
-      height:18px;
+      width:22px;
+      height:22px;
       display:block;
+      overflow:visible;
     }
 
-    .shape-btn svg .outline{
+    .shape-btn svg .outer{
       fill:none;
       stroke:currentColor;
-      stroke-width:1.5;
+      stroke-width:1.7;
       stroke-linejoin:round;
       stroke-linecap:round;
+      vector-effect:non-scaling-stroke;
     }
 
     .shape-btn svg .facet{
       fill:none;
       stroke:currentColor;
-      stroke-width:0.9;
+      stroke-width:0.95;
       stroke-linejoin:round;
       stroke-linecap:round;
+      vector-effect:non-scaling-stroke;
+    }
+
+    .btn-toggle.active .shape-plot{
+      color:#8fb6f2;
     }
 
     .carat-row{display:grid;gap:6px;margin-bottom:6px;}
@@ -659,9 +671,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Round',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle class="outline" cx="12" cy="12" r="8"></circle>
-              <polygon class="facet" points="12,6 16,8 18,12 16,16 12,18 8,16 6,12 8,8"></polygon>
-              <path class="facet" d="M12 6v12M6 12h12M8 8l8 8M16 8l-8 8"></path>
+              <circle class="outer" cx="12" cy="12" r="8.65"></circle>
+              <path class="facet" d="M12 3.35L14.95 5.35L16.95 8.3L20.65 8.95L19.95 12L20.65 15.05L16.95 15.7L14.95 18.65L12 20.65L9.05 18.65L7.05 15.7L3.35 15.05L4.05 12L3.35 8.95L7.05 8.3L9.05 5.35Z"></path>
+              <path class="facet" d="M12 3.35L12 20.65M4.05 12L19.95 12M7.05 8.3L16.95 15.7M16.95 8.3L7.05 15.7M9.05 5.35L14.95 18.65M14.95 5.35L9.05 18.65"></path>
             </svg>
           </span>
           <span class="shape-label">Round</span>
@@ -670,9 +682,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Oval',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <ellipse class="outline" cx="12" cy="12" rx="7" ry="8.5"></ellipse>
-              <ellipse class="facet" cx="12" cy="12" rx="4.2" ry="5.4"></ellipse>
-              <path class="facet" d="M12 4.5v15M5.5 12h13M8 7.5l8 9M16 7.5l-8 9"></path>
+              <ellipse class="outer" cx="12" cy="12" rx="7.15" ry="8.85"></ellipse>
+              <path class="facet" d="M12 3.15L14.8 5.4L17.15 8.2L19.1 12L17.15 15.8L14.8 18.6L12 20.85L9.2 18.6L6.85 15.8L4.9 12L6.85 8.2L9.2 5.4Z"></path>
+              <path class="facet" d="M12 3.15L12 20.85M4.9 12L19.1 12M6.85 8.2L17.15 15.8M17.15 8.2L6.85 15.8M9.2 5.4L14.8 18.6M14.8 5.4L9.2 18.6"></path>
             </svg>
           </span>
           <span class="shape-label">Oval</span>
@@ -681,9 +693,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Cushion',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect class="outline" x="5" y="5" width="14" height="14" rx="3.5"></rect>
-              <rect class="facet" x="8" y="8" width="8" height="8" rx="1.5"></rect>
-              <path class="facet" d="M12 5.5v13M5.5 12h13M8 8l8 8M16 8l-8 8"></path>
+              <rect class="outer" x="4.7" y="4.7" width="14.6" height="14.6" rx="3.25"></rect>
+              <path class="facet" d="M7.2 6.1H16.8L18.35 7.65V16.35L16.8 17.9H7.2L5.65 16.35V7.65Z"></path>
+              <path class="facet" d="M12 4.7L12 19.3M4.7 12L19.3 12M7.2 6.1L16.8 17.9M16.8 6.1L7.2 17.9M5.65 7.65L18.35 16.35M18.35 7.65L5.65 16.35"></path>
             </svg>
           </span>
           <span class="shape-label">Cushion</span>
@@ -692,9 +704,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Emerald',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M8 5h8l3 3v8l-3 3H8l-3-3V8z"></path>
-              <path class="facet" d="M9.2 8.2h5.6l1 1v5.6l-1 1H9.2l-1-1V9.2z"></path>
-              <path class="facet" d="M12 5.2v13.6M5.2 12h13.6"></path>
+              <path class="outer" d="M7.2 3.9H16.8L19.4 6.5V17.5L16.8 20.1H7.2L4.6 17.5V6.5Z"></path>
+              <path class="facet" d="M8.65 6.15H15.35L17.1 7.9V16.1L15.35 17.85H8.65L6.9 16.1V7.9Z"></path>
+              <path class="facet" d="M10.15 7.55H13.85L15.1 8.8V15.2L13.85 16.45H10.15L8.9 15.2V8.8Z"></path>
             </svg>
           </span>
           <span class="shape-label">Emerald</span>
@@ -703,8 +715,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Pear',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M12 5c2.4 0 4 1.7 4 4 0 1.5-.8 2.8-1.8 4.2L12 18l-2.2-4.8C8.8 11.8 8 10.5 8 9c0-2.3 1.6-4 4-4z"></path>
-              <path class="facet" d="M12 6.2v9.5M9.7 9.4h4.6M10.4 13.4h3.2"></path>
+              <path class="outer" d="M12 3.15L14.3 5.4L16.2 8.15L18.2 12L17.55 15.85L15.7 18.7L12 20.85L8.3 18.7L6.45 15.85L5.8 12L7.8 8.15L9.7 5.4Z"></path>
+              <path class="facet" d="M12 3.15L14.25 6.15L15.65 8.7L17.1 12L15.65 15.3L14.25 17.85L12 20.85L9.75 17.85L8.35 15.3L6.9 12L8.35 8.7L9.75 6.15Z"></path>
+              <path class="facet" d="M12 6.15L12 20.85M7.8 8.15L16.2 15.85M16.2 8.15L7.8 15.85M5.8 12L18.2 12"></path>
             </svg>
           </span>
           <span class="shape-label">Pear</span>
@@ -713,9 +726,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Radiant',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M7 5h10l2 2v10l-2 2H7l-2-2V7z"></path>
-              <rect class="facet" x="8.3" y="8.3" width="7.4" height="7.4" rx="1"></rect>
-              <path class="facet" d="M12 5.5v13M5.5 12h13M8 8l8 8M16 8l-8 8"></path>
+              <path class="outer" d="M6.75 3.9H17.25L19.65 6.3V17.7L17.25 20.1H6.75L4.35 17.7V6.3Z"></path>
+              <path class="facet" d="M8.25 6.05H15.75L17.45 7.75V16.25L15.75 17.95H8.25L6.55 16.25V7.75Z"></path>
+              <path class="facet" d="M12 3.9L12 20.1M4.35 12L19.65 12M6.75 6.3L17.25 17.7M17.25 6.3L6.75 17.7"></path>
             </svg>
           </span>
           <span class="shape-label">Radiant</span>
@@ -724,9 +737,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Princess',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect class="outline" x="5" y="5" width="14" height="14"></rect>
-              <rect class="facet" x="8" y="8" width="8" height="8"></rect>
-              <path class="facet" d="M12 5v14M5 12h14M5 5l14 14M19 5L5 19"></path>
+              <rect class="outer" x="4.35" y="4.35" width="15.3" height="15.3"></rect>
+              <path class="facet" d="M6.25 6.25H17.75L18.85 12L17.75 17.75H6.25L5.15 12Z"></path>
+              <path class="facet" d="M4.35 4.35L12 12L19.65 4.35M4.35 19.65L12 12L19.65 19.65M4.35 4.35L6.25 6.25L5.15 12L6.25 17.75L4.35 19.65M19.65 4.35L17.75 6.25L18.85 12L17.75 17.75L19.65 19.65"></path>
             </svg>
           </span>
           <span class="shape-label">Princess</span>
@@ -735,9 +748,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Asscher',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M8 5h8l3 3v8l-3 3H8l-3-3V8z"></path>
-              <path class="facet" d="M9.5 9.5h5l1 1v5l-1 1h-5l-1-1v-5z"></path>
-              <path class="facet" d="M12 5.3v13.4M5.3 12h13.4"></path>
+              <path class="outer" d="M7.2 3.9H16.8L19.4 6.5V17.5L16.8 20.1H7.2L4.6 17.5V6.5Z"></path>
+              <path class="facet" d="M8.5 5.95H15.5L17.45 7.9V16.1L15.5 18.05H8.5L6.55 16.1V7.9Z"></path>
+              <path class="facet" d="M9.8 7.95H14.2L16.1 9.85V14.15L14.2 16.05H9.8L7.9 14.15V9.85Z"></path>
             </svg>
           </span>
           <span class="shape-label">Asscher</span>
@@ -746,8 +759,8 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Marquise',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M12 5c3 1.4 5.4 3.8 7 7-1.6 3.2-4 5.6-7 7-3-1.4-5.4-3.8-7-7 1.6-3.2 4-5.6 7-7z"></path>
-              <path class="facet" d="M12 5.8v12.4M6.5 12h11M8 8l8 8M16 8l-8 8"></path>
+              <path class="outer" d="M12 3.15L15.1 5.55L17.45 8.55L19.15 12L17.45 15.45L15.1 18.45L12 20.85L8.9 18.45L6.55 15.45L4.85 12L6.55 8.55L8.9 5.55Z"></path>
+              <path class="facet" d="M12 3.15L12 20.85M4.85 12L19.15 12M6.55 8.55L17.45 15.45M17.45 8.55L6.55 15.45M8.9 5.55L15.1 18.45M15.1 5.55L8.9 18.45"></path>
             </svg>
           </span>
           <span class="shape-label">Marquise</span>
@@ -756,8 +769,9 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Heart',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path class="outline" d="M12 18.5s-6.5-3.7-8.5-6.8c-1.5-2.5.2-5.7 3.3-5.7 1.8 0 3.3 1.1 5.2 3 1.9-1.9 3.4-3 5.2-3 3.1 0 4.8 3.2 3.3 5.7-2 3.1-8.5 6.8-8.5 6.8z"></path>
-              <path class="facet" d="M12 8.8v7.2M8.2 10.8h7.6"></path>
+              <path class="outer" d="M12 20.45L8.7 17.95L6.1 15.05L4.35 11.8L5.2 8.45L7.35 6L10.2 4.7L12 6L13.8 4.7L16.65 6L18.8 8.45L19.65 11.8L17.9 15.05L15.3 17.95Z"></path>
+              <path class="facet" d="M12 6L10.15 7.65L7.95 8.3L5.9 11.8L7.2 14.65L9.25 16.7L12 20.45L14.75 16.7L16.8 14.65L18.1 11.8L16.05 8.3L13.85 7.65Z"></path>
+              <path class="facet" d="M12 6L12 20.45M5.2 8.45L18.8 15.05M18.8 8.45L5.2 15.05"></path>
             </svg>
           </span>
           <span class="shape-label">Heart</span>
@@ -766,9 +780,8 @@
         <button class="btn-toggle shape-btn" onclick="toggleFilter('shape','Other',this)">
           <span class="shape-plot">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-              <polygon class="outline" points="12,5 17.5,8.5 15.5,18 8.5,18 6.5,8.5"></polygon>
-              <polygon class="facet" points="12,8 15,10 14,15 10,15 9,10"></polygon>
-              <path class="facet" d="M12 5.5v12M7.2 9h9.6"></path>
+              <polygon class="outer" points="12,3.9 17.6,7.8 15.45,18.1 8.55,18.1 6.4,7.8"></polygon>
+              <path class="facet" d="M12 3.9L12 18.1M6.4 7.8L17.6 7.8M8.55 18.1L17.6 7.8M15.45 18.1L6.4 7.8"></path>
             </svg>
           </span>
           <span class="shape-label">Other</span>
