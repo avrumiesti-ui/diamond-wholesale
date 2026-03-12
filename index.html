@@ -18,6 +18,7 @@
       --hover-row:#f8fafc;
       --select-row:#eff6ff;
       --max-w:1600px;
+      --header-h:56px;
     }
 
     *{
@@ -26,7 +27,7 @@
       -webkit-tap-highlight-color:transparent;
     }
 
-    body{
+    html, body{
       margin:0;
       padding:0;
       background-color:var(--bg-gray);
@@ -34,6 +35,8 @@
       font-size:13px;
       overflow-x:hidden;
     }
+
+    body{padding:0;}
 
     @keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -57,10 +60,12 @@
       align-items:center;
       padding:10px 20px;
       width:100%;
+      min-height:var(--header-h);
     }
 
     .logo-section{display:flex;align-items:center;gap:12px;min-width:0;}
     .logo-img{height:35px;}
+
     .header-controls{
       font-weight:600;
       color:var(--text-muted);
@@ -112,7 +117,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      height:calc(100vh - 60px);
+      height:calc(100vh - var(--header-h));
       text-align:center;
       padding:20px;
     }
@@ -129,7 +134,7 @@
 
     .inventory-container{
       display:none;
-      min-height:calc(100vh - 60px);
+      min-height:calc(100vh - var(--header-h));
       max-width:var(--max-w);
       margin:0 auto;
       width:100%;
@@ -139,21 +144,21 @@
       width:320px;
       background:var(--bg-gray);
       border-right:1px solid var(--border);
-      padding:20px 20px 20px 0;
+      padding:0 20px 20px 0;
       flex-shrink:0;
       overflow-y:auto;
-      height:calc(100vh - 60px);
+      height:calc(100vh - var(--header-h));
       position:sticky;
-      top:60px;
+      top:var(--header-h);
       z-index:100;
     }
 
     .sidebar-sticky-top{
       position:sticky;
       top:0;
-      z-index:5;
+      z-index:8;
       background:var(--bg-gray);
-      padding:0 0 12px 0;
+      padding:12px 0 10px 0;
       border-bottom:1px solid var(--border);
       box-shadow:0 1px 0 rgba(0,0,0,0.03);
     }
@@ -166,28 +171,41 @@
       gap:10px;
     }
 
-    .compact-filter-header{align-items:flex-start;}
+    .compact-filter-header{align-items:center;}
 
     .compact-filter-left{
       display:flex;
       align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
+      gap:8px;
+      flex-wrap:nowrap;
       min-width:0;
+      flex:1 1 auto;
+      overflow:hidden;
+    }
+
+    .mobile-filter-title{
+      margin:0;
+      font-size:1.02rem;
+      font-weight:600;
+      white-space:nowrap;
+      flex:0 1 auto;
     }
 
     .btn-reset{
       background:none;
       border:none;
       color:var(--accent);
-      font-weight:600;
+      font-weight:700;
       cursor:pointer;
       font-size:0.8rem;
       text-transform:uppercase;
       padding:0;
+      white-space:nowrap;
+      margin-left:2px;
     }
 
     .btn-reset:hover{text-decoration:underline;}
+
     .filter-group{margin-bottom:20px;}
 
     .filter-label{
@@ -230,7 +248,28 @@
       flex:0 0 auto;
     }
 
-    /* UPDATED SHAPE GRID: 4 PER LINE + LARGER BUTTONS */
+    .circle-close-btn{
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      border:1px solid #cbd5e1;
+      background:#fff;
+      color:#334155;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:1rem;
+      cursor:pointer;
+      line-height:1;
+      flex:0 0 auto;
+      box-shadow:0 1px 2px rgba(0,0,0,0.04);
+    }
+
+    .circle-close-btn:hover{
+      background:#f8fafc;
+      border-color:#94a3b8;
+    }
+
     .shape-grid{
       display:grid;
       grid-template-columns:repeat(4, minmax(0, 1fr));
@@ -366,18 +405,20 @@
     .mobile-tools{
       display:none;
       position:sticky;
-      top:56px;
+      top:var(--header-h);
       z-index:110;
       background:var(--bg-gray);
-      padding:10px 0 8px 0;
+      padding:0;
+      margin:0;
       border-bottom:1px solid var(--border);
     }
 
     .mobile-tools .tool-row{
       display:flex;
       gap:10px;
-      padding:0 10px;
+      padding:10px 10px 8px 10px;
       align-items:center;
+      margin:0;
     }
 
     .mobile-tools .tool-row .tool-btn{
@@ -395,10 +436,12 @@
 
     .dashboard-wrapper{
       position:sticky;
-      top:56px;
+      top:var(--header-h);
       z-index:90;
       background:var(--bg-gray);
-      padding:18px 0 12px 0;
+      padding:12px 0 12px 0;
+      margin:0;
+      border-bottom:1px solid transparent;
     }
 
     .summary-dashboard{
@@ -832,11 +875,19 @@
     .desktop-only{display:table-cell;}
 
     @media (max-width:1100px){
+      :root{
+        --header-h:56px;
+      }
+
       .desktop-only{display:none!important;}
       .mobile-only{display:block;}
       .inventory-container{flex-direction:column;padding:0;}
 
-      .header-inner{padding:8px 10px;}
+      .header-inner{
+        padding:8px 10px;
+        min-height:var(--header-h);
+      }
+
       .logo-img{height:28px;}
       .header-controls{flex-wrap:nowrap;gap:6px;}
       .action-btn{padding:6px 8px;font-size:0.78rem;gap:6px;border-radius:12px;}
@@ -850,7 +901,7 @@
         left:0;
         right:0;
         z-index:3000;
-        padding:16px 16px 0 16px;
+        padding:0 16px 0 16px;
         background:var(--white);
         height:100dvh;
         box-sizing:border-box;
@@ -858,10 +909,55 @@
       }
 
       .sidebar.show{display:block;}
-      .sidebar-sticky-top{background:var(--white);}
+
+      .sidebar-sticky-top{
+        background:var(--white);
+        position:sticky;
+        top:0;
+        z-index:10;
+        padding:10px 0 10px 0;
+      }
+
+      .compact-filter-header{
+        gap:8px;
+        flex-wrap:nowrap;
+        justify-content:space-between;
+      }
+
+      .compact-filter-left{
+        gap:6px;
+        min-width:0;
+        flex:1 1 auto;
+      }
+
+      .mobile-filter-title{
+        font-size:0.96rem;
+        flex:0 1 auto;
+      }
+
+      .btn-fav-compact{
+        padding:6px 8px;
+        font-size:0.7rem;
+      }
+
+      .btn-reset{
+        font-size:0.72rem;
+        margin-left:0;
+      }
+
+      .circle-close-btn{
+        width:32px;
+        height:32px;
+        font-size:0.95rem;
+      }
+
       .results-area{padding:0 10px 10px 10px;}
       .mobile-tools{display:block;}
-      .dashboard-wrapper{top:106px;padding:10px 0 10px 0;z-index:85;}
+      .dashboard-wrapper{
+        top:calc(var(--header-h) + 44px);
+        padding:10px 0 10px 0;
+        z-index:85;
+      }
 
       .summary-dashboard{
         display:grid;
@@ -881,7 +977,6 @@
       .sum-val{font-size:0.82rem;}
       .sum-sub{font-size:0.68rem;padding:2px 5px;}
 
-      /* KEEP 4 ACROSS ON MOBILE TOO */
       .shape-grid{
         grid-template-columns:repeat(4, minmax(0, 1fr));
         gap:10px;
@@ -899,11 +994,6 @@
 
       .shape-btn .shape-label{
         font-size:0.62rem;
-      }
-
-      .btn-fav-compact{
-        padding:6px 9px;
-        font-size:0.72rem;
       }
 
       table,tbody,tr{display:block;width:100%;min-width:100%;}
@@ -936,11 +1026,53 @@
       .mc-inline-actions{display:inline-flex;align-items:center;gap:10px;}
       .mc-inline-actions .row-checkbox{transform:scale(1.15);margin-right:0;}
 
-      .drawer-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:3000;align-items:flex-end;}
+      .drawer-overlay{
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.6);
+        z-index:3000;
+        align-items:flex-end;
+      }
+
       .drawer-overlay.open{display:flex;}
-      .drawer-content{background:var(--white);width:100%;height:90vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:slideUp 0.3s ease-out;overflow:hidden;}
-      .drawer-header{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#f8fafc;}
-      .drawer-body{overflow-y:auto;padding:16px;flex-grow:1;display:flex;flex-direction:column;-webkit-overflow-scrolling:touch;}
+      .drawer-content{
+        background:var(--white);
+        width:100%;
+        height:90vh;
+        border-radius:22px 22px 0 0;
+        display:flex;
+        flex-direction:column;
+        animation:slideUp 0.3s ease-out;
+        overflow:hidden;
+      }
+
+      .drawer-header{
+        padding:12px 16px;
+        border-bottom:1px solid var(--border);
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+        background:#f8fafc;
+      }
+
+      .drawer-title-wrap{
+        min-width:0;
+        flex:1 1 auto;
+      }
+
+      .drawer-body{
+        overflow-y:auto;
+        padding:16px;
+        flex-grow:1;
+        display:flex;
+        flex-direction:column;
+        -webkit-overflow-scrolling:touch;
+      }
 
       .sort-modal{width:min(96vw, 560px);}
       .sort-level{
@@ -959,6 +1091,18 @@
       .sort-level .dir-btn{grid-area:dir;justify-content:flex-start;padding:10px 10px;font-size:0.88rem;}
       .sort-level .sort-move-wrap{grid-area:actions;display:flex;gap:8px;justify-content:flex-end;}
       .sort-level .icon-btn{width:36px;height:36px;border-radius:14px;}
+
+      .apply-btn-wrapper.mobile-only{
+        position:sticky !important;
+        bottom:0 !important;
+        left:0;
+        right:0;
+        z-index:12;
+        background:linear-gradient(to top, #ffffff 70%, rgba(255,255,255,0.88));
+        padding:14px 0 calc(12px + env(safe-area-inset-bottom)) 0 !important;
+        margin-top:22px;
+        border-top:1px solid var(--border);
+      }
     }
   </style>
 </head>
@@ -995,19 +1139,19 @@
 <div class="inventory-container" id="app-container">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-sticky-top">
-      <div class="mobile-only" style="text-align:right; margin-bottom:8px; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</div>
-
       <div class="sidebar-header compact-filter-header">
         <div class="compact-filter-left">
-          <h3 style="margin:0; font-size:1.02rem; font-weight:600;">Filters</h3>
+          <h3 class="mobile-filter-title">Search Filters</h3>
 
           <button class="btn-fav btn-fav-compact" id="btn-fav-filter" onclick="toggleLikedFilter()">
             <span class="heart-btn liked" id="fav-filter-heart" aria-hidden="true"></span>
             <span>Favorites</span>
           </button>
+
+          <button class="btn-reset" onclick="resetFilters()">Reset</button>
         </div>
 
-        <button class="btn-reset" onclick="resetFilters()">Reset All</button>
+        <button class="circle-close-btn mobile-only" onclick="toggleSidebar()" aria-label="Close filters">✕</button>
       </div>
     </div>
 
@@ -1181,8 +1325,8 @@
 
     <input type="text" id="search-box" placeholder="Search ID, Shape..." style="width:100%; padding:10px; border:1px solid #ccc; border-radius:16px;" onkeyup="runSearch()">
 
-    <div class="apply-btn-wrapper mobile-only" style="position:sticky;bottom:0;background:var(--white);padding:15px 0 20px 0;margin-top:20px;border-top:1px solid var(--border);">
-      <button onclick="toggleSidebar()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:16px; font-weight:600;">APPLY FILTERS</button>
+    <div class="apply-btn-wrapper mobile-only">
+      <button onclick="toggleSidebar()" style="width:100%; padding:15px; background:var(--primary); color:white; border:none; border-radius:16px; font-weight:700;">APPLY FILTERS</button>
     </div>
   </aside>
 
@@ -1190,7 +1334,7 @@
     <div class="mobile-tools mobile-only">
       <div class="tool-row">
         <button class="tool-btn" onclick="toggleSidebar()">
-          <span>Filters</span><span>⚙️</span>
+          <span>Search Filters</span><span>⚙️</span>
         </button>
       </div>
     </div>
@@ -1236,7 +1380,6 @@
           <tr>
             <th style="width:30px;"></th>
             <th style="width:90px; text-align:center;">Select</th>
-
             <th onclick="sortBy('ID')">ID <span id="sort-ID"></span></th>
             <th onclick="sortBy('Shape')">Shape <span id="sort-Shape"></span></th>
             <th onclick="sortBy('Size')">Size <span id="sort-Size"></span></th>
@@ -1305,8 +1448,10 @@
 <div class="drawer-overlay" id="mobile-drawer">
   <div class="drawer-content">
     <div class="drawer-header">
-      <div id="drawer-title" style="font-size:1.1rem;font-weight:700;color:var(--primary);"></div>
-      <button onclick="closeDrawer()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;line-height:1;">✕</button>
+      <div class="drawer-title-wrap">
+        <div id="drawer-title" style="font-size:1.02rem;font-weight:700;color:var(--primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+      </div>
+      <button class="circle-close-btn" onclick="closeDrawer()" aria-label="Close details">✕</button>
     </div>
     <div class="drawer-body" id="drawer-body"></div>
   </div>
@@ -1320,7 +1465,6 @@
   let likedIds = new Set();
 
   const KNOWN_SHAPES = new Set(['ROUND','OVAL','CUSHION','EMERALD','PEAR','RADIANT','PRINCESS','ASSCHER','MARQUISE','HEART']);
-
   const CLARITY_ORDER = ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'];
   const FLUO_ORDER = ['N','F','M','ST','VST'];
 
@@ -1863,22 +2007,16 @@
 
     const minS = safeParseFloat(document.getElementById('min-size').value);
     const maxS = safeParseFloat(document.getElementById('max-size').value);
-
     const minDepth = safeParseFloat(document.getElementById('depth-min').value);
     const maxDepth = safeParseFloat(document.getElementById('depth-max').value);
-
     const minTable = safeParseFloat(document.getElementById('table-min').value);
     const maxTable = safeParseFloat(document.getElementById('table-max').value);
-
     const minRatio = safeParseFloat(document.getElementById('ratio-min').value);
     const maxRatio = safeParseFloat(document.getElementById('ratio-max').value);
-
     const minL = safeParseFloat(document.getElementById('min-l').value);
     const maxL = safeParseFloat(document.getElementById('max-l').value);
-
     const minW = safeParseFloat(document.getElementById('min-w').value);
     const maxW = safeParseFloat(document.getElementById('max-w').value);
-
     const minDmm = safeParseFloat(document.getElementById('min-d').value);
     const maxDmm = safeParseFloat(document.getElementById('max-d').value);
 
@@ -2354,7 +2492,6 @@
     document.getElementById('sidebar').classList.toggle('show');
   }
 
-  /* AUTO-MATCH SHAPE BUTTON BACKGROUND TO IMAGE BACKGROUND */
   function applyShapeButtonBackgrounds() {
     const imgs = document.querySelectorAll('.shape-btn .shape-plot img');
 
