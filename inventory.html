@@ -531,6 +531,41 @@
       font-weight:600;
     }
 
+    .active-list-pill{
+      display:none;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#111827;
+      color:#fff;
+      font-size:0.82rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .active-list-pill.show{display:inline-flex;}
+
+    .active-list-pill button{
+      border:1px solid rgba(255,255,255,0.35);
+      background:rgba(255,255,255,0.12);
+      color:#fff;
+      border-radius:999px;
+      padding:2px 7px;
+      cursor:pointer;
+      font-weight:800;
+      line-height:1;
+    }
+
+    .saved-list-count{
+      display:block;
+      font-size:0.78rem;
+      color:#64748b;
+      font-weight:500;
+      margin-top:2px;
+    }
+
+
     .table-container{
       background:var(--white);
       border-radius:18px;
@@ -1180,6 +1215,19 @@
         <span>Load Search</span>
       </button>
 
+      <button class="action-btn" onclick="addSelectedToItemList()" title="Save selected stones to a list">
+        <span>Add to List</span>
+      </button>
+
+      <button class="action-btn" onclick="openItemListModal()" title="Load a saved item list">
+        <span>Load List</span>
+      </button>
+
+      <span class="active-list-pill" id="active-list-pill">
+        <span id="active-list-label"></span>
+        <button type="button" onclick="clearActiveItemListFilter()" title="Show all inventory">×</button>
+      </span>
+
       <button class="action-btn" onclick="exportExcel()" title="Export">
         <span>Export</span>
       </button>
@@ -1516,6 +1564,29 @@
   </div>
 </div>
 
+<div class="sort-overlay" id="item-list-overlay" onclick="closeItemListModalOnBackdrop(event)">
+  <div class="sort-modal" role="dialog" aria-modal="true" aria-label="Saved Item Lists">
+    <div class="sort-head">
+      <div class="sort-title">Saved Item Lists</div>
+      <div class="sort-head-actions">
+        <button type="button" class="btn-ghost" onclick="addSelectedToItemList()">+ Add Selected</button>
+        <button type="button" class="sort-close" onclick="closeItemListModal()" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="sort-body">
+      <p class="sort-note">Check stones in the inventory, add them to a named list, then load that list to show only those stones.</p>
+      <div id="item-list-list"></div>
+    </div>
+    <div class="sort-foot">
+      <button type="button" class="btn-danger" onclick="clearItemLists()">Clear item lists</button>
+      <div class="sort-actions-right">
+        <button type="button" class="btn-ghost" onclick="clearActiveItemListFilter()">Show all inventory</button>
+        <button type="button" class="btn-ghost" onclick="closeItemListModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="media-modal-overlay" id="media-modal">
   <div class="media-modal-content">
     <div class="media-modal-header">
@@ -1544,7 +1615,10 @@
   let sortSpecs = [];
   let selectedIds = new Set();
   let likedIds = new Set();
+  let activeItemListIds = null;
+  let activeItemListName = '';
   const SAVED_SEARCHES_KEY = 'mjg_saved_searches_v1';
+  const SAVED_ITEM_LISTS_KEY = 'mjg_saved_item_lists_v1';
 
   const KNOWN_SHAPES = new Set(['ROUND','OVAL','CUSHION','EMERALD','PEAR','RADIANT','PRINCESS','ASSCHER','MARQUISE','HEART']);
   const CLARITY_ORDER = ['FL','IF','VVS1','VVS2','VS1','VS2','SI1','SI2','I1'];
@@ -1910,7 +1984,8 @@
     if (!document.getElementById('mobile-drawer').classList.contains('open') &&
         !document.getElementById('media-modal').classList.contains('open') &&
         !document.getElementById('sort-overlay').classList.contains('open') &&
-        !document.getElementById('saved-search-overlay').classList.contains('open')) {
+        !document.getElementById('saved-search-overlay').classList.contains('open') &&
+        !document.getElementById('item-list-overlay').classList.contains('open')) {
       document.body.style.overflow = '';
     }
   }
@@ -2034,6 +2109,199 @@
     renderSavedSearchList();
   }
 
+
+  function readItemLists(){
+    try {
+      const saved = JSON.parse(localStorage.getItem(SAVED_ITEM_LISTS_KEY) || '[]');
+      return Array.isArray(saved) ? saved : [];
+    } catch (err) {
+      return [];
+    }
+  }
+
+  function writeItemLists(lists){
+    localStorage.setItem(SAVED_ITEM_LISTS_KEY, JSON.stringify(lists));
+  }
+
+  function addSelectedToItemList(){
+    if (!selectedIds.size) {
+      alert('Select one or more stones first.');
+      return;
+    }
+
+    const name = prompt('Add selected stones to which list?');
+    if (!name || !name.trim()) return;
+
+    const cleanName = name.trim();
+    const lists = readItemLists();
+    const existingIndex = lists.findIndex(l => (l.name || '').toLowerCase() === cleanName.toLowerCase());
+    const selectedArray = Array.from(selectedIds).filter(Boolean);
+
+    if (existingIndex > -1) {
+      const currentIds = Array.isArray(lists[existingIndex].ids) ? lists[existingIndex].ids : [];
+      lists[existingIndex].ids = Array.from(new Set([...currentIds, ...selectedArray]));
+      lists[existingIndex].updatedAt = new Date().toISOString();
+    } else {
+      lists.unshift({
+        id: String(Date.now()),
+        name: cleanName,
+        ids: selectedArray,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+    }
+
+    writeItemLists(lists);
+    renderItemListModal();
+    alert('Added ' + selectedArray.length + ' selected stone(s) to: ' + cleanName);
+  }
+
+  function openItemListModal(){
+    renderItemListModal();
+    document.getElementById('item-list-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeItemListModalOnBackdrop(e){
+    if (e.target.id === 'item-list-overlay') closeItemListModal();
+  }
+
+  function closeItemListModal(){
+    document.getElementById('item-list-overlay').classList.remove('open');
+    if (!document.getElementById('mobile-drawer').classList.contains('open') &&
+        !document.getElementById('media-modal').classList.contains('open') &&
+        !document.getElementById('sort-overlay').classList.contains('open') &&
+        !document.getElementById('saved-search-overlay').classList.contains('open') &&
+        !document.getElementById('item-list-overlay').classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  function renderItemListModal(){
+    const wrap = document.getElementById('item-list-list');
+    if (!wrap) return;
+
+    const lists = readItemLists();
+    if (!lists.length) {
+      wrap.innerHTML = '<div class="saved-search-empty">No saved item lists yet.</div>';
+      return;
+    }
+
+    wrap.innerHTML = '';
+    lists.forEach(list => {
+      const row = document.createElement('div');
+      row.className = 'saved-search-row';
+
+      const label = document.createElement('div');
+      label.className = 'saved-search-name';
+      label.textContent = list.name || 'Untitled List';
+
+      const count = document.createElement('span');
+      count.className = 'saved-list-count';
+      const itemCount = Array.isArray(list.ids) ? list.ids.length : 0;
+      const dateText = list.updatedAt ? ' • Updated ' + new Date(list.updatedAt).toLocaleString() : '';
+      count.textContent = itemCount + ' stone' + (itemCount === 1 ? '' : 's') + dateText;
+      label.appendChild(count);
+
+      const loadBtn = document.createElement('button');
+      loadBtn.type = 'button';
+      loadBtn.className = 'btn-primary';
+      loadBtn.textContent = 'Load';
+      loadBtn.onclick = () => loadItemList(list.id);
+
+      const replaceBtn = document.createElement('button');
+      replaceBtn.type = 'button';
+      replaceBtn.className = 'btn-ghost';
+      replaceBtn.textContent = 'Replace';
+      replaceBtn.title = 'Replace this list with currently selected stones';
+      replaceBtn.onclick = () => replaceItemListWithSelected(list.id);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn-danger';
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.onclick = () => deleteItemList(list.id);
+
+      row.appendChild(label);
+      row.appendChild(loadBtn);
+      row.appendChild(replaceBtn);
+      row.appendChild(deleteBtn);
+      wrap.appendChild(row);
+    });
+  }
+
+  function loadItemList(id){
+    const list = readItemLists().find(l => l.id === id);
+    if (!list) return;
+
+    activeItemListIds = new Set(Array.isArray(list.ids) ? list.ids : []);
+    activeItemListName = list.name || 'Item List';
+    updateActiveItemListPill();
+    runSearch();
+    closeItemListModal();
+  }
+
+  function replaceItemListWithSelected(id){
+    if (!selectedIds.size) {
+      alert('Select one or more stones first.');
+      return;
+    }
+    if (!confirm('Replace this list with the currently selected stones?')) return;
+
+    const lists = readItemLists();
+    const idx = lists.findIndex(l => l.id === id);
+    if (idx === -1) return;
+
+    lists[idx].ids = Array.from(selectedIds).filter(Boolean);
+    lists[idx].updatedAt = new Date().toISOString();
+    writeItemLists(lists);
+    renderItemListModal();
+
+    if (activeItemListName && lists[idx].name === activeItemListName) {
+      activeItemListIds = new Set(lists[idx].ids);
+      updateActiveItemListPill();
+      runSearch();
+    }
+  }
+
+  function deleteItemList(id){
+    if (!confirm('Delete this saved item list?')) return;
+    const list = readItemLists().find(l => l.id === id);
+    const lists = readItemLists().filter(l => l.id !== id);
+    writeItemLists(lists);
+    if (list && activeItemListName === list.name) clearActiveItemListFilter(false);
+    renderItemListModal();
+  }
+
+  function clearItemLists(){
+    if (!confirm('Clear all saved item lists?')) return;
+    writeItemLists([]);
+    clearActiveItemListFilter(false);
+    renderItemListModal();
+  }
+
+  function clearActiveItemListFilter(shouldRun=true){
+    activeItemListIds = null;
+    activeItemListName = '';
+    updateActiveItemListPill();
+    if (shouldRun) runSearch();
+  }
+
+  function updateActiveItemListPill(){
+    const pill = document.getElementById('active-list-pill');
+    const label = document.getElementById('active-list-label');
+    if (!pill || !label) return;
+
+    if (activeItemListIds && activeItemListName) {
+      pill.classList.add('show');
+      label.textContent = 'List: ' + activeItemListName + ' (' + activeItemListIds.size + ')';
+    } else {
+      pill.classList.remove('show');
+      label.textContent = '';
+    }
+  }
+
+
   function toggleSelect(id, event) {
     if (event) event.stopPropagation();
     if (selectedIds.has(id)) selectedIds.delete(id);
@@ -2098,7 +2366,8 @@
     document.getElementById('sort-overlay').classList.remove('open');
     if (!document.getElementById('mobile-drawer').classList.contains('open') &&
         !document.getElementById('media-modal').classList.contains('open') &&
-        !document.getElementById('saved-search-overlay').classList.contains('open')) {
+        !document.getElementById('saved-search-overlay').classList.contains('open') &&
+        !document.getElementById('item-list-overlay').classList.contains('open')) {
       document.body.style.overflow = '';
     }
   }
@@ -2300,6 +2569,7 @@
     filteredData = inventoryData.filter(row => {
       const id = getVal(row,'ID');
 
+      if (activeItemListIds && !activeItemListIds.has(id)) return false;
       if (activeFilters.likedOnly && !likedIds.has(id)) return false;
 
       if (query) {
@@ -2675,7 +2945,8 @@
     document.getElementById('mobile-drawer').classList.remove('open');
     if (!document.getElementById('media-modal').classList.contains('open') &&
         !document.getElementById('sort-overlay').classList.contains('open') &&
-        !document.getElementById('saved-search-overlay').classList.contains('open')) {
+        !document.getElementById('saved-search-overlay').classList.contains('open') &&
+        !document.getElementById('item-list-overlay').classList.contains('open')) {
       document.body.style.overflow = '';
     }
   }
