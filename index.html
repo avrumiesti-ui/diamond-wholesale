@@ -2,364 +2,283 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>M.J. Gross Inc. | Login</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22 style=%22background-color:black;%22><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2250%22 fill=%22white%22>MJG</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M.J. Gross Inc. | Secure Inventory Portal</title>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22000%22/><text x=%2250%25%22 y=%2256%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22serif%22 font-weight=%22bold%22 font-size=%2246%22 fill=%22white%22>MJG</text></svg>">
+
   <style>
-    :root{
-      --primary:#000000;
-      --accent:#C5A059;
-      --accent-soft:#ead8ad;
-      --bg:#f4f6f8;
-      --card:#ffffff;
-      --ink:#111827;
-      --muted:#64748b;
-      --border:#e2e8f0;
-      --danger:#dc2626;
-      --success:#15803d;
+    :root {
+      --black: #050505;
+      --gold: #C5A059;
+      --soft-gold: #eadbb8;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f6f7f9;
+      --white: #ffffff;
+      --danger: #b91c1c;
     }
 
-    *{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-tap-highlight-color:transparent;}
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);}
-
-    body{
-      min-height:100dvh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      overflow:hidden;
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
       background:
-        radial-gradient(circle at 18% 18%, rgba(197,160,89,0.28), transparent 28%),
-        radial-gradient(circle at 85% 75%, rgba(15,23,42,0.12), transparent 32%),
-        linear-gradient(135deg, #ffffff 0%, #f4f6f8 50%, #eceff3 100%);
+        radial-gradient(circle at top left, rgba(197,160,89,0.18), transparent 34%),
+        linear-gradient(135deg, #f7f7f8 0%, #ffffff 45%, #f2f3f5 100%);
+      color: var(--text);
     }
 
-    .page-shell{
-      width:min(980px,100%);
-      min-height:610px;
-      display:grid;
-      grid-template-columns:1fr 1.08fr;
-      border-radius:30px;
-      overflow:hidden;
-      background:rgba(255,255,255,0.72);
-      box-shadow:0 28px 80px rgba(15,23,42,0.20);
-      border:1px solid rgba(255,255,255,0.72);
-      backdrop-filter:blur(18px);
-      position:relative;
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
     }
 
-    .brand-panel{
+    .login-shell {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(229,231,235,0.95);
+      border-radius: 28px;
+      box-shadow:
+        0 28px 80px rgba(15,23,42,0.12),
+        0 2px 8px rgba(15,23,42,0.04);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand-panel {
       background:
-        linear-gradient(145deg, rgba(0,0,0,0.96), rgba(21,24,30,0.96)),
-        radial-gradient(circle at top left, rgba(197,160,89,0.45), transparent 40%);
-      color:#fff;
-      padding:42px 36px;
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
+        linear-gradient(145deg, #050505 0%, #151515 58%, #2a2418 100%);
+      padding: 34px 28px 30px;
+      text-align: center;
+      border-bottom: 3px solid var(--gold);
     }
 
-    .brand-panel::before,
-    .brand-panel::after{
-      content:"";
-      position:absolute;
-      border-radius:999px;
-      background:rgba(197,160,89,0.18);
-      filter:blur(1px);
-      animation:floatOrb 7s ease-in-out infinite;
+    .logo-wrap {
+      width: 148px;
+      height: 68px;
+      margin: 0 auto 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .brand-panel::before{width:220px;height:220px;right:-88px;top:42px;}
-    .brand-panel::after{width:150px;height:150px;left:-58px;bottom:88px;animation-delay:-2s;}
-
-    @keyframes floatOrb{
-      0%,100%{transform:translate3d(0,0,0) scale(1);}
-      50%{transform:translate3d(-12px,16px,0) scale(1.06);}
+    .logo-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+      filter: brightness(1.05);
     }
 
-    .logo-lockup{position:relative;z-index:2;display:flex;align-items:center;gap:14px;}
-
-    .logo-box{
-      width:88px;
-      height:52px;
-      border-radius:16px;
-      background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      padding:8px;
-      box-shadow:0 14px 34px rgba(0,0,0,0.22);
+    .fallback-logo {
+      display: none;
+      width: 116px;
+      height: 58px;
+      border: 1px solid rgba(197,160,89,0.55);
+      border-radius: 16px;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: Georgia, serif;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: 1px;
     }
 
-    .logo-box img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
-    .fallback-logo{font-family:Georgia,serif;font-weight:800;color:#000;font-size:1.45rem;letter-spacing:-1px;display:none;}
-
-    .brand-name{font-weight:800;letter-spacing:0.02em;line-height:1.1;}
-    .brand-name span{display:block;color:var(--accent);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.16em;margin-top:5px;}
-
-    .brand-copy{position:relative;z-index:2;margin-top:70px;}
-    .eyebrow{color:var(--accent-soft);font-weight:800;letter-spacing:0.16em;text-transform:uppercase;font-size:0.72rem;margin-bottom:14px;}
-    .brand-copy h1{font-size:2.65rem;line-height:0.98;margin:0 0 18px 0;letter-spacing:-0.06em;}
-    .brand-copy p{font-size:1rem;line-height:1.65;color:#d7dde8;margin:0;max-width:330px;}
-
-    .brand-links{position:relative;z-index:2;display:flex;gap:12px;flex-wrap:wrap;margin-top:34px;}
-    .brand-links a{color:#f8fafc;text-decoration:none;font-size:0.86rem;font-weight:700;border:1px solid rgba(255,255,255,0.20);border-radius:999px;padding:9px 12px;background:rgba(255,255,255,0.06);}
-    .brand-links a:hover{border-color:rgba(197,160,89,0.65);background:rgba(197,160,89,0.12);}
-
-    .form-panel{padding:48px min(58px,6vw);display:flex;align-items:center;justify-content:center;position:relative;background:rgba(255,255,255,0.82);}
-    .form-stage{width:100%;max-width:390px;position:relative;}
-
-    .form-card{
-      width:100%;
-      transition:transform .42s cubic-bezier(.2,.8,.2,1), opacity .28s ease, filter .28s ease;
-      transform-origin:center;
+    .brand-title {
+      margin: 0;
+      color: #ffffff;
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
-    .form-card.hidden{position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateX(38px) scale(.97);filter:blur(4px);}
-    .form-card.slide-left.hidden{transform:translateX(-38px) scale(.97);}
-
-    .form-title{font-size:2rem;letter-spacing:-0.045em;margin:0 0 8px 0;color:#0f172a;}
-    .form-subtitle{margin:0 0 28px 0;color:var(--muted);line-height:1.55;font-size:0.97rem;}
-
-    .field{position:relative;margin-bottom:16px;}
-    .field input{
-      width:100%;
-      height:54px;
-      border:1px solid #d6dde7;
-      border-radius:18px;
-      background:#fff;
-      outline:none;
-      padding:20px 16px 8px 16px;
-      font-size:1rem;
-      font-weight:650;
-      color:#0f172a;
-      box-shadow:0 8px 20px rgba(15,23,42,0.04);
-      transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    .brand-subtitle {
+      margin: 8px 0 0;
+      color: rgba(255,255,255,0.68);
+      font-size: 0.93rem;
+      font-weight: 500;
     }
 
-    .field input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(197,160,89,0.16),0 10px 22px rgba(15,23,42,0.07);transform:translateY(-1px);}
-    .field label{position:absolute;left:16px;top:7px;color:#94a3b8;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;pointer-events:none;}
-
-    .inline-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 22px 0;color:var(--muted);font-size:0.9rem;}
-    .remember{display:flex;align-items:center;gap:8px;white-space:nowrap;}
-    .remember input{accent-color:#111827;}
-    .text-link{border:none;background:none;padding:0;color:#111827;font-weight:800;text-decoration:none;cursor:pointer;font-size:0.9rem;}
-    .text-link:hover{color:var(--accent);}
-
-    .submit-btn{
-      width:100%;
-      height:54px;
-      border:none;
-      border-radius:18px;
-      background:#111827;
-      color:#fff;
-      font-size:1rem;
-      font-weight:850;
-      cursor:pointer;
-      box-shadow:0 14px 26px rgba(17,24,39,0.24);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
-      overflow:hidden;
-      position:relative;
+    .form-panel {
+      padding: 30px 28px 28px;
     }
 
-    .submit-btn:hover{transform:translateY(-1px);box-shadow:0 18px 32px rgba(17,24,39,0.28);background:#000;}
-    .submit-btn:active{transform:translateY(0);}
-    .submit-btn .arrow{transition:transform .18s ease;}
-    .submit-btn:hover .arrow{transform:translateX(3px);}
-
-    .message{min-height:22px;margin-top:14px;font-size:0.88rem;font-weight:700;color:var(--muted);}
-    .message.error{color:var(--danger);}
-    .message.success{color:var(--success);}
-
-    .divider{display:flex;align-items:center;gap:12px;color:#94a3b8;font-size:0.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;margin:26px 0;}
-    .divider::before,.divider::after{content:"";height:1px;background:#e2e8f0;flex:1;}
-
-    .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    .quick-links a,.quick-links button{
-      border:1px solid #d6dde7;
-      border-radius:16px;
-      background:#fff;
-      min-height:44px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      text-decoration:none;
-      color:#0f172a;
-      font-weight:800;
-      cursor:pointer;
-      font-size:0.88rem;
+    .field {
+      margin-bottom: 16px;
     }
-    .quick-links a:hover,.quick-links button:hover{border-color:#c5a059;background:#fffaf0;}
 
-    .test-note{margin-top:18px;color:#64748b;font-size:0.84rem;line-height:1.5;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;}
-    .test-note b{color:#0f172a;}
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #374151;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
 
-    .reset-actions{display:flex;gap:10px;margin-top:10px;}
-    .reset-actions .submit-btn{flex:1;}
-    .secondary-btn{height:54px;border:1px solid #d6dde7;border-radius:18px;background:#fff;color:#0f172a;font-weight:850;cursor:pointer;padding:0 18px;}
-    .secondary-btn:hover{background:#f8fafc;}
+    .field input {
+      width: 100%;
+      height: 50px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #ffffff;
+      padding: 0 15px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
 
-    @media (max-width:760px){
-      body{align-items:stretch;padding:12px;overflow:auto;}
-      .page-shell{grid-template-columns:1fr;min-height:auto;border-radius:24px;}
-      .brand-panel{min-height:270px;padding:28px 24px;}
-      .brand-copy{margin-top:36px;}
-      .brand-copy h1{font-size:2.1rem;}
-      .brand-links{margin-top:24px;}
-      .form-panel{padding:34px 22px 28px 22px;}
-      .quick-links{grid-template-columns:1fr;}
+    .field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(197,160,89,0.16);
+      background: #fffdf8;
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 52px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 17px;
+      background: var(--black);
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+    }
+
+    .login-btn:hover {
+      background: #151515;
+      transform: translateY(-1px);
+      box-shadow: 0 13px 28px rgba(0,0,0,0.18);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+    }
+
+    .error {
+      display: none;
+      margin: 12px 0 0;
+      color: var(--danger);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .secure-note {
+      margin: 20px 0 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px;
+      }
+
+      .login-shell {
+        border-radius: 24px;
+      }
+
+      .brand-panel {
+        padding: 30px 22px 26px;
+      }
+
+      .form-panel {
+        padding: 26px 22px 24px;
+      }
+
+      .logo-wrap {
+        width: 138px;
+        height: 64px;
+      }
+
+      .brand-title {
+        font-size: 1.28rem;
+      }
     }
   </style>
 </head>
+
 <body>
-  <section class="page-shell" aria-label="M.J. Gross login page">
-    <aside class="brand-panel">
-      <div>
-        <div class="logo-lockup">
-          <div class="logo-box">
-            <img src="images/logo.jpg" alt="M.J. Gross Inc." onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-            <span class="fallback-logo">MJG</span>
-          </div>
-          <div class="brand-name">M.J. Gross Inc.<span>Diamond Inventory</span></div>
-        </div>
-
-        <div class="brand-copy">
-          <div class="eyebrow">Secure Inventory Portal</div>
-          <h1>Welcome back.</h1>
-          <p>Log in to review live inventory, save searches, load search presets, select stones, and export results.</p>
-        </div>
+  <main class="login-shell">
+    <section class="brand-panel">
+      <div class="logo-wrap">
+        <img src="images/logo.jpg" alt="M.J. Gross Inc." onerror="this.style.display='none'; document.getElementById('fallback-logo').style.display='flex';">
+        <div class="fallback-logo" id="fallback-logo">MJG</div>
       </div>
 
-      <nav class="brand-links" aria-label="Helpful links">
-        <a href="inventory.html">Inventory Preview</a>
-        <a href="mailto:info@mjgross.com">Contact Office</a>
-        <a href="https://mjgross.com" target="_blank" rel="noopener">MJGross.com</a>
-      </nav>
-    </aside>
+      <h1 class="brand-title">Secure Inventory Portal</h1>
+      <p class="brand-subtitle">M.J. Gross Inc.</p>
+    </section>
 
-    <main class="form-panel">
-      <div class="form-stage">
-        <form class="form-card" id="login-card" onsubmit="handleLogin(event)">
-          <h2 class="form-title">Log in</h2>
-          <p class="form-subtitle">This is a test site, so any email address and any password will let you continue.</p>
+    <section class="form-panel">
+      <form id="login-form">
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input id="email" type="email" autocomplete="email" required />
+        </div>
 
-          <div class="field">
-            <input id="email" name="email" type="email" autocomplete="email" placeholder=" " required>
-            <label for="email">Email address</label>
-          </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="current-password" required />
+        </div>
 
-          <div class="field">
-            <input id="password" name="password" type="password" autocomplete="current-password" placeholder=" " required>
-            <label for="password">Password</label>
-          </div>
+        <button class="login-btn" type="submit">Log In</button>
 
-          <div class="inline-row">
-            <label class="remember"><input type="checkbox" id="remember"> Remember me</label>
-            <button type="button" class="text-link" onclick="showReset()">Forgot password?</button>
-          </div>
+        <div class="error" id="login-error">
+          Please enter an email address and password.
+        </div>
 
-          <button class="submit-btn" type="submit"><span>Enter Inventory</span><span class="arrow">→</span></button>
-          <div class="message" id="login-message" aria-live="polite"></div>
-
-          <div class="divider">test links</div>
-          <div class="quick-links">
-            <a href="inventory.html">Skip to Inventory</a>
-            <button type="button" onclick="fillDemoLogin()">Use Demo Login</button>
-          </div>
-
-          <div class="test-note"><b>Testing mode:</b> No real authentication is active. The login only checks that both fields are filled in.</div>
-        </form>
-
-        <form class="form-card hidden" id="reset-card" onsubmit="handleReset(event)">
-          <h2 class="form-title">Reset password</h2>
-          <p class="form-subtitle">Enter an email address and we’ll show a test confirmation. No email is actually sent from this static page.</p>
-
-          <div class="field">
-            <input id="reset-email" name="reset-email" type="email" autocomplete="email" placeholder=" " required>
-            <label for="reset-email">Email address</label>
-          </div>
-
-          <div class="reset-actions">
-            <button class="secondary-btn" type="button" onclick="showLogin()">Back</button>
-            <button class="submit-btn" type="submit"><span>Send Reset</span><span class="arrow">→</span></button>
-          </div>
-          <div class="message" id="reset-message" aria-live="polite"></div>
-        </form>
-      </div>
-    </main>
-  </section>
+        <p class="secure-note">
+          Authorized access only.
+        </p>
+      </form>
+    </section>
+  </main>
 
   <script>
-    const INVENTORY_URL = 'inventory.html';
-
-    function handleLogin(event){
+    document.getElementById('login-form').addEventListener('submit', function(event) {
       event.preventDefault();
+
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value.trim();
-      const msg = document.getElementById('login-message');
+      const error = document.getElementById('login-error');
 
       if (!email || !password) {
-        msg.className = 'message error';
-        msg.textContent = 'Please enter any email and password to continue.';
+        error.style.display = 'block';
         return;
       }
 
-      try {
-        localStorage.setItem('mjgTestLogin', JSON.stringify({ email, time: Date.now() }));
-      } catch(e) {}
+      error.style.display = 'none';
 
-      msg.className = 'message success';
-      msg.textContent = 'Login accepted. Opening inventory...';
-      setTimeout(() => { window.location.href = INVENTORY_URL; }, 420);
-    }
+      localStorage.setItem('mjg_inventory_logged_in', 'true');
+      localStorage.setItem('mjg_inventory_login_email', email);
 
-    function fillDemoLogin(){
-      document.getElementById('email').value = 'test@mjgross.com';
-      document.getElementById('password').value = 'password';
-      document.getElementById('password').focus();
-    }
-
-    function showReset(){
-      const login = document.getElementById('login-card');
-      const reset = document.getElementById('reset-card');
-      login.classList.add('hidden','slide-left');
-      reset.classList.remove('hidden');
-      reset.classList.remove('slide-left');
-      document.getElementById('reset-email').value = document.getElementById('email').value;
-      setTimeout(() => document.getElementById('reset-email').focus(), 80);
-    }
-
-    function showLogin(){
-      const login = document.getElementById('login-card');
-      const reset = document.getElementById('reset-card');
-      reset.classList.add('hidden');
-      login.classList.remove('hidden','slide-left');
-      document.getElementById('reset-message').textContent = '';
-      setTimeout(() => document.getElementById('email').focus(), 80);
-    }
-
-    function handleReset(event){
-      event.preventDefault();
-      const email = document.getElementById('reset-email').value.trim();
-      const msg = document.getElementById('reset-message');
-      if (!email) {
-        msg.className = 'message error';
-        msg.textContent = 'Enter any email address for the test reset.';
-        return;
-      }
-      msg.className = 'message success';
-      msg.textContent = 'Test reset accepted. No email was sent.';
-    }
+      window.location.href = 'inventory.html';
+    });
   </script>
 </body>
 </html>
